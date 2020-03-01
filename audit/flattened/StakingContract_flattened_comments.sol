@@ -232,23 +232,28 @@ interface IMigratableStakingContract {
 }
 
 /// @title An interface for staking contracts.
+// BK Ok
 interface IStakingContract {
     /// @dev Stakes ORBS tokens on behalf of msg.sender. This method assumes that the user has already approved at least
     /// the required amount using ERC20 approve.
     /// @param _amount uint256 The amount of tokens to stake.
+    // BK Ok
     function stake(uint256 _amount) external;
 
     /// @dev Unstakes ORBS tokens from msg.sender. If successful, this will start the cooldown period, after which
     /// msg.sender would be able to withdraw all of his tokens.
     /// @param _amount uint256 The amount of tokens to unstake.
+    // BK Ok
     function unstake(uint256 _amount) external;
 
     /// @dev Requests to withdraw all of staked ORBS tokens back to msg.sender. Stake owners can withdraw their ORBS
     /// tokens only after previously unstaking them and after the cooldown period has passed (unless the contract was
     /// requested to release all stakes).
+    // BK Ok
     function withdraw() external;
 
     /// @dev Restakes unstaked ORBS tokens (in or after cooldown) for msg.sender.
+    // BK Ok
     function restake() external;
 
     /// @dev Distributes staking rewards to a list of addresses by directly adding rewards to their stakes. This method
@@ -258,33 +263,43 @@ interface IStakingContract {
     /// @param _totalAmount uint256 The total amount of rewards to distributes.
     /// @param _stakeOwners address[] The addresses of the stake owners.
     /// @param _amounts uint256[] The amounts of the rewards.
+    // BK Ok
     function distributeRewards(uint256 _totalAmount, address[] calldata _stakeOwners, uint256[] calldata _amounts) external;
 
     /// @dev Returns the stake of the specified stake owner (excluding unstaked tokens).
     /// @param _stakeOwner address The address to check.
     /// @return uint256 The total stake.
+    // BK Ok
     function getStakeBalanceOf(address _stakeOwner) external view returns (uint256);
 
     /// @dev Returns the total amount staked tokens (excluding unstaked tokens).
     /// @return uint256 The total staked tokens of all stake owners.
+    // BK Ok
     function getTotalStakedTokens() external view returns (uint256);
 
     /// @dev Returns the time that the cooldown period ends (or ended) and the amount of tokens to be released.
     /// @param _stakeOwner address The address to check.
     /// @return cooldownAmount uint256 The total tokens in cooldown.
     /// @return cooldownEndTime uint256 The time when the cooldown period ends (in seconds).
+    // BK Ok
     function getUnstakeStatus(address _stakeOwner) external view returns (uint256 cooldownAmount,
         uint256 cooldownEndTime);
 
     /// @dev Migrates the stake of msg.sender from this staking contract to a new approved staking contract.
     /// @param _newStakingContract IMigratableStakingContract The new staking contract which supports stake migration.
     /// @param _amount uint256 The amount of tokens to migrate.
+    // BK Ok
     function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external;
 
+    // BK Ok
     event Staked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+    // BK Ok
     event Unstaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+    // BK Ok
     event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+    // BK Ok
     event Restaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+    // BK Ok
     event MigratedStake(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
 }
 
@@ -527,11 +542,13 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @dev Stakes ORBS tokens on behalf of msg.sender. This method assumes that the user has already approved at least
     /// the required amount using ERC20 approve.
     /// @param _amount uint256 The amount of tokens to stake.
+    // BK NOTE - function stake(uint256 _amount) external;
     function stake(uint256 _amount) external onlyWhenAcceptingNewStakes {
         address stakeOwner = msg.sender;
 
         uint256 totalStakedAmount = stake(stakeOwner, _amount);
 
+        // BK NOTE - event Staked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit Staked(stakeOwner, _amount, totalStakedAmount);
 
         // Note: we aren't concerned with reentrancy since:
@@ -543,6 +560,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @dev Unstakes ORBS tokens from msg.sender. If successful, this will start the cooldown period, after which
     /// msg.sender would be able to withdraw all of his tokens.
     /// @param _amount uint256 The amount of tokens to unstake.
+    // BK NOTE - function unstake(uint256 _amount) external;
     function unstake(uint256 _amount) external {
         require(_amount > 0, "StakingContract::unstake - amount must be greater than 0");
 
@@ -569,6 +587,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
         uint256 totalStakedAmount = stakeData.amount;
 
+        // BK NOTE - event Unstaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit Unstaked(stakeOwner, _amount, totalStakedAmount);
 
         // Note: we aren't concerned with reentrancy since:
@@ -580,11 +599,13 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @dev Requests to withdraw all of staked ORBS tokens back to msg.sender. Stake owners can withdraw their ORBS
     /// tokens only after previously unstaking them and after the cooldown period has passed (unless the contract was
     /// requested to release all stakes).
+    // BK NOTE - function withdraw() external;
     function withdraw() external {
         address stakeOwner = msg.sender;
 
         WithdrawResult memory res = withdraw(stakeOwner);
 
+        // BK NOTE - event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit Withdrew(stakeOwner, res.withdrawnAmount, res.stakedAmount);
 
         // Trigger staking state change notifications only if the staking amount was changed.
@@ -599,6 +620,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     }
 
     /// @dev Restakes unstaked ORBS tokens (in or after cooldown) for msg.sender.
+    // BK NOTE - function restake() external;
     function restake() external onlyWhenAcceptingNewStakes {
         address stakeOwner = msg.sender;
         Stake storage stakeData = stakes[stakeOwner];
@@ -614,6 +636,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
         uint256 totalStakedAmount = stakeData.amount;
 
+        // BK NOTE - event Restaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit Restaked(stakeOwner, cooldownAmount, totalStakedAmount);
 
         // Note: we aren't concerned with reentrancy since:
@@ -640,6 +663,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @dev Migrates the stake of msg.sender from this staking contract to a new approved staking contract.
     /// @param _newStakingContract IMigratableStakingContract The new staking contract which supports stake migration.
     /// @param _amount uint256 The amount of tokens to migrate.
+    // BK NOTE - function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external;
     function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external
         onlyWhenStakesNotReleased {
         // BK Ok
@@ -663,6 +687,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         require(token.approve(address(_newStakingContract), _amount),
             "StakingContract::migrateStakedTokens - couldn't approve transfer");
 
+        // BK NOTE - event MigratedStake(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit MigratedStake(stakeOwner, _amount, stakeData.amount);
 
         _newStakingContract.acceptMigration(stakeOwner, _amount);
@@ -680,6 +705,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _totalAmount uint256 The total amount of rewards to distributes.
     /// @param _stakeOwners address[] The addresses of the stake owners.
     /// @param _amounts uint256[] The amounts of the rewards.
+    // BK NOTE - function distributeRewards(uint256 _totalAmount, address[] calldata _stakeOwners, uint256[] calldata _amounts) external;
     function distributeRewards(uint256 _totalAmount, address[] calldata _stakeOwners, uint256[] calldata _amounts) external
         onlyWhenAcceptingNewStakes {
         require(_totalAmount > 0, "StakingContract::distributeRewards - total amount must be greater than 0");
@@ -716,6 +742,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
             signs[i] = true;
             totalStakedAmounts[i] = totalStakedAmount;
 
+            // BK NOTE - event Staked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
             emit Staked(stakeOwner, amount, totalStakedAmount);
         }
 
@@ -732,12 +759,14 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @dev Returns the stake of the specified stake owner (excluding unstaked tokens).
     /// @param _stakeOwner address The address to check.
     /// @return uint256 The stake of the stake owner.
+    // BK NOTE - function getStakeBalanceOf(address _stakeOwner) external view returns (uint256);
     function getStakeBalanceOf(address _stakeOwner) external view returns (uint256) {
         return stakes[_stakeOwner].amount;
     }
 
     /// @dev Returns the total amount staked tokens (excluding unstaked tokens).
     /// @return uint256 The total staked tokens of all stake owners.
+    // BK NOTE - function getTotalStakedTokens() external view returns (uint256);
     function getTotalStakedTokens() external view returns (uint256) {
         return totalStakedTokens;
     }
@@ -746,6 +775,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _stakeOwner address The address to check.
     /// @return cooldownAmount uint256 The total tokens in cooldown.
     /// @return cooldownEndTime uint256 The time when the cooldown period ends (in seconds).
+    // BK NOTE - function getUnstakeStatus(address _stakeOwner) external view returns (uint256 cooldownAmount, uint256 cooldownEndTime);
     function getUnstakeStatus(address _stakeOwner) external view returns (uint256 cooldownAmount,
         uint256 cooldownEndTime) {
         Stake memory stakeData = stakes[_stakeOwner];
@@ -789,6 +819,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
             signs[i] = false;
             totalStakedAmounts[i] = res.stakedAmount;
 
+            // BK NOTE - event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
             emit Withdrew(stakeOwner, res.withdrawnAmount, res.stakedAmount);
         }
 

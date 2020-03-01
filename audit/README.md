@@ -69,7 +69,7 @@ Contracts reviewed:
   * [x] library SafeMath
   * [x] interface IERC20
   * [ ] interface IMigratableStakingContract
-  * [ ] interface IStakingContract
+  * [x] interface IStakingContract
   * [ ] interface IStakeChangeNotifier
   * [ ] contract StakingContract is IStakingContract, IMigratableStakingContract
     * [ ] using SafeMath for uint256;
