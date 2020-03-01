@@ -473,6 +473,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _newNotifier IStakeChangeNotifier The address of the new stake change notifier contract.
     ///
     /// Note: it's allowed to reset the notifier to a zero address.
+    // BK NOTE - External function, can only be called by migrationManager
     function setStakeChangeNotifier(IStakeChangeNotifier _newNotifier) external onlyMigrationManager {
         require(notifier != _newNotifier,
             "StakingContract::setStakeChangeNotifier - address must be different than the current address");
@@ -484,6 +485,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Adds a new contract to the list of approved staking contracts migration destinations.
     /// @param _newStakingContract IMigratableStakingContract The new contract to add.
+    // BK NOTE - External function, can only be called by migrationManager
     function addMigrationDestination(IMigratableStakingContract _newStakingContract) external onlyMigrationManager {
         require(address(_newStakingContract) != address(0),
             "StakingContract::addMigrationDestination - address must not be 0");
@@ -506,6 +508,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Removes a contract from the list of approved staking contracts migration destinations.
     /// @param _stakingContract IMigratableStakingContract The contract to remove.
+    // BK NOTE - External function, can only be called by migrationManager
     function removeMigrationDestination(IMigratableStakingContract _stakingContract) external onlyMigrationManager {
         require(address(_stakingContract) != address(0),
             "StakingContract::removeMigrationDestination - address must not be 0");
@@ -820,6 +823,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
             return;
         }
 
+        // BK TODO - Check what happens if an invalid notifier is specified
         notifier.stakeChange(_stakeOwner, _amount, _sign, _updatedStake);
     }
 
@@ -912,15 +916,20 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // BK Ok - Private view function
     function findApprovedStakingContractIndex(IMigratableStakingContract _stakingContract) private view returns
         (uint index, bool exists) {
+        // BK Ok
         uint length = approvedStakingContracts.length;
+        // BK Ok
         for (index = 0; index < length; ++index) {
+            // BK Ok
             if (approvedStakingContracts[index] == _stakingContract) {
+                // BK Ok
                 exists = true;
+                // BK Ok
                 return (index, exists);
             }
         }
 
-        // BK OK - Should return (index = 0, exist = false)
+        // BK OK - Should return (index = length, exist = false)
         exists = false;
     }
 }
