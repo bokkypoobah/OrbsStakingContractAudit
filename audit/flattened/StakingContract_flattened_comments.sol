@@ -331,6 +331,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     uint public constant VERSION = 1;
 
     // The maximum number of approved staking contracts as migration destinations.
+    // BK Ok - Referenced in addMigrationDestination()
     uint public constant MAX_APPROVED_STAKING_CONTRACTS = 10;
 
     // The mapping between stake owners and their data.
@@ -343,6 +344,8 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     uint256 public cooldownPeriodInSec;
 
     // The address responsible for managing migration to a new staking contract.
+    // BK Ok
+    // BK NOTE - Set in constructor() and setMigrationManager()
     address public migrationManager;
 
     // The address responsible for emergency operations and graceful return of staked tokens back to their owners.
@@ -350,6 +353,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     // The list of staking contracts that are approved by this contract. It would be only allowed to migrate a stake to
     // one of these contracts.
+    // BK NOTE - Written by approvedStakingContracts() and removeMigrationDestination(). Read by findApprovedStakingContractIndex()
     IMigratableStakingContract[] public approvedStakingContracts;
 
     // The address of the contract responsible for publishing stake change notifications.
@@ -372,6 +376,8 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // Note: This can be turned off only once by the emergency manager of the contract.
     bool public releasingAllStakes = false;
 
+    // BK Ok
+    // BK NOTE - Emitted by setMigrationManager()
     event MigrationManagerUpdated(address indexed migrationManager);
     event MigrationDestinationAdded(IMigratableStakingContract indexed stakingContract);
     event MigrationDestinationRemoved(IMigratableStakingContract indexed stakingContract);
@@ -380,7 +386,10 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     event StoppedAcceptingNewStake();
     event ReleasedAllStakes();
 
+    // BK Ok - Modifier
+    // BK NOTE - Used by setMigrationManager(), setStakeChangeNotifier(), addMigrationDestination() and removeMigrationDestination()
     modifier onlyMigrationManager() {
+        // BK Ok
         require(msg.sender == migrationManager, "StakingContract: caller is not the migration manager");
 
         _;
@@ -419,11 +428,13 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _token IERC20 The address of the ORBS token.
     constructor(uint256 _cooldownPeriodInSec, address _migrationManager, address _emergencyManager, IERC20 _token) public {
         require(_cooldownPeriodInSec > 0, "StakingContract::ctor - cooldown period must be greater than 0");
+        // BK Ok
         require(_migrationManager != address(0), "StakingContract::ctor - migration manager must not be 0");
         require(_emergencyManager != address(0), "StakingContract::ctor - emergency manager must not be 0");
         require(address(_token) != address(0), "StakingContract::ctor - ORBS token must not be 0");
 
         cooldownPeriodInSec = _cooldownPeriodInSec;
+        // BK Ok
         migrationManager = _migrationManager;
         emergencyManager = _emergencyManager;
         token = _token;
@@ -431,13 +442,18 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Sets the address of the migration manager.
     /// @param _newMigrationManager address The address of the new migration manager.
+    // BK NOTE - External function, can only be called by migrationManager
     function setMigrationManager(address _newMigrationManager) external onlyMigrationManager {
+        // BK Ok
         require(_newMigrationManager != address(0), "StakingContract::setMigrationManager - address must not be 0");
+        // BK Ok
         require(migrationManager != _newMigrationManager,
             "StakingContract::setMigrationManager - address must be different than the current address");
 
+        // BK Ok
         migrationManager = _newMigrationManager;
 
+        // BK Ok - Log event
         emit MigrationManagerUpdated(_newMigrationManager);
     }
 
@@ -473,6 +489,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
             "StakingContract::addMigrationDestination - address must not be 0");
 
         uint length = approvedStakingContracts.length;
+        // BK Ok - set to 10
         require(length + 1 <= MAX_APPROVED_STAKING_CONTRACTS,
             "StakingContract::addMigrationDestination - can't add more staking contracts");
 
@@ -622,6 +639,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _amount uint256 The amount of tokens to migrate.
     function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external
         onlyWhenStakesNotReleased {
+        // BK Ok
         require(isApprovedStakingContract(_newStakingContract),
             "StakingContract::migrateStakedTokens - migration destination wasn't approved");
         require(_amount > 0, "StakingContract::migrateStakedTokens - amount must be greater than 0");
@@ -780,7 +798,10 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @dev Returns whether a specific staking contract was approved as a migration destination.
     /// @param _stakingContract IMigratableStakingContract The staking contract to look for.
     /// @return exists bool The approval status.
+    // BK NOTE - Called by migrateStakedTokens()
+    // BK Ok - Public view function
     function isApprovedStakingContract(IMigratableStakingContract _stakingContract) public view returns (bool exists) {
+        // BK Ok
         (, exists) = findApprovedStakingContractIndex(_stakingContract);
     }
 
@@ -887,6 +908,8 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _stakingContract IMigratableStakingContract The staking contract to look for.
     /// @return index uint The index of the located staking contract (in the case that it was found).
     /// @return exists bool The search result.
+    // BK NOTE - Called by removeMigrationDestination() and isApprovedStakingContract()
+    // BK Ok - Private view function
     function findApprovedStakingContractIndex(IMigratableStakingContract _stakingContract) private view returns
         (uint index, bool exists) {
         uint length = approvedStakingContracts.length;
@@ -897,6 +920,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
             }
         }
 
+        // BK OK - Should return (index = 0, exist = false)
         exists = false;
     }
 }
