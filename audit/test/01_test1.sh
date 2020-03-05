@@ -142,21 +142,31 @@ console.log("RESULT: ");
 
 // -----------------------------------------------------------------------------
 var deployGroup2_Message = "Deploy Group #2 - Setup";
-var tokens = new BigNumber("250000").shift(18)
+var tokens = new BigNumber("250000").shift(18);
+var tokensToApprove = new BigNumber("1000").shift(18);
 // -----------------------------------------------------------------------------
 console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
 var deployGroup2_1Tx = token.transfer(user1, tokens.toString(), {from: deployer, gas: 100000, gasPrice: defaultGasPrice});
 var deployGroup2_2Tx = token.transfer(user2, tokens.toString(), {from: deployer, gas: 100000, gasPrice: defaultGasPrice});
 var deployGroup2_3Tx = token.transfer(user3, tokens.toString(), {from: deployer, gas: 100000, gasPrice: defaultGasPrice});
+var deployGroup2_4Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user1, gas: 100000, gasPrice: defaultGasPrice});
+var deployGroup2_5Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user2, gas: 100000, gasPrice: defaultGasPrice});
+var deployGroup2_6Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user3, gas: 100000, gasPrice: defaultGasPrice});
 while (txpool.status.pending > 0) {
 }
 printBalances();
-failIfTxStatusError(deployGroup2_1Tx, deployGroup2_Message + " - deployer -> token.transfer(user1, " + tokens.toString() + ")");
-failIfTxStatusError(deployGroup2_2Tx, deployGroup2_Message + " - deployer -> token.transfer(user2, " + tokens.toString() + ")");
-failIfTxStatusError(deployGroup2_2Tx, deployGroup2_Message + " - deployer -> token.transfer(user3, " + tokens.toString() + ")");
+failIfTxStatusError(deployGroup2_1Tx, deployGroup2_Message + " - deployer -> token.transfer(user1, " + tokens.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_2Tx, deployGroup2_Message + " - deployer -> token.transfer(user2, " + tokens.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_3Tx, deployGroup2_Message + " - deployer -> token.transfer(user3, " + tokens.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_4Tx, deployGroup2_Message + " - user1 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_5Tx, deployGroup2_Message + " - user2 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_6Tx, deployGroup2_Message + " - user3 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
 printTxData("deployGroup2_1Tx", deployGroup2_1Tx);
 printTxData("deployGroup2_2Tx", deployGroup2_2Tx);
 printTxData("deployGroup2_3Tx", deployGroup2_3Tx);
+printTxData("deployGroup2_4Tx", deployGroup2_4Tx);
+printTxData("deployGroup2_5Tx", deployGroup2_5Tx);
+printTxData("deployGroup2_6Tx", deployGroup2_6Tx);
 console.log("RESULT: ");
 printTokenContractDetails(0);
 console.log("RESULT: ");
@@ -166,8 +176,60 @@ console.log("RESULT: ");
 var allTests = false;
 
 if (allTests || true) {
-
+  // -----------------------------------------------------------------------------
+  var testStaking1_Message = "Test Staking #1";
+  var tokensToStake1 = new BigNumber("100").shift(18);
+  var tokensToStake2 = new BigNumber("200").shift(18);
+  var tokensToStake3 = new BigNumber("300").shift(18);
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
+  var testStaking1_1Tx = staking.stake(tokensToStake1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  var testStaking1_2Tx = staking.stake(tokensToStake2.toString(), {from: user2, gas: 500000, gasPrice: defaultGasPrice});
+  var testStaking1_3Tx = staking.stake(tokensToStake3.toString(), {from: user3, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(testStaking1_1Tx, testStaking1_Message + " - user1 -> staking.stake(" + tokensToStake1.shift(-18).toString() + ")");
+  failIfTxStatusError(testStaking1_2Tx, testStaking1_Message + " - user2 -> staking.stake(" + tokensToStake2.shift(-18).toString() + ")");
+  failIfTxStatusError(testStaking1_3Tx, testStaking1_Message + " - user3 -> staking.stake(" + tokensToStake3.shift(-18).toString() + ")");
+  printTxData("testStaking1_1Tx", testStaking1_1Tx);
+  printTxData("testStaking1_2Tx", testStaking1_2Tx);
+  printTxData("testStaking1_3Tx", testStaking1_3Tx);
+  console.log("RESULT: ");
+  printTokenContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails();
+  console.log("RESULT: ");
 }
+
+if (allTests || true) {
+  // -----------------------------------------------------------------------------
+  var testUnstaking1_Message = "Test Unstaking #1";
+  var tokensToUnstake1 = new BigNumber("10").shift(18);
+  var tokensToUnstake2 = new BigNumber("20").shift(18);
+  var tokensToUnstake3 = new BigNumber("30").shift(18);
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
+  var testUnstaking1_1Tx = staking.unstake(tokensToUnstake1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  var testUnstaking1_2Tx = staking.unstake(tokensToUnstake2.toString(), {from: user2, gas: 500000, gasPrice: defaultGasPrice});
+  var testUnstaking1_3Tx = staking.unstake(tokensToUnstake3.toString(), {from: user3, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ")");
+  failIfTxStatusError(testUnstaking1_2Tx, testUnstaking1_Message + " - user2 -> staking.unstake(" + tokensToUnstake2.shift(-18).toString() + ")");
+  failIfTxStatusError(testUnstaking1_3Tx, testUnstaking1_Message + " - user3 -> staking.unstake(" + tokensToUnstake3.shift(-18).toString() + ")");
+  printTxData("testUnstaking1_1Tx", testUnstaking1_1Tx);
+  printTxData("testUnstaking1_2Tx", testUnstaking1_2Tx);
+  printTxData("testUnstaking1_3Tx", testUnstaking1_3Tx);
+  console.log("RESULT: ");
+  printTokenContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails();
+  console.log("RESULT: ");
+}
+
+
 
 
 
@@ -394,4 +456,4 @@ grep "DATA: " $TEST1OUTPUT | sed "s/DATA: //" > $DEPLOYMENTDATA
 cat $DEPLOYMENTDATA
 grep "RESULT: " $TEST1OUTPUT | sed "s/RESULT: //" > $TEST1RESULTS
 cat $TEST1RESULTS
-egrep -e "tokenTx.*gasUsed|ordersTx.*gasUsed" $TEST1RESULTS
+# egrep -e "tokenTx.*gasUsed|ordersTx.*gasUsed" $TEST1RESULTS

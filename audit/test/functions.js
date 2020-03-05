@@ -373,6 +373,7 @@ function printStakingContractDetails() {
     console.log("RESULT: stakingContract.cooldownPeriodInSec=" + contract.cooldownPeriodInSec.call());
     console.log("RESULT: stakingContract.migrationManager=" + getShortAddressName(contract.migrationManager.call()));
     console.log("RESULT: stakingContract.emergencyManager=" + getShortAddressName(contract.emergencyManager.call()));
+    console.log("RESULT: stakingContract.getToken=" + getShortAddressName(contract.getToken.call()));
 
     var i = 0;
     var v = "";
@@ -385,13 +386,54 @@ function printStakingContractDetails() {
     console.log("RESULT: stakingContract.notifier=" + contract.notifier.call());
     console.log("RESULT: stakingContract.acceptingNewStakes=" + contract.acceptingNewStakes.call());
     console.log("RESULT: stakingContract.releasingAllStakes=" + contract.releasingAllStakes.call());
-    console.log("RESULT: stakingContract.getTotalStakedTokens=" + contract.getTotalStakedTokens.call());
+    console.log("RESULT: stakingContract.getTotalStakedTokens=" + contract.getTotalStakedTokens.call().shift(-18).toString());
     var users = [user1, user2, user3];
     users.forEach(function(u) {
-      console.log("RESULT: stakingContract.getStakeBalanceOf(" + getShortAddressName(u) + ")=" + contract.getStakeBalanceOf.call(u));
+      console.log("RESULT: stakingContract.getStakeBalanceOf(" + getShortAddressName(u) + ")=" + contract.getStakeBalanceOf.call(u).shift(-18).toString());
     });
 
     var latestBlock = eth.blockNumber;
+
+    // event Staked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+    // event Unstaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+    // event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+    // event Restaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+    // event MigratedStake(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+
+    var stakedEvents = contract.Staked({}, { fromBlock: _stakingContractFromBlock, toBlock: latestBlock });
+    i = 0;
+    stakedEvents.watch(function (error, result) {
+      console.log("RESULT: Staked " + i++ + " #" + result.blockNumber + " stakeOwner=" + getShortAddressName(result.args.stakeOwner) + ", amount=" + result.args.amount.shift(-18).toString()  + ", totalStakedAmount=" + result.args.totalStakedAmount.shift(-18).toString());
+    });
+    stakedEvents.stopWatching();
+
+    var unstakedEvents = contract.Unstaked({}, { fromBlock: _stakingContractFromBlock, toBlock: latestBlock });
+    i = 0;
+    unstakedEvents.watch(function (error, result) {
+      console.log("RESULT: Unstaked " + i++ + " #" + result.blockNumber + " stakeOwner=" + getShortAddressName(result.args.stakeOwner) + ", amount=" + result.args.amount.shift(-18).toString()  + ", totalStakedAmount=" + result.args.totalStakedAmount.shift(-18).toString());
+    });
+    unstakedEvents.stopWatching();
+
+    var withdrewEvents = contract.Withdrew({}, { fromBlock: _stakingContractFromBlock, toBlock: latestBlock });
+    i = 0;
+    withdrewEvents.watch(function (error, result) {
+      console.log("RESULT: Withdrew " + i++ + " #" + result.blockNumber + " stakeOwner=" + getShortAddressName(result.args.stakeOwner) + ", amount=" + result.args.amount.shift(-18).toString()  + ", totalStakedAmount=" + result.args.totalStakedAmount.shift(-18).toString());
+    });
+    withdrewEvents.stopWatching();
+
+    var restakedEvents = contract.Restaked({}, { fromBlock: _stakingContractFromBlock, toBlock: latestBlock });
+    i = 0;
+    restakedEvents.watch(function (error, result) {
+      console.log("RESULT: Restaked " + i++ + " #" + result.blockNumber + " stakeOwner=" + getShortAddressName(result.args.stakeOwner) + ", amount=" + result.args.amount.shift(-18).toString()  + ", totalStakedAmount=" + result.args.totalStakedAmount.shift(-18).toString());
+    });
+    restakedEvents.stopWatching();
+
+    var migratedStakeEvents = contract.MigratedStake({}, { fromBlock: _stakingContractFromBlock, toBlock: latestBlock });
+    i = 0;
+    migratedStakeEvents.watch(function (error, result) {
+      console.log("RESULT: MigratedStake " + i++ + " #" + result.blockNumber + " stakeOwner=" + getShortAddressName(result.args.stakeOwner) + ", amount=" + result.args.amount.shift(-18).toString()  + ", totalStakedAmount=" + result.args.totalStakedAmount.shift(-18).toString());
+    });
+    migratedStakeEvents.stopWatching();
 
     var migrationManagerUpdatedEvents = contract.MigrationManagerUpdated({}, { fromBlock: _stakingContractFromBlock, toBlock: latestBlock });
     i = 0;

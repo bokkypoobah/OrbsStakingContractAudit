@@ -11,3 +11,10 @@
 /coverage.json
 /allFiredEvents
 /scTopics
+
+.project
+.settings
+audit/test/testchain/geth
+audit/test/testchain/geth.ipc
+audit/test/testchain/history
+private
