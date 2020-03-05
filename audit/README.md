@@ -25,6 +25,8 @@ Status: Work in progress
 
 ## Recommendations
 
+* **VERY LOW IMPORTANCE** Add a function that will report back the length of the `approvedStakingContracts` array
+
 <br />
 
 <hr />
@@ -73,6 +75,31 @@ Contracts reviewed:
   * [ ] interface IStakeChangeNotifier
   * [ ] contract StakingContract is IStakingContract, IMigratableStakingContract
     * [ ] using SafeMath for uint256;
+
+<br />
+
+<hr />
+
+## Notes
+
+### Admin Keys
+
+`migrationManager` -
+
+`emergencyManager` -
+
+<br />
+
+### States
+
+`acceptingNewStakes`
+
+`releasingAllStakes`
+
+### Check
+
+* `totalStakedTokens` - should not include unstaked tokens in cooldown period or pending withdrawal
+* Check that can unstake and withdraw tokens if not `acceptingNewStakes`
 
 <br />
 
