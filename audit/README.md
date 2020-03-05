@@ -84,9 +84,18 @@ Contracts reviewed:
 
 ### Admin Keys
 
-`migrationManager` -
+Account `migrationManager` can execute:
 
-`emergencyManager` -
+* `setMigrationManager(...)`
+* `setStakeChangeNotifier(...)`
+* `addMigrationDestination(...)`
+* `removeMigrationDestination(...)`
+
+Account `emergencyManager` can execute:
+
+* `setEmergencyManager(...)`
+* `stopAcceptingNewStakes(...)`
+* `releaseAllStakes()`
 
 <br />
 

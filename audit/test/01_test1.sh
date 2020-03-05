@@ -77,7 +77,7 @@ console.log("RESULT: ");
 
 // -----------------------------------------------------------------------------
 var deployGroup1_Message = "Deploy Group #1 - Contracts";
-var _cooldownPeriodInSec = 60;
+var _cooldownPeriodInSec = 10000;
 console.log("DATA: deployer=" + deployer);
 console.log("DATA: defaultGasPrice=" + defaultGasPrice);
 // -----------------------------------------------------------------------------
@@ -175,6 +175,41 @@ console.log("RESULT: ");
 
 var allTests = false;
 
+if (allTests || false) {
+  // -----------------------------------------------------------------------------
+  var stopAcceptingNewStakes1_Message = "Stop Accepting New Stakes";
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + stopAcceptingNewStakes1_Message + " ----------");
+  // Tested with non-emergencyManager
+  var stopAcceptingNewStakes1_1Tx = staking.stopAcceptingNewStakes({from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(stopAcceptingNewStakes1_1Tx, stopAcceptingNewStakes1_Message + " - emergencyManager -> staking.stopAcceptingNewStakes()");
+  printTxData("stopAcceptingNewStakes1_1Tx", stopAcceptingNewStakes1_1Tx);
+  console.log("RESULT: ");
+  printStakingContractDetails();
+  console.log("RESULT: ");
+}
+
+
+if (allTests || false) {
+  // -----------------------------------------------------------------------------
+  var releaseAllStakes1_Message = "Release All Stakes #1";
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + releaseAllStakes1_Message + " ----------");
+  // Tested with non-emergencyManager
+  var releaseAllStakes1_1Tx = staking.releaseAllStakes({from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(releaseAllStakes1_1Tx, releaseAllStakes1_Message + " - emergencyManager -> staking.releaseAllStakes()");
+  printTxData("releaseAllStakes1_1Tx", releaseAllStakes1_1Tx);
+  console.log("RESULT: ");
+  printStakingContractDetails();
+  console.log("RESULT: ");
+}
+
 if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testStaking1_Message = "Test Staking #1";
@@ -182,7 +217,7 @@ if (allTests || true) {
   var tokensToStake2 = new BigNumber("200").shift(18);
   var tokensToStake3 = new BigNumber("300").shift(18);
   // -----------------------------------------------------------------------------
-  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
+  console.log("RESULT: ---------- " + testStaking1_Message + " ----------");
   var testStaking1_1Tx = staking.stake(tokensToStake1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
   var testStaking1_2Tx = staking.stake(tokensToStake2.toString(), {from: user2, gas: 500000, gasPrice: defaultGasPrice});
   var testStaking1_3Tx = staking.stake(tokensToStake3.toString(), {from: user3, gas: 500000, gasPrice: defaultGasPrice});
@@ -209,7 +244,7 @@ if (allTests || true) {
   var tokensToUnstake2 = new BigNumber("20").shift(18);
   var tokensToUnstake3 = new BigNumber("30").shift(18);
   // -----------------------------------------------------------------------------
-  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
+  console.log("RESULT: ---------- " + testUnstaking1_Message + " ----------");
   var testUnstaking1_1Tx = staking.unstake(tokensToUnstake1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
   var testUnstaking1_2Tx = staking.unstake(tokensToUnstake2.toString(), {from: user2, gas: 500000, gasPrice: defaultGasPrice});
   var testUnstaking1_3Tx = staking.unstake(tokensToUnstake3.toString(), {from: user3, gas: 500000, gasPrice: defaultGasPrice});
@@ -229,7 +264,49 @@ if (allTests || true) {
   console.log("RESULT: ");
 }
 
+if (allTests || false) {
+  // -----------------------------------------------------------------------------
+  var releaseAllStakes2_Message = "Release All Stakes #2";
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + releaseAllStakes2_Message + " ----------");
+  // Tested with non-emergencyManager
+  var releaseAllStakes2_1Tx = staking.releaseAllStakes({from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(releaseAllStakes2_1Tx, releaseAllStakes2_Message + " - emergencyManager -> staking.releaseAllStakes()");
+  printTxData("releaseAllStakes2_1Tx", releaseAllStakes2_1Tx);
+  console.log("RESULT: ");
+  printStakingContractDetails();
+  console.log("RESULT: ");
+}
 
+
+
+if (allTests || true) {
+  // -----------------------------------------------------------------------------
+  var testWithdraw1_Message = "Test Withdraw #1";
+  // Check with _cooldownPeriodInSec 1 and 10000
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
+  var testWithdraw1_1Tx = staking.withdraw({from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  var testWithdraw1_2Tx = staking.withdraw({from: user2, gas: 500000, gasPrice: defaultGasPrice});
+  var testWithdraw1_3Tx = staking.withdraw({from: user3, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw()");
+  printTxData("testWithdraw1_1Tx", testWithdraw1_1Tx);
+  printTxData("testWithdraw1_2Tx", testWithdraw1_2Tx);
+  printTxData("testWithdraw1_3Tx", testWithdraw1_3Tx);
+  console.log("RESULT: ");
+  printTokenContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails();
+  console.log("RESULT: ");
+}
 
 
 
