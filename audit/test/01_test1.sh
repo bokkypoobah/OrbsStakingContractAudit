@@ -147,11 +147,16 @@ var staking2 = stakingContract.new(_cooldownPeriodInSec, migrationManager, emerg
 );
 while (txpool.status.pending > 0) {
 }
+var addMigrationDestination1_1Tx = staking.addMigrationDestination(staking2Address, {from: migrationManager, gas: 500000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
 printBalances();
 failIfTxStatusError(tokenTx, deployGroup1_Message + " - Token");
 printTxData("tokenTx", tokenTx);
 failIfTxStatusError(stakingTx, deployGroup1_Message + " - Staking");
 printTxData("stakingTx", stakingTx);
+failIfTxStatusError(addMigrationDestination1_1Tx, deployGroup1_Message + " - staking.addMigrationDestination(staking2)");
+printTxData("addMigrationDestination1_1Tx", addMigrationDestination1_1Tx);
 console.log("RESULT: ");
 printTokenContractDetails(0);
 console.log("RESULT: ");
@@ -159,6 +164,7 @@ printStakingContractDetails(0);
 console.log("RESULT: ");
 printStakingContractDetails(1);
 console.log("RESULT: ");
+
 
 // -----------------------------------------------------------------------------
 var deployGroup2_Message = "Deploy Group #2 - Setup";
@@ -197,6 +203,7 @@ console.log("RESULT: ");
 
 var allTests = false;
 
+// Release All Stakes #1
 if (allTests || false) {
   // -----------------------------------------------------------------------------
   var releaseAllStakes1_Message = "Release All Stakes #1";
@@ -216,9 +223,10 @@ if (allTests || false) {
   console.log("RESULT: ");
 }
 
+// Stop Accepting New Stakes #1
 if (allTests || false) {
   // -----------------------------------------------------------------------------
-  var stopAcceptingNewStakes1_Message = "Stop Accepting New Stakes";
+  var stopAcceptingNewStakes1_Message = "Stop Accepting New Stakes #1";
   // -----------------------------------------------------------------------------
   console.log("RESULT: ---------- " + stopAcceptingNewStakes1_Message + " ----------");
   // Tested with non-emergencyManager
@@ -236,6 +244,7 @@ if (allTests || false) {
 }
 
 
+// Test Staking #1
 if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testStaking1_Message = "Test Staking #1";
@@ -265,7 +274,9 @@ if (allTests || true) {
   console.log("RESULT: ");
 }
 
-if (allTests || true) {
+
+// Test Unstaking #1
+if (allTests || false) {
   // -----------------------------------------------------------------------------
   var testUnstaking1_Message = "Test Unstaking #1";
   var tokensToUnstake1 = new BigNumber("10").shift(18);
@@ -294,6 +305,8 @@ if (allTests || true) {
   console.log("RESULT: ");
 }
 
+
+// Release All Stakes #2
 if (allTests || false) {
   // -----------------------------------------------------------------------------
   var releaseAllStakes2_Message = "Release All Stakes #2";
@@ -314,7 +327,7 @@ if (allTests || false) {
 }
 
 
-
+// Test Withdraw #1
 if (allTests || false) {
   // -----------------------------------------------------------------------------
   var testWithdraw1_Message = "Test Withdraw #1";
@@ -343,6 +356,37 @@ if (allTests || false) {
 }
 
 
+// Test Migrate #1
+if (allTests || true) {
+  // -----------------------------------------------------------------------------
+  var testMigrateStakedTokens1_Message = "Test Migrate #1";
+  var tokensToMigrate1 = new BigNumber("1").shift(18);
+  var tokensToMigrate2 = new BigNumber("2").shift(18);
+  var tokensToMigrate3 = new BigNumber("3").shift(18);
+  // Check with _cooldownPeriodInSec 1 and 10000
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + testMigrateStakedTokens1_Message + " ----------");
+  var testMigrateStakedTokens1_1Tx = staking.migrateStakedTokens(staking2Address, tokensToMigrate1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  var testMigrateStakedTokens1_2Tx = staking.migrateStakedTokens(staking2Address, tokensToMigrate2.toString(), {from: user2, gas: 500000, gasPrice: defaultGasPrice});
+  var testMigrateStakedTokens1_3Tx = staking.migrateStakedTokens(staking2Address, tokensToMigrate3.toString(), {from: user3, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(testMigrateStakedTokens1_1Tx, testMigrateStakedTokens1_Message + " - user1 -> staking.migrateStakedTokens(staking2, " + tokensToMigrate1.shift(-18).toString() + ")");
+  failIfTxStatusError(testMigrateStakedTokens1_2Tx, testMigrateStakedTokens1_Message + " - user2 -> staking.migrateStakedTokens(staking2, " + tokensToMigrate2.shift(-18).toString() + ")");
+  failIfTxStatusError(testMigrateStakedTokens1_3Tx, testMigrateStakedTokens1_Message + " - user3 -> staking.migrateStakedTokens(staking2, " + tokensToMigrate3.shift(-18).toString() + ")");
+  printTxData("testMigrateStakedTokens1_1Tx", testMigrateStakedTokens1_1Tx);
+  printTxData("testMigrateStakedTokens1_2Tx", testMigrateStakedTokens1_2Tx);
+  printTxData("testMigrateStakedTokens1_3Tx", testMigrateStakedTokens1_3Tx);
+  console.log("RESULT: ");
+  printTokenContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
+  console.log("RESULT: ");
+}
+function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external
 
 exit;
 
