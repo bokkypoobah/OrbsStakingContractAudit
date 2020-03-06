@@ -109,7 +109,6 @@ var stakingContract = web3.eth.contract(stakingAbi);
 // console.log("DATA: stakingContract=" + JSON.stringify(stakingContract));
 var stakingTx = null;
 var stakingAddress = null;
-// constructor(uint256 _cooldownPeriodInSec, address _migrationManager, address _emergencyManager, IERC20 _token) public
 var staking = stakingContract.new(_cooldownPeriodInSec, migrationManager, emergencyManager, tokenAddress, {from: deployer, data: stakingBin, gas: 5000000, gasPrice: defaultGasPrice},
   function(e, contract) {
     if (!e) {
@@ -119,10 +118,29 @@ var staking = stakingContract.new(_cooldownPeriodInSec, migrationManager, emerge
         stakingAddress = contract.address;
         addAccount(stakingAddress, "Staking");
         addAddressSymbol(stakingAddress, "Staking");
-        addStakingContractAddressAndAbi(stakingAddress, stakingAbi);
+        addStakingContractAddressAndAbi(0, stakingAddress, stakingAbi);
         console.log("DATA: var stakingAddress=\"" + stakingAddress + "\";");
         console.log("DATA: var stakingAbi=" + JSON.stringify(stakingAbi) + ";");
         console.log("DATA: var staking=eth.contract(stakingAbi).at(stakingAddress);");
+      }
+    }
+  }
+);
+var staking2Tx = null;
+var staking2Address = null;
+var staking2 = stakingContract.new(_cooldownPeriodInSec, migrationManager, emergencyManager, tokenAddress, {from: deployer, data: stakingBin, gas: 5000000, gasPrice: defaultGasPrice},
+  function(e, contract) {
+    if (!e) {
+      if (!contract.address) {
+        staking2Tx = contract.transactionHash;
+      } else {
+        staking2Address = contract.address;
+        addAccount(staking2Address, "Staking2");
+        addAddressSymbol(staking2Address, "Staking2");
+        addStakingContractAddressAndAbi(1, staking2Address, stakingAbi);
+        console.log("DATA: var staking2Address=\"" + staking2Address + "\";");
+        console.log("DATA: var stakingAbi=" + JSON.stringify(stakingAbi) + ";");
+        console.log("DATA: var staking2=eth.contract(stakingAbi).at(staking2Address);");
       }
     }
   }
@@ -137,7 +155,9 @@ printTxData("stakingTx", stakingTx);
 console.log("RESULT: ");
 printTokenContractDetails(0);
 console.log("RESULT: ");
-printStakingContractDetails();
+printStakingContractDetails(0);
+console.log("RESULT: ");
+printStakingContractDetails(1);
 console.log("RESULT: ");
 
 // -----------------------------------------------------------------------------
@@ -170,28 +190,12 @@ printTxData("deployGroup2_6Tx", deployGroup2_6Tx);
 console.log("RESULT: ");
 printTokenContractDetails(0);
 console.log("RESULT: ");
-printStakingContractDetails();
+printStakingContractDetails(0);
+console.log("RESULT: ");
+printStakingContractDetails(1);
 console.log("RESULT: ");
 
 var allTests = false;
-
-if (allTests || false) {
-  // -----------------------------------------------------------------------------
-  var stopAcceptingNewStakes1_Message = "Stop Accepting New Stakes";
-  // -----------------------------------------------------------------------------
-  console.log("RESULT: ---------- " + stopAcceptingNewStakes1_Message + " ----------");
-  // Tested with non-emergencyManager
-  var stopAcceptingNewStakes1_1Tx = staking.stopAcceptingNewStakes({from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
-  while (txpool.status.pending > 0) {
-  }
-  printBalances();
-  failIfTxStatusError(stopAcceptingNewStakes1_1Tx, stopAcceptingNewStakes1_Message + " - emergencyManager -> staking.stopAcceptingNewStakes()");
-  printTxData("stopAcceptingNewStakes1_1Tx", stopAcceptingNewStakes1_1Tx);
-  console.log("RESULT: ");
-  printStakingContractDetails();
-  console.log("RESULT: ");
-}
-
 
 if (allTests || false) {
   // -----------------------------------------------------------------------------
@@ -206,9 +210,31 @@ if (allTests || false) {
   failIfTxStatusError(releaseAllStakes1_1Tx, releaseAllStakes1_Message + " - emergencyManager -> staking.releaseAllStakes()");
   printTxData("releaseAllStakes1_1Tx", releaseAllStakes1_1Tx);
   console.log("RESULT: ");
-  printStakingContractDetails();
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
   console.log("RESULT: ");
 }
+
+if (allTests || false) {
+  // -----------------------------------------------------------------------------
+  var stopAcceptingNewStakes1_Message = "Stop Accepting New Stakes";
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + stopAcceptingNewStakes1_Message + " ----------");
+  // Tested with non-emergencyManager
+  var stopAcceptingNewStakes1_1Tx = staking.stopAcceptingNewStakes({from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(stopAcceptingNewStakes1_1Tx, stopAcceptingNewStakes1_Message + " - emergencyManager -> staking.stopAcceptingNewStakes()");
+  printTxData("stopAcceptingNewStakes1_1Tx", stopAcceptingNewStakes1_1Tx);
+  console.log("RESULT: ");
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
+  console.log("RESULT: ");
+}
+
 
 if (allTests || true) {
   // -----------------------------------------------------------------------------
@@ -233,7 +259,9 @@ if (allTests || true) {
   console.log("RESULT: ");
   printTokenContractDetails(0);
   console.log("RESULT: ");
-  printStakingContractDetails();
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
   console.log("RESULT: ");
 }
 
@@ -260,7 +288,9 @@ if (allTests || true) {
   console.log("RESULT: ");
   printTokenContractDetails(0);
   console.log("RESULT: ");
-  printStakingContractDetails();
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
   console.log("RESULT: ");
 }
 
@@ -277,13 +307,15 @@ if (allTests || false) {
   failIfTxStatusError(releaseAllStakes2_1Tx, releaseAllStakes2_Message + " - emergencyManager -> staking.releaseAllStakes()");
   printTxData("releaseAllStakes2_1Tx", releaseAllStakes2_1Tx);
   console.log("RESULT: ");
-  printStakingContractDetails();
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
   console.log("RESULT: ");
 }
 
 
 
-if (allTests || true) {
+if (allTests || false) {
   // -----------------------------------------------------------------------------
   var testWithdraw1_Message = "Test Withdraw #1";
   // Check with _cooldownPeriodInSec 1 and 10000
@@ -304,7 +336,9 @@ if (allTests || true) {
   console.log("RESULT: ");
   printTokenContractDetails(0);
   console.log("RESULT: ");
-  printStakingContractDetails();
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
   console.log("RESULT: ");
 }
 

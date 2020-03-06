@@ -25,7 +25,7 @@ Status: Work in progress
 
 ## Recommendations
 
-* **VERY LOW IMPORTANCE** Add a function that will report back the length of the `approvedStakingContracts` array
+* **VERY LOW IMPORTANCE** Add a function that will report back the length of the `approvedStakingContracts` array. So callers can iterate over 0..length, instead of 0..9 and detect an invalid address. I would not change the smart contracts just for this.
 
 <br />
 
@@ -109,6 +109,8 @@ Account `emergencyManager` can execute:
 
 * `totalStakedTokens` - should not include unstaked tokens in cooldown period or pending withdrawal
 * Check that can unstake and withdraw tokens if not `acceptingNewStakes`
+* [x] If `releaseAllStakes()` is called before `stopAcceptingNewStakes()`, `stopAcceptingNewStakes()` cannot be executed. But this does not affect the result of the modifier `onlyWhenAcceptingNewStakes()` as both variables are checked in `require(acceptingNewStakes && !releasingAllStakes, ...)`
+
 
 <br />
 

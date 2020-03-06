@@ -356,18 +356,18 @@ function printTokenContractDetails(j) {
 //-----------------------------------------------------------------------------
 // Staking Contract
 //-----------------------------------------------------------------------------
-var _stakingContractAddress = null;
-var _stakingContractAbi = null;
-function addStakingContractAddressAndAbi(_address, _abi) {
-  _stakingContractAddress = _address;
-  _stakingContractAbi = _abi;
+var _stakingContractAddress = [null, null];
+var _stakingContractAbi = [null, null];
+function addStakingContractAddressAndAbi(index, _address, _abi) {
+  _stakingContractAddress[index] = _address;
+  _stakingContractAbi[index] = _abi;
 }
 
 var _stakingContractFromBlock = 0;
-function printStakingContractDetails() {
-  console.log("RESULT: stakingContractAddress=" + _stakingContractAddress);
-  if (_stakingContractAddress != null && _stakingContractAbi != null) {
-    var contract = eth.contract(_stakingContractAbi).at(_stakingContractAddress);
+function printStakingContractDetails(index) {
+  console.log("RESULT: stakingContractAddress=" + _stakingContractAddress[index]);
+  if (_stakingContractAddress[index] != null && _stakingContractAbi[index] != null) {
+    var contract = eth.contract(_stakingContractAbi[index]).at(_stakingContractAddress[index]);
     console.log("RESULT: stakingContract.VERSION=" + contract.VERSION.call());
     console.log("RESULT: stakingContract.MAX_APPROVED_STAKING_CONTRACTS=" + contract.MAX_APPROVED_STAKING_CONTRACTS.call());
     console.log("RESULT: stakingContract.cooldownPeriodInSec=" + contract.cooldownPeriodInSec.call());

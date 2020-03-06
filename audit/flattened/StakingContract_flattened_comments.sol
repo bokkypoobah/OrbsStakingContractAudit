@@ -397,8 +397,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // Note: This can be turned off only once by the emergency manager of the contract.
     bool public releasingAllStakes = false;
 
-    // BK Ok
-    // BK NOTE - Emitted by setMigrationManager()
+    // BK Next 7 Ok
     event MigrationManagerUpdated(address indexed migrationManager);
     event MigrationDestinationAdded(IMigratableStakingContract indexed stakingContract);
     event MigrationDestinationRemoved(IMigratableStakingContract indexed stakingContract);
@@ -407,8 +406,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     event StoppedAcceptingNewStake();
     event ReleasedAllStakes();
 
-    // BK Ok - Modifier
-    // BK NOTE - Used by setMigrationManager(), setStakeChangeNotifier(), addMigrationDestination() and removeMigrationDestination()
+    // BK Ok - Modifier for setMigrationManager(), setStakeChangeNotifier(), addMigrationDestination() and removeMigrationDestination()
     modifier onlyMigrationManager() {
         // BK Ok
         require(msg.sender == migrationManager, "StakingContract: caller is not the migration manager");
@@ -416,24 +414,28 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         _;
     }
 
+    // BK Ok - Modifier for setEmergencyManager(), stopAcceptingNewStakes() and releaseAllStakes()
     modifier onlyEmergencyManager() {
         require(msg.sender == emergencyManager, "StakingContract: caller is not the emergency manager");
 
         _;
     }
 
+    // BK Ok - Modifier for stake(), restake(), acceptMigration(), distributeRewards() and stopAcceptingNewStakes()
     modifier onlyWhenAcceptingNewStakes() {
         require(acceptingNewStakes && !releasingAllStakes, "StakingContract: not accepting new stakes");
 
         _;
     }
 
+    // BK Ok - Modifier for withdrawReleasedStakes()
     modifier onlyWhenStakesReleased() {
         require(releasingAllStakes, "StakingContract: not releasing all stakes");
 
         _;
     }
 
+    // BK Ok - Modifier for migrateStakedTokens() and releaseAllStakes()
     modifier onlyWhenStakesNotReleased() {
         require(!releasingAllStakes, "StakingContract: releasing all stakes");
 
@@ -474,7 +476,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         // BK Ok
         migrationManager = _newMigrationManager;
 
-        // BK Ok - Log event
+        // BK Ok - event MigrationManagerUpdated(address indexed migrationManager);
         emit MigrationManagerUpdated(_newMigrationManager);
     }
 
@@ -487,6 +489,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
         emergencyManager = _newEmergencyManager;
 
+        // BK Ok - event EmergencyManagerUpdated(address indexed emergencyManager);
         emit EmergencyManagerUpdated(_newEmergencyManager);
     }
 
@@ -501,6 +504,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
         notifier = _newNotifier;
 
+        // BK Ok - event StakeChangeNotifierUpdated(IStakeChangeNotifier indexed notifier);
         emit StakeChangeNotifierUpdated(notifier);
     }
 
@@ -524,6 +528,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
         approvedStakingContracts.push(_newStakingContract);
 
+        // BK Ok - event MigrationDestinationAdded(IMigratableStakingContract indexed stakingContract);
         emit MigrationDestinationAdded(_newStakingContract);
     }
 
@@ -542,6 +547,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         approvedStakingContracts[i] = approvedStakingContracts[approvedStakingContracts.length - 1];
         approvedStakingContracts.pop();
 
+        // BK Ok - event MigrationDestinationRemoved(IMigratableStakingContract indexed stakingContract);
         emit MigrationDestinationRemoved(_stakingContract);
     }
 
@@ -799,6 +805,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     function stopAcceptingNewStakes() external onlyEmergencyManager onlyWhenAcceptingNewStakes {
         acceptingNewStakes = false;
 
+        // BK Ok - event StoppedAcceptingNewStake();
         emit StoppedAcceptingNewStake();
     }
 
@@ -806,6 +813,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     function releaseAllStakes() external onlyEmergencyManager onlyWhenStakesNotReleased {
         releasingAllStakes = true;
 
+        // BK Ok - event ReleasedAllStakes();
         emit ReleasedAllStakes();
     }
 
