@@ -77,7 +77,7 @@ console.log("RESULT: ");
 
 // -----------------------------------------------------------------------------
 var deployGroup1_Message = "Deploy Group #1 - Contracts";
-var _cooldownPeriodInSec = 10000;
+var _cooldownPeriodInSec = 5;
 console.log("DATA: deployer=" + deployer);
 console.log("DATA: defaultGasPrice=" + defaultGasPrice);
 // -----------------------------------------------------------------------------
@@ -152,10 +152,12 @@ while (txpool.status.pending > 0) {
 }
 printBalances();
 failIfTxStatusError(tokenTx, deployGroup1_Message + " - Token");
-printTxData("tokenTx", tokenTx);
 failIfTxStatusError(stakingTx, deployGroup1_Message + " - Staking");
-printTxData("stakingTx", stakingTx);
+failIfTxStatusError(staking2Tx, deployGroup1_Message + " - Staking2");
 failIfTxStatusError(addMigrationDestination1_1Tx, deployGroup1_Message + " - staking.addMigrationDestination(staking2)");
+printTxData("tokenTx", tokenTx);
+printTxData("stakingTx", stakingTx);
+printTxData("staking2Tx", staking2Tx);
 printTxData("addMigrationDestination1_1Tx", addMigrationDestination1_1Tx);
 console.log("RESULT: ");
 printTokenContractDetails(0);
@@ -276,7 +278,7 @@ if (allTests || true) {
 
 
 // Test Unstaking #1
-if (allTests || false) {
+if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testUnstaking1_Message = "Test Unstaking #1";
   var tokensToUnstake1 = new BigNumber("10").shift(18);
@@ -327,35 +329,6 @@ if (allTests || false) {
 }
 
 
-// Test Withdraw #1
-if (allTests || false) {
-  // -----------------------------------------------------------------------------
-  var testWithdraw1_Message = "Test Withdraw #1";
-  // Check with _cooldownPeriodInSec 1 and 10000
-  // -----------------------------------------------------------------------------
-  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
-  var testWithdraw1_1Tx = staking.withdraw({from: user1, gas: 500000, gasPrice: defaultGasPrice});
-  var testWithdraw1_2Tx = staking.withdraw({from: user2, gas: 500000, gasPrice: defaultGasPrice});
-  var testWithdraw1_3Tx = staking.withdraw({from: user3, gas: 500000, gasPrice: defaultGasPrice});
-  while (txpool.status.pending > 0) {
-  }
-  printBalances();
-  failIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw()");
-  failIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw()");
-  failIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw()");
-  printTxData("testWithdraw1_1Tx", testWithdraw1_1Tx);
-  printTxData("testWithdraw1_2Tx", testWithdraw1_2Tx);
-  printTxData("testWithdraw1_3Tx", testWithdraw1_3Tx);
-  console.log("RESULT: ");
-  printTokenContractDetails(0);
-  console.log("RESULT: ");
-  printStakingContractDetails(0);
-  console.log("RESULT: ");
-  printStakingContractDetails(1);
-  console.log("RESULT: ");
-}
-
-
 // Test Migrate #1
 if (allTests || true) {
   // -----------------------------------------------------------------------------
@@ -386,7 +359,36 @@ if (allTests || true) {
   printStakingContractDetails(1);
   console.log("RESULT: ");
 }
-function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external
+
+
+// Test Withdraw #1
+if (allTests || true) {
+  // -----------------------------------------------------------------------------
+  var testWithdraw1_Message = "Test Withdraw #1";
+  // Check with _cooldownPeriodInSec 1 and 10000
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
+  var testWithdraw1_1Tx = staking.withdraw({from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  var testWithdraw1_2Tx = staking.withdraw({from: user2, gas: 500000, gasPrice: defaultGasPrice});
+  var testWithdraw1_3Tx = staking.withdraw({from: user3, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw()");
+  printTxData("testWithdraw1_1Tx", testWithdraw1_1Tx);
+  printTxData("testWithdraw1_2Tx", testWithdraw1_2Tx);
+  printTxData("testWithdraw1_3Tx", testWithdraw1_3Tx);
+  console.log("RESULT: ");
+  printTokenContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
+  console.log("RESULT: ");
+}
+
 
 exit;
 
