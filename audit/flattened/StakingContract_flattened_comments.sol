@@ -903,6 +903,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _stakeOwner address The specified stake owner.
     /// @param _amount uint256 The amount of tokens to stake.
     /// @return totalStakedAmount uint256 The total stake of the stake owner.
+    // BK NOTE - Called by stake() and acceptMigration()
     function stake(address _stakeOwner, uint256 _amount) private returns (uint256 totalStakedAmount) {
         require(_stakeOwner != address(0), "StakingContract::stake - stake owner can't be 0");
         require(_amount > 0, "StakingContract::stake - amount must be greater than 0");
@@ -923,6 +924,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// their ORBS tokens only after previously unstaking them and after the cooldown period has passed (unless the
     /// contract was requested to release all stakes).
     /// @return res WithdrawResult The result of the withdraw operation.
+    // BK NOTE - Called by withdraw() and withdrawReleasedStakes()
     function withdraw(address _stakeOwner) private returns (WithdrawResult memory res) {
         require(_stakeOwner != address(0), "StakingContract::withdraw - stake owner can't be 0");
 

@@ -177,24 +177,27 @@ console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
 var deployGroup2_1Tx = token.transfer(user1, tokens.toString(), {from: deployer, gas: 100000, gasPrice: defaultGasPrice});
 var deployGroup2_2Tx = token.transfer(user2, tokens.toString(), {from: deployer, gas: 100000, gasPrice: defaultGasPrice});
 var deployGroup2_3Tx = token.transfer(user3, tokens.toString(), {from: deployer, gas: 100000, gasPrice: defaultGasPrice});
-var deployGroup2_4Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user1, gas: 100000, gasPrice: defaultGasPrice});
-var deployGroup2_5Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user2, gas: 100000, gasPrice: defaultGasPrice});
-var deployGroup2_6Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user3, gas: 100000, gasPrice: defaultGasPrice});
+var deployGroup2_4Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: deployer, gas: 100000, gasPrice: defaultGasPrice});
+var deployGroup2_5Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user1, gas: 100000, gasPrice: defaultGasPrice});
+var deployGroup2_6Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user2, gas: 100000, gasPrice: defaultGasPrice});
+var deployGroup2_7Tx = token.approve(stakingAddress, tokensToApprove.toString(), {from: user3, gas: 100000, gasPrice: defaultGasPrice});
 while (txpool.status.pending > 0) {
 }
 printBalances();
 failIfTxStatusError(deployGroup2_1Tx, deployGroup2_Message + " - deployer -> token.transfer(user1, " + tokens.shift(-18).toString() + ")");
 failIfTxStatusError(deployGroup2_2Tx, deployGroup2_Message + " - deployer -> token.transfer(user2, " + tokens.shift(-18).toString() + ")");
 failIfTxStatusError(deployGroup2_3Tx, deployGroup2_Message + " - deployer -> token.transfer(user3, " + tokens.shift(-18).toString() + ")");
-failIfTxStatusError(deployGroup2_4Tx, deployGroup2_Message + " - user1 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
-failIfTxStatusError(deployGroup2_5Tx, deployGroup2_Message + " - user2 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
-failIfTxStatusError(deployGroup2_6Tx, deployGroup2_Message + " - user3 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_4Tx, deployGroup2_Message + " - deployer -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_5Tx, deployGroup2_Message + " - user1 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_6Tx, deployGroup2_Message + " - user2 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
+failIfTxStatusError(deployGroup2_7Tx, deployGroup2_Message + " - user3 -> token.approve(stakingContract, " + tokensToApprove.shift(-18).toString() + ")");
 printTxData("deployGroup2_1Tx", deployGroup2_1Tx);
 printTxData("deployGroup2_2Tx", deployGroup2_2Tx);
 printTxData("deployGroup2_3Tx", deployGroup2_3Tx);
 printTxData("deployGroup2_4Tx", deployGroup2_4Tx);
 printTxData("deployGroup2_5Tx", deployGroup2_5Tx);
 printTxData("deployGroup2_6Tx", deployGroup2_6Tx);
+printTxData("deployGroup2_7Tx", deployGroup2_7Tx);
 console.log("RESULT: ");
 printTokenContractDetails(0);
 console.log("RESULT: ");
@@ -330,7 +333,7 @@ if (allTests || false) {
 
 
 // Test Migrate #1
-if (allTests || true) {
+if (allTests || false) {
   // -----------------------------------------------------------------------------
   var testMigrateStakedTokens1_Message = "Test Migrate #1";
   var tokensToMigrate1 = new BigNumber("1").shift(18);
@@ -362,12 +365,12 @@ if (allTests || true) {
 
 
 // Test Withdraw #1
-if (allTests || true) {
+if (allTests || false) {
   // -----------------------------------------------------------------------------
   var testWithdraw1_Message = "Test Withdraw #1";
   // Check with _cooldownPeriodInSec 1 and 10000
   // -----------------------------------------------------------------------------
-  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
+  console.log("RESULT: ---------- " + testWithdraw1_Message + " ----------");
   var testWithdraw1_1Tx = staking.withdraw({from: user1, gas: 500000, gasPrice: defaultGasPrice});
   var testWithdraw1_2Tx = staking.withdraw({from: user2, gas: 500000, gasPrice: defaultGasPrice});
   var testWithdraw1_3Tx = staking.withdraw({from: user3, gas: 500000, gasPrice: defaultGasPrice});
@@ -380,6 +383,32 @@ if (allTests || true) {
   printTxData("testWithdraw1_1Tx", testWithdraw1_1Tx);
   printTxData("testWithdraw1_2Tx", testWithdraw1_2Tx);
   printTxData("testWithdraw1_3Tx", testWithdraw1_3Tx);
+  console.log("RESULT: ");
+  printTokenContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
+  console.log("RESULT: ");
+}
+
+
+// Test Distribute Rewards #1
+if (allTests || true) {
+  // -----------------------------------------------------------------------------
+  var testDistributeRewards1_Message = "Test Distribute Rewards #1";
+  // Check with _cooldownPeriodInSec 1 and 10000
+  var totalAmount = new BigNumber(66).shift(18).toString();
+  var stakeOwners = [user1, user2, user3];
+  var amounts = [new BigNumber(11).shift(18).toString(), new BigNumber(22).shift(18).toString(), new BigNumber(33).shift(18).toString()];
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + deployGroup2_Message + " ----------");
+  var testDistributeRewards1_1Tx = staking.distributeRewards(totalAmount, stakeOwners, amounts, {from: deployer, gas: 1000000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(testDistributeRewards1_1Tx, testDistributeRewards1_Message + " - deployer -> staking.distributeRewards(66, [user1, user2, user3], [11, 22, 33])");
+  printTxData("testDistributeRewards1_1Tx", testDistributeRewards1_1Tx);
   console.log("RESULT: ");
   printTokenContractDetails(0);
   console.log("RESULT: ");
