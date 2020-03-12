@@ -208,13 +208,7 @@ console.log("RESULT: ");
 
 var allTests = false;
 
-// Test Migration Manager Functions #1
-// * `setMigrationManager(...)`
-// * `setStakeChangeNotifier(...)`
-// * `addMigrationDestination(...)`
-// * `removeMigrationDestination(...)`
-
-if (allTests || true) {
+if (true) {
   // -----------------------------------------------------------------------------
   var testMigrationManagerFunctions1_Message = "Test Migration Manager Functions #1";
   // -----------------------------------------------------------------------------
@@ -256,14 +250,19 @@ if (allTests || true) {
   var testMigrationManagerFunctions1_9Tx = staking.removeMigrationDestination(miner, {from: deployer, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
+  var testMigrationManagerFunctions1_10Tx = staking.removeMigrationDestination(miner, {from: deployer, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
 
   printBalances();
   failIfTxStatusError(testMigrationManagerFunctions1_7Tx, testMigrationManagerFunctions1_Message + " - deployer -> staking.setStakeChangeNotifier(deployer)");
   passIfTxStatusError(testMigrationManagerFunctions1_8Tx, testMigrationManagerFunctions1_Message + " - user1 -> staking.removeMigrationDestination(miner) - Expecting failure");
   failIfTxStatusError(testMigrationManagerFunctions1_9Tx, testMigrationManagerFunctions1_Message + " - deployer -> staking.removeMigrationDestination(miner)");
+  passIfTxStatusError(testMigrationManagerFunctions1_10Tx, testMigrationManagerFunctions1_Message + " - deployer -> staking.removeMigrationDestination(miner) - Expecting failure as address already removed");
   printTxData("testMigrationManagerFunctions1_7Tx", testMigrationManagerFunctions1_7Tx);
   printTxData("testMigrationManagerFunctions1_8Tx", testMigrationManagerFunctions1_8Tx);
   printTxData("testMigrationManagerFunctions1_9Tx", testMigrationManagerFunctions1_9Tx);
+  printTxData("testMigrationManagerFunctions1_10Tx", testMigrationManagerFunctions1_10Tx);
   console.log("RESULT: ");
   printStakingContractDetails(0);
   console.log("RESULT: ");
@@ -272,32 +271,27 @@ if (allTests || true) {
 
 }
 
-exit;
 
 // Test Migration Manager Functions #1
-if (allTests || true) {
+if (allTests || false) {
   // -----------------------------------------------------------------------------
-  var testAdminOwnership1_Message = "Test Admin Ownership #1";
+  var testEmergencyManagerFunctions1_Message = "Test Emergency Manager Functions #1";
   // -----------------------------------------------------------------------------
-  console.log("RESULT: ---------- " + testAdminOwnership1_Message + " ----------");
+  console.log("RESULT: ---------- " + testEmergencyManagerFunctions1_Message + " ----------");
   // Tested with non-emergencyManager
-  var testAdminOwnership1_1Tx = staking.setMigrationManager(deployer, {from: user1, gas: 500000, gasPrice: defaultGasPrice});
-  var testAdminOwnership1_2Tx = staking.setEmergencyManager(deployer, {from: user2, gas: 500000, gasPrice: defaultGasPrice});
+  var testEmergencyManagerFunctions1_1Tx = staking.setEmergencyManager(deployer, {from: user2, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
-  var testAdminOwnership1_3Tx = staking.setMigrationManager(deployer, {from: migrationManager, gas: 500000, gasPrice: defaultGasPrice});
-  var testAdminOwnership1_4Tx = staking.setEmergencyManager(deployer, {from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
+  var testEmergencyManagerFunctions1_2Tx = staking.setEmergencyManager(deployer, {from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  passIfTxStatusError(testAdminOwnership1_1Tx, testAdminOwnership1_Message + " - user1 -> staking.setMigrationManager(deployer) - Expecting failure");
-  passIfTxStatusError(testAdminOwnership1_2Tx, testAdminOwnership1_Message + " - user2 -> staking.setEmergencyManager(deployer) - Expecting failure");
-  failIfTxStatusError(testAdminOwnership1_3Tx, testAdminOwnership1_Message + " - migrationManager -> staking.setMigrationManager(deployer)");
-  failIfTxStatusError(testAdminOwnership1_4Tx, testAdminOwnership1_Message + " - emergencyManager -> staking.setEmergencyManager(deployer)");
-  printTxData("testAdminOwnership1_1Tx", testAdminOwnership1_1Tx);
-  printTxData("testAdminOwnership1_2Tx", testAdminOwnership1_2Tx);
-  printTxData("testAdminOwnership1_3Tx", testAdminOwnership1_3Tx);
-  printTxData("testAdminOwnership1_4Tx", testAdminOwnership1_4Tx);
+  passIfTxStatusError(testEmergencyManagerFunctions1_2Tx, testEmergencyManagerFunctions1_Message + " - user2 -> staking.setEmergencyManager(deployer) - Expecting failure");
+  failIfTxStatusError(testEmergencyManagerFunctions1_4Tx, testEmergencyManagerFunctions1_Message + " - emergencyManager -> staking.setEmergencyManager(deployer)");
+  printTxData("testEmergencyManagerFunctions1_1Tx", testEmergencyManagerFunctions1_1Tx);
+  printTxData("testEmergencyManagerFunctions1_2Tx", testEmergencyManagerFunctions1_2Tx);
+  // printTxData("testEmergencyManagerFunctions1_3Tx", testEmergencyManagerFunctions1_3Tx);
+  // printTxData("testEmergencyManagerFunctions1_4Tx", testEmergencyManagerFunctions1_4Tx);
   console.log("RESULT: ");
   printStakingContractDetails(0);
   console.log("RESULT: ");
@@ -305,6 +299,7 @@ if (allTests || true) {
   console.log("RESULT: ");
 }
 
+exit;
 
 // Release All Stakes #1
 if (allTests || false) {
