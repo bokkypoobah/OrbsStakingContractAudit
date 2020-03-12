@@ -555,11 +555,15 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
             "StakingContract::removeMigrationDestination - address must not be 0");
 
         // Check for existence.
+        // BK Ok
         (uint i, bool exists) = findApprovedStakingContractIndex(_stakingContract);
+        // BK Ok
         require(exists, "StakingContract::removeMigrationDestination - staking contract doesn't exist");
 
         // Swap the requested element with the last element and then delete it using pop/
+        // BK Ok
         approvedStakingContracts[i] = approvedStakingContracts[approvedStakingContracts.length - 1];
+        // BK Ok
         approvedStakingContracts.pop();
 
         // BK Ok - event MigrationDestinationRemoved(IMigratableStakingContract indexed stakingContract);
@@ -799,7 +803,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _stakeOwner address The address to check.
     /// @return uint256 The stake of the stake owner.
     // BK NOTE - function getStakeBalanceOf(address _stakeOwner) external view returns (uint256);
-    // BK Ok - External view
+    // BK Ok - External view function
     function getStakeBalanceOf(address _stakeOwner) external view returns (uint256) {
         // BK Ok
         return stakes[_stakeOwner].amount;
@@ -808,7 +812,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @dev Returns the total amount staked tokens (excluding unstaked tokens).
     /// @return uint256 The total staked tokens of all stake owners.
     // BK NOTE - function getTotalStakedTokens() external view returns (uint256);
-    // BK Ok - External view
+    // BK Ok - External view function
     function getTotalStakedTokens() external view returns (uint256) {
         // BK Ok
         return totalStakedTokens;
@@ -819,7 +823,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @return cooldownAmount uint256 The total tokens in cooldown.
     /// @return cooldownEndTime uint256 The time when the cooldown period ends (in seconds).
     // BK NOTE - function getUnstakeStatus(address _stakeOwner) external view returns (uint256 cooldownAmount, uint256 cooldownEndTime);
-    // BK Ok - External view
+    // BK Ok - External view function
     function getUnstakeStatus(address _stakeOwner) external view returns (uint256 cooldownAmount,
         uint256 cooldownEndTime) {
         Stake memory stakeData = stakes[_stakeOwner];
@@ -830,14 +834,16 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @dev Returns the address of the underlying staked token.
     /// @return IERC20 The address of the token.
     // BK NOTE - function getToken() external view returns (IERC20);
-    // BK Ok
+    // BK Ok - External view function
     function getToken() external view returns (IERC20) {
         // BK Ok
         return token;
     }
 
     /// @dev Requests the contract to stop accepting new staking requests.
+    // BK Ok - External function that can only be executed by `emergencyManager`
     function stopAcceptingNewStakes() external onlyEmergencyManager onlyWhenAcceptingNewStakes {
+        // BK Ok
         acceptingNewStakes = false;
 
         // BK Ok - event StoppedAcceptingNewStake();
@@ -845,7 +851,9 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     }
 
     /// @dev Requests the contract to release all stakes.
+    // BK Ok - External function that can only be executed by `emergencyManager`
     function releaseAllStakes() external onlyEmergencyManager onlyWhenStakesNotReleased {
+        // BK Ok
         releasingAllStakes = true;
 
         // BK Ok - event ReleasedAllStakes();

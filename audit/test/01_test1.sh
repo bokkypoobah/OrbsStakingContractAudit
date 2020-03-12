@@ -206,9 +206,7 @@ console.log("RESULT: ");
 printStakingContractDetails(1);
 console.log("RESULT: ");
 
-var allTests = false;
-
-if (true) {
+if (false) {
   // -----------------------------------------------------------------------------
   var testMigrationManagerFunctions1_Message = "Test Migration Manager Functions #1";
   // -----------------------------------------------------------------------------
@@ -272,8 +270,8 @@ if (true) {
 }
 
 
-// Test Migration Manager Functions #1
-if (allTests || false) {
+// Test Emergency Manager Functions #1
+if (true) {
   // -----------------------------------------------------------------------------
   var testEmergencyManagerFunctions1_Message = "Test Emergency Manager Functions #1";
   // -----------------------------------------------------------------------------
@@ -285,13 +283,28 @@ if (allTests || false) {
   var testEmergencyManagerFunctions1_2Tx = staking.setEmergencyManager(deployer, {from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
+  var testEmergencyManagerFunctions1_3Tx = staking.stopAcceptingNewStakes({from: user2, gas: 500000, gasPrice: defaultGasPrice});
+  var testEmergencyManagerFunctions1_4Tx = staking.releaseAllStakes({from: user2, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  var testEmergencyManagerFunctions1_6Tx = staking.releaseAllStakes({from: deployer, gas: 500000, gasPrice: defaultGasPrice});
+  var testEmergencyManagerFunctions1_5Tx = staking.stopAcceptingNewStakes({from: deployer, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
   printBalances();
-  passIfTxStatusError(testEmergencyManagerFunctions1_2Tx, testEmergencyManagerFunctions1_Message + " - user2 -> staking.setEmergencyManager(deployer) - Expecting failure");
-  failIfTxStatusError(testEmergencyManagerFunctions1_4Tx, testEmergencyManagerFunctions1_Message + " - emergencyManager -> staking.setEmergencyManager(deployer)");
+  passIfTxStatusError(testEmergencyManagerFunctions1_1Tx, testEmergencyManagerFunctions1_Message + " - user2 -> staking.setEmergencyManager(deployer) - Expecting failure");
+  failIfTxStatusError(testEmergencyManagerFunctions1_2Tx, testEmergencyManagerFunctions1_Message + " - emergencyManager -> staking.setEmergencyManager(deployer)");
+  passIfTxStatusError(testEmergencyManagerFunctions1_3Tx, testEmergencyManagerFunctions1_Message + " - user2 -> staking.stopAcceptingNewStakes() - Expecting failure");
+  passIfTxStatusError(testEmergencyManagerFunctions1_4Tx, testEmergencyManagerFunctions1_Message + " - user2 -> staking.releaseAllStakes() - Expecting failure");
+  passIfTxStatusError(testEmergencyManagerFunctions1_4Tx, testEmergencyManagerFunctions1_Message + " - user2 -> staking.releaseAllStakes() - Expecting failure");
+  failIfTxStatusError(testEmergencyManagerFunctions1_5Tx, testEmergencyManagerFunctions1_Message + " - deployer -> staking.stopAcceptingNewStakes()");
+  failIfTxStatusError(testEmergencyManagerFunctions1_6Tx, testEmergencyManagerFunctions1_Message + " - deployer -> staking.releaseAllStakes()");
   printTxData("testEmergencyManagerFunctions1_1Tx", testEmergencyManagerFunctions1_1Tx);
   printTxData("testEmergencyManagerFunctions1_2Tx", testEmergencyManagerFunctions1_2Tx);
-  // printTxData("testEmergencyManagerFunctions1_3Tx", testEmergencyManagerFunctions1_3Tx);
-  // printTxData("testEmergencyManagerFunctions1_4Tx", testEmergencyManagerFunctions1_4Tx);
+  printTxData("testEmergencyManagerFunctions1_3Tx", testEmergencyManagerFunctions1_3Tx);
+  printTxData("testEmergencyManagerFunctions1_4Tx", testEmergencyManagerFunctions1_4Tx);
+  printTxData("testEmergencyManagerFunctions1_5Tx", testEmergencyManagerFunctions1_5Tx);
+  printTxData("testEmergencyManagerFunctions1_6Tx", testEmergencyManagerFunctions1_6Tx);
   console.log("RESULT: ");
   printStakingContractDetails(0);
   console.log("RESULT: ");
@@ -300,6 +313,8 @@ if (allTests || false) {
 }
 
 exit;
+
+var allTests = false;
 
 // Release All Stakes #1
 if (allTests || false) {

@@ -63,12 +63,10 @@ Status: Work in progress
 * `migrationManager` admin functions - `setMigrationManager(...)`, `setStakeChangeNotifier(...)`, `addMigrationDestination(...)` and `removeMigrationDestination(...)`
   * [x] CHECK & TESTED Can only be executed by `migrationManager`
   * [x] CHECK & TESTED Intended state changes & logs
-* `emergencyManager` admin functions
-  * `setEmergencyManager(...)`
-    * [ ] CHECK & TESTED Can only be executed by `emergencyManager`
-    * [ ] CHECK & TESTED Intended state changes & logs
-  * `stopAcceptingNewStakes()`
-  * `releaseAllStakes()`
+* `emergencyManager` admin functions - `setEmergencyManager(...)`, `stopAcceptingNewStakes()`, `releaseAllStakes()`
+  * [x] CHECK & TESTED Can only be executed by `emergencyManager`
+  * [x] CHECK & TESTED Intended state changes & logs
+  * NOTE: If `releaseAllStakes()` is executed before `stopAcceptingNewStakes()` is executed, `stopAcceptingNewStakes()` can never be executed. This does not matter as the modifier `onlyWhenAcceptingNewStakes()` checks both conditions.
 
 
 <br />
