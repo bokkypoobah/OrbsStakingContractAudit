@@ -57,6 +57,20 @@ Status: Work in progress
 
 ## Testing
 
+* `constructor()`
+  * [x] CHECK Cannot be initialised more than once
+  * [x] CHECK & TESTED Variables set as expected
+* `migrationManager` admin functions - `setMigrationManager(...)`, `setStakeChangeNotifier(...)`, `addMigrationDestination(...)` and `removeMigrationDestination(...)`
+  * [x] CHECK & TESTED Can only be executed by `migrationManager`
+  * [x] CHECK & TESTED Intended state changes & logs
+* `emergencyManager` admin functions
+  * `setEmergencyManager(...)`
+    * [ ] CHECK & TESTED Can only be executed by `emergencyManager`
+    * [ ] CHECK & TESTED Intended state changes & logs
+  * `stopAcceptingNewStakes()`
+  * `releaseAllStakes()`
+
+
 <br />
 
 <hr />
@@ -110,7 +124,17 @@ Account `emergencyManager` can execute:
 * `totalStakedTokens` - should not include unstaked tokens in cooldown period or pending withdrawal
 * Check that can unstake and withdraw tokens if not `acceptingNewStakes`
 * [x] If `releaseAllStakes()` is called before `stopAcceptingNewStakes()`, `stopAcceptingNewStakes()` cannot be executed. But this does not affect the result of the modifier `onlyWhenAcceptingNewStakes()` as both variables are checked in `require(acceptingNewStakes && !releasingAllStakes, ...)`
+* Check migration during cooldown period
+* Can a sequence of calls within a single tx cause any unexpected changes?
+* Can `migrationManager` set a notifier that transfers away a user's staked/unstaked tokens?
+* Can a user with staked/unstaked tokens withdraw/migrate more tokens than they stake
+* `migrationManager` could add new staking contract `IMigratableStakingContract` - users should check the new staking contract before migrating their tokens
+* Can `totalStakedTokens` and individual `stakes[account]` be unbalanced?
 
+### Assumptions
+
+* ORBs token contract at [0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa](https://etherscan.io/address/0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa#code)
+* `notifier` will be set to 0x0000000000000000000000000000000000000000
 
 <br />
 

@@ -217,17 +217,21 @@ interface IERC20 {
 }
 
 /// @title An interface for staking contracts which support stake migration.
+// BK Ok
 interface IMigratableStakingContract {
     /// @dev Returns the address of the underlying staked token.
     /// @return IERC20 The address of the token.
+    // BK Ok
     function getToken() external view returns (IERC20);
 
     /// @dev Stakes ORBS tokens on behalf of msg.sender. This method assumes that the user has already approved at least
     /// the required amount using ERC20 approve.
     /// @param _stakeOwner address The specified stake owner.
     /// @param _amount uint256 The number of tokens to stake.
+    // BK Ok
     function acceptMigration(address _stakeOwner, uint256 _amount) external;
 
+    // BK Ok - Event
     event AcceptedMigration(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
 }
 
@@ -291,15 +295,11 @@ interface IStakingContract {
     // BK Ok
     function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external;
 
-    // BK Ok
+    // BK Next 5 Ok
     event Staked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
-    // BK Ok
     event Unstaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
-    // BK Ok
     event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
-    // BK Ok
     event Restaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
-    // BK Ok
     event MigratedStake(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
 }
 
@@ -381,6 +381,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     IStakeChangeNotifier public notifier;
 
     // The address of the ORBS token.
+    // BK Ok
     IERC20 internal token;
 
     // Represents whether the contract accepts new staking requests. Please note, that even when it's turned off,
@@ -449,23 +450,27 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _emergencyManager address The address responsible for emergency operations and graceful return of staked
     /// tokens back to their owners.
     /// @param _token IERC20 The address of the ORBS token.
+    // BK Ok - Can only be called once per contract deployment
     constructor(uint256 _cooldownPeriodInSec, address _migrationManager, address _emergencyManager, IERC20 _token) public {
         require(_cooldownPeriodInSec > 0, "StakingContract::ctor - cooldown period must be greater than 0");
         // BK Ok
         require(_migrationManager != address(0), "StakingContract::ctor - migration manager must not be 0");
         require(_emergencyManager != address(0), "StakingContract::ctor - emergency manager must not be 0");
+        // BK Ok
         require(address(_token) != address(0), "StakingContract::ctor - ORBS token must not be 0");
 
         cooldownPeriodInSec = _cooldownPeriodInSec;
         // BK Ok
         migrationManager = _migrationManager;
         emergencyManager = _emergencyManager;
+        // BK Ok
         token = _token;
     }
 
     /// @dev Sets the address of the migration manager.
     /// @param _newMigrationManager address The address of the new migration manager.
     // BK NOTE - External function, can only be called by migrationManager
+    // BK Ok - Can only be executed by `migrationManager`
     function setMigrationManager(address _newMigrationManager) external onlyMigrationManager {
         // BK Ok
         require(_newMigrationManager != address(0), "StakingContract::setMigrationManager - address must not be 0");
@@ -482,7 +487,9 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Sets the address of the emergency manager.
     /// @param _newEmergencyManager address The address of the new emergency manager.
+    // BK Ok - Can only be executed by `emergencyManager`
     function setEmergencyManager(address _newEmergencyManager) external onlyEmergencyManager {
+        // BK Ok
         require(_newEmergencyManager != address(0), "StakingContract::setEmergencyManager - address must not be 0");
         require(emergencyManager != _newEmergencyManager,
             "StakingContract::setEmergencyManager - address must be different than the current address");
@@ -497,11 +504,13 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _newNotifier IStakeChangeNotifier The address of the new stake change notifier contract.
     ///
     /// Note: it's allowed to reset the notifier to a zero address.
-    // BK NOTE - External function, can only be called by migrationManager
+    // BK Ok - External function, can only be called by `migrationManager`
     function setStakeChangeNotifier(IStakeChangeNotifier _newNotifier) external onlyMigrationManager {
+        // BK Ok
         require(notifier != _newNotifier,
             "StakingContract::setStakeChangeNotifier - address must be different than the current address");
 
+        // BK Ok
         notifier = _newNotifier;
 
         // BK Ok - event StakeChangeNotifierUpdated(IStakeChangeNotifier indexed notifier);
@@ -510,22 +519,27 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Adds a new contract to the list of approved staking contracts migration destinations.
     /// @param _newStakingContract IMigratableStakingContract The new contract to add.
-    // BK NOTE - External function, can only be called by migrationManager
+    // BK Ok - External function, can only be called by migrationManager
     function addMigrationDestination(IMigratableStakingContract _newStakingContract) external onlyMigrationManager {
+        // BK Ok
         require(address(_newStakingContract) != address(0),
             "StakingContract::addMigrationDestination - address must not be 0");
 
+        // BK Ok
         uint length = approvedStakingContracts.length;
-        // BK Ok - set to 10
+        // BK Ok - (length + 1) <= 10
         require(length + 1 <= MAX_APPROVED_STAKING_CONTRACTS,
             "StakingContract::addMigrationDestination - can't add more staking contracts");
 
         // Check for duplicates.
+        // BK Ok
         for (uint i = 0; i < length; ++i) {
+            // BK Ok
             require(approvedStakingContracts[i] != _newStakingContract,
                 "StakingContract::addMigrationDestination - can't add a duplicate staking contract");
         }
 
+        // BK Ok
         approvedStakingContracts.push(_newStakingContract);
 
         // BK Ok - event MigrationDestinationAdded(IMigratableStakingContract indexed stakingContract);
@@ -534,8 +548,9 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Removes a contract from the list of approved staking contracts migration destinations.
     /// @param _stakingContract IMigratableStakingContract The contract to remove.
-    // BK NOTE - External function, can only be called by migrationManager
+    // BK Ok - External function, can only be called by migrationManager
     function removeMigrationDestination(IMigratableStakingContract _stakingContract) external onlyMigrationManager {
+        // BK Ok
         require(address(_stakingContract) != address(0),
             "StakingContract::removeMigrationDestination - address must not be 0");
 
@@ -615,6 +630,11 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     function withdraw() external {
         address stakeOwner = msg.sender;
 
+        // BK NOTE - struct WithdrawResult {
+        // BK NOTE -     uint256 withdrawnAmount;
+        // BK NOTE -     uint256 stakedAmount;
+        // BK NOTE -     uint256 stakedAmountDiff;
+        // BK NOTE - }
         WithdrawResult memory res = withdraw(stakeOwner);
 
         // BK NOTE - event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
@@ -661,9 +681,13 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// the required amount using ERC20 approve.
     /// @param _stakeOwner address The specified stake owner.
     /// @param _amount uint256 The amount of tokens to stake.
+    // BK NOTE - function acceptMigration(address _stakeOwner, uint256 _amount) external;
+    // BK NOTE - msg.sender will be the new instance of this contract
+    // BK NOTE - If an account executes this directly, the effects are the same as executing stake(uint256), & different events emitted
     function acceptMigration(address _stakeOwner, uint256 _amount) external onlyWhenAcceptingNewStakes {
         uint256 totalStakedAmount = stake(_stakeOwner, _amount);
 
+        // BK NOTE - event AcceptedMigration(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit AcceptedMigration(_stakeOwner, _amount, totalStakedAmount);
 
         // Note: we aren't concerned with reentrancy since:
@@ -694,6 +718,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
         totalStakedTokens = totalStakedTokens.sub(_amount);
 
+        // BK Ok
         require(_newStakingContract.getToken() == token,
             "StakingContract::migrateStakedTokens - staked tokens must be the same");
         require(token.approve(address(_newStakingContract), _amount),
@@ -718,6 +743,8 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _stakeOwners address[] The addresses of the stake owners.
     /// @param _amounts uint256[] The amounts of the rewards.
     // BK NOTE - function distributeRewards(uint256 _totalAmount, address[] calldata _stakeOwners, uint256[] calldata _amounts) external;
+    // BK TODO - Check if sum(_amounts) can overflow to _totalAmount
+    // BK TODO - Check duplicate _stakeOwners
     function distributeRewards(uint256 _totalAmount, address[] calldata _stakeOwners, uint256[] calldata _amounts) external
         onlyWhenAcceptingNewStakes {
         require(_totalAmount > 0, "StakingContract::distributeRewards - total amount must be greater than 0");
@@ -772,14 +799,18 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _stakeOwner address The address to check.
     /// @return uint256 The stake of the stake owner.
     // BK NOTE - function getStakeBalanceOf(address _stakeOwner) external view returns (uint256);
+    // BK Ok - External view
     function getStakeBalanceOf(address _stakeOwner) external view returns (uint256) {
+        // BK Ok
         return stakes[_stakeOwner].amount;
     }
 
     /// @dev Returns the total amount staked tokens (excluding unstaked tokens).
     /// @return uint256 The total staked tokens of all stake owners.
     // BK NOTE - function getTotalStakedTokens() external view returns (uint256);
+    // BK Ok - External view
     function getTotalStakedTokens() external view returns (uint256) {
+        // BK Ok
         return totalStakedTokens;
     }
 
@@ -788,6 +819,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @return cooldownAmount uint256 The total tokens in cooldown.
     /// @return cooldownEndTime uint256 The time when the cooldown period ends (in seconds).
     // BK NOTE - function getUnstakeStatus(address _stakeOwner) external view returns (uint256 cooldownAmount, uint256 cooldownEndTime);
+    // BK Ok - External view
     function getUnstakeStatus(address _stakeOwner) external view returns (uint256 cooldownAmount,
         uint256 cooldownEndTime) {
         Stake memory stakeData = stakes[_stakeOwner];
@@ -797,7 +829,10 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Returns the address of the underlying staked token.
     /// @return IERC20 The address of the token.
+    // BK NOTE - function getToken() external view returns (IERC20);
+    // BK Ok
     function getToken() external view returns (IERC20) {
+        // BK Ok
         return token;
     }
 
@@ -819,6 +854,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Requests withdraw of released tokens for a list of addresses.
     /// @param _stakeOwners address[] The addresses of the stake owners.
+    // BK TODO - Check what happens with dodgy data
     function withdrawReleasedStakes(address[] calldata _stakeOwners) external onlyWhenStakesReleased {
         uint256 stakeOwnersLength = _stakeOwners.length;
         uint256[] memory stakedAmountDiffs = new uint256[](stakeOwnersLength);
@@ -828,6 +864,11 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         for (uint i = 0; i < stakeOwnersLength; ++i) {
             address stakeOwner = _stakeOwners[i];
 
+            // BK NOTE - struct WithdrawResult {
+            // BK NOTE -     uint256 withdrawnAmount;
+            // BK NOTE -     uint256 stakedAmount;
+            // BK NOTE -     uint256 stakedAmountDiff;
+            // BK NOTE - }
             WithdrawResult memory res = withdraw(stakeOwner);
             stakedAmountDiffs[i] = res.stakedAmountDiff;
             signs[i] = false;
@@ -904,6 +945,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _amount uint256 The amount of tokens to stake.
     /// @return totalStakedAmount uint256 The total stake of the stake owner.
     // BK NOTE - Called by stake() and acceptMigration()
+    // BK Ok - Private function callable by any account with tokens approved to this contract
     function stake(address _stakeOwner, uint256 _amount) private returns (uint256 totalStakedAmount) {
         require(_stakeOwner != address(0), "StakingContract::stake - stake owner can't be 0");
         require(_amount > 0, "StakingContract::stake - amount must be greater than 0");
@@ -925,6 +967,11 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// contract was requested to release all stakes).
     /// @return res WithdrawResult The result of the withdraw operation.
     // BK NOTE - Called by withdraw() and withdrawReleasedStakes()
+    // BK NOTE - struct WithdrawResult {
+    // BK NOTE -     uint256 withdrawnAmount;
+    // BK NOTE -     uint256 stakedAmount;
+    // BK NOTE -     uint256 stakedAmountDiff;
+    // BK NOTE - }
     function withdraw(address _stakeOwner) private returns (WithdrawResult memory res) {
         require(_stakeOwner != address(0), "StakingContract::withdraw - stake owner can't be 0");
 
