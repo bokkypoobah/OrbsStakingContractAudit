@@ -390,6 +390,8 @@ function printStakingContractDetails(index) {
     var users = [user1, user2, user3];
     users.forEach(function(u) {
       console.log("RESULT: stakingContract.getStakeBalanceOf(" + getShortAddressName(u) + ")=" + contract.getStakeBalanceOf.call(u).shift(-18).toString());
+      var data = contract.getUnstakeStatus.call(u);
+      console.log("RESULT: stakingContract.getUnstakeStatus(" + getShortAddressName(u) + ")=" + data[0].shift(-18).toString() + ", cooldownEndTime=" + data[1]);
     });
 
     var latestBlock = eth.blockNumber;

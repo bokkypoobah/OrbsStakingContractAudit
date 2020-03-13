@@ -370,14 +370,18 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     address public migrationManager;
 
     // The address responsible for emergency operations and graceful return of staked tokens back to their owners.
+    // BK Ok - Set in constructor() and setEmergencyManager()
     address public emergencyManager;
 
     // The list of staking contracts that are approved by this contract. It would be only allowed to migrate a stake to
     // one of these contracts.
     // BK NOTE - Written by approvedStakingContracts() and removeMigrationDestination(). Read by findApprovedStakingContractIndex()
+    // BK Ok
     IMigratableStakingContract[] public approvedStakingContracts;
 
     // The address of the contract responsible for publishing stake change notifications.
+    // BK NOTE - Assuming `notifier` is set to 0x0000000000000000000000000000000000000000 . Have to be separately audited before usage with this contract
+    // BK Ok
     IStakeChangeNotifier public notifier;
 
     // The address of the ORBS token.
@@ -388,6 +392,8 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // it'd be still possible to unstake or withdraw tokens.
     //
     // Note: This can be turned off only once by the emergency manager of the contract.
+    // BK NOTE - Can only be switched off in `stopAcceptingNewStakes()`, executed by `emergencyManager`
+    // BK Ok
     bool public acceptingNewStakes = true;
 
     // Represents whether this staking contract allows releasing all unstaked tokens unconditionally. When it's turned
@@ -396,6 +402,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // stakes.
     //
     // Note: This can be turned off only once by the emergency manager of the contract.
+    // BK NOTE - Can only be switched on in `releaseAllStakes()`, executed by `emergencyManager`
     bool public releasingAllStakes = false;
 
     // BK Next 7 Ok
@@ -412,34 +419,43 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         // BK Ok
         require(msg.sender == migrationManager, "StakingContract: caller is not the migration manager");
 
+        // BK Ok
         _;
     }
 
     // BK Ok - Modifier for setEmergencyManager(), stopAcceptingNewStakes() and releaseAllStakes()
     modifier onlyEmergencyManager() {
+        // BK Ok
         require(msg.sender == emergencyManager, "StakingContract: caller is not the emergency manager");
 
+        // BK Ok
         _;
     }
 
     // BK Ok - Modifier for stake(), restake(), acceptMigration(), distributeRewards() and stopAcceptingNewStakes()
     modifier onlyWhenAcceptingNewStakes() {
+        // BK Ok
         require(acceptingNewStakes && !releasingAllStakes, "StakingContract: not accepting new stakes");
 
+        // BK Ok
         _;
     }
 
     // BK Ok - Modifier for withdrawReleasedStakes()
     modifier onlyWhenStakesReleased() {
+        // BK Ok
         require(releasingAllStakes, "StakingContract: not releasing all stakes");
 
+        // BK Ok
         _;
     }
 
     // BK Ok - Modifier for migrateStakedTokens() and releaseAllStakes()
     modifier onlyWhenStakesNotReleased() {
+        // BK Ok
         require(!releasingAllStakes, "StakingContract: releasing all stakes");
 
+        // BK Ok
         _;
     }
 

@@ -69,6 +69,24 @@ Status: Work in progress
   * NOTE: If `releaseAllStakes()` is executed before `stopAcceptingNewStakes()` is executed, `stopAcceptingNewStakes()` can never be executed. This does not matter as the modifier `onlyWhenAcceptingNewStakes()` checks both conditions.
 
 
+### Regular workflow
+
+#### `stake(...)`
+
+#### `unstake(...)`
+
+#### `distributeRewards(...)`
+
+#### `migrateStakedTokens(...)`
+Also tests `acceptMigration(...)`
+
+#### `withdraw()`
+
+### Other
+* `restake()`
+* `withdrawReleasedStakes(...)`
+
+
 <br />
 
 <hr />
