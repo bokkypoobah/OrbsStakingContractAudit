@@ -63,15 +63,16 @@ Contracts reviewed:
 
 * [ ] [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol)
   * [x] library SafeMath
-    * [x] function `add(...)`
-    * [x] function `sub(...)`
+    * [x] `function add(...) internal`
+    * [x] `function sub(...) internal`
     * [x] functions `mul(...)`, `div(...)` and `mod(...)` are unused in these smart contracts
   * [x] interface IERC20
   * [x] interface IMigratableStakingContract
   * [x] interface IStakingContract
-  * [ ] interface IStakeChangeNotifier
+  * [x] interface IStakeChangeNotifier
   * [ ] contract StakingContract is IStakingContract, IMigratableStakingContract
-    * [ ] using SafeMath for uint256;
+    * [x] using SafeMath for uint256;
+    * [x] Structs, constants, variables, events and modifiers
     * [x] `constructor(...)`
     * [x] `function setMigrationManager(...) external`
     * [x] `function setEmergencyManager(...) external`
