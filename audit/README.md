@@ -80,8 +80,8 @@ Contracts reviewed:
     * [x] `function addMigrationDestination(...) external`
     * [x] `function removeMigrationDestination(...) external`
     * [x] `function stake(...) external`
-    * [ ] `function unstake(...) external`
-    * [ ] `function withdraw() external`
+    * [x] `function unstake(...) external`
+    * [x] `function withdraw() external`
     * [ ] `function restake() external`
     * [ ] `function acceptMigration(...) external`
     * [ ] `function migrateStakedTokens(...) external`

@@ -578,7 +578,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// the required amount using ERC20 approve.
     /// @param _amount uint256 The amount of tokens to stake.
     // BK NOTE - function stake(uint256 _amount) external;
-    // BK Any user can stake tokens already approve(...)-d to this contract
+    // BK Ok - Any user can stake tokens already approve(...)-d to this contract
     function stake(uint256 _amount) external onlyWhenAcceptingNewStakes {
         // BK Ok
         address stakeOwner = msg.sender;
@@ -600,15 +600,21 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// msg.sender would be able to withdraw all of his tokens.
     /// @param _amount uint256 The amount of tokens to unstake.
     // BK NOTE - function unstake(uint256 _amount) external;
+    // BK Ok - Any user can unstake tokens already staked
     function unstake(uint256 _amount) external {
+        // BK Ok
         require(_amount > 0, "StakingContract::unstake - amount must be greater than 0");
 
+        // BK Ok
         address stakeOwner = msg.sender;
+        // BK Ok
         Stake storage stakeData = stakes[stakeOwner];
+        // BK Next 3 Ok
         uint256 stakedAmount = stakeData.amount;
         uint256 cooldownAmount = stakeData.cooldownAmount;
         uint256 cooldownEndTime = stakeData.cooldownEndTime;
 
+        // BK Ok
         require(_amount <= stakedAmount, "StakingContract::unstake - can't unstake more than the current stake");
 
         // If any tokens in cooldown are ready for withdrawal - revert. Stake owner should withdraw their unstaked
@@ -618,20 +624,24 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
         // Update the amount of tokens in cooldown. Please note that this will also restart the cooldown period of all
         // tokens in cooldown.
+        // BK Next 3 Ok
         stakeData.amount = stakedAmount.sub(_amount);
         stakeData.cooldownAmount = cooldownAmount.add(_amount);
         stakeData.cooldownEndTime = now.add(cooldownPeriodInSec);
 
+        // BK Ok
         totalStakedTokens = totalStakedTokens.sub(_amount);
 
+        // BK Ok
         uint256 totalStakedAmount = stakeData.amount;
 
-        // BK NOTE - event Unstaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+        // BK Ok - event Unstaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit Unstaked(stakeOwner, _amount, totalStakedAmount);
 
         // Note: we aren't concerned with reentrancy since:
         //   1. At this point, due to the CEI pattern, a reentrant notifier can't affect the effects of this method.
         //   2. The notifier is set and managed by the migration manager.
+        // BK Ok
         stakeChange(stakeOwner, _amount, false, totalStakedAmount);
     }
 
@@ -639,7 +649,9 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// tokens only after previously unstaking them and after the cooldown period has passed (unless the contract was
     /// requested to release all stakes).
     // BK NOTE - function withdraw() external;
+    // BK Ok - Any account with unstaked tokens can withdraw unstaked tokens after cooldown period. If after all stakes released, both staked and unstaked tokens are withdrawn
     function withdraw() external {
+        // BK Ok
         address stakeOwner = msg.sender;
 
         // BK NOTE - struct WithdrawResult {
@@ -647,19 +659,23 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         // BK NOTE -     uint256 stakedAmount;
         // BK NOTE -     uint256 stakedAmountDiff;
         // BK NOTE - }
+        // BK Ok
         WithdrawResult memory res = withdraw(stakeOwner);
 
-        // BK NOTE - event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+        // BK Ok - event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit Withdrew(stakeOwner, res.withdrawnAmount, res.stakedAmount);
 
         // Trigger staking state change notifications only if the staking amount was changed.
+        // BK Ok
         if (res.stakedAmountDiff == 0) {
+            // BK Ok
             return;
         }
 
         // Note: we aren't concerned with reentrancy since:
         //   1. At this point, due to the CEI pattern, a reentrant notifier can't affect the effects of this method.
         //   2. The notifier is set and managed by the migration manager.
+        // BK Ok
         stakeChange(stakeOwner, res.stakedAmountDiff, false, res.stakedAmount);
     }
 
