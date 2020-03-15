@@ -79,7 +79,7 @@ Contracts reviewed:
     * [x] `function setStakeChangeNotifier(...) external`
     * [x] `function addMigrationDestination(...) external`
     * [x] `function removeMigrationDestination(...) external`
-    * [ ] `function stake(...) external`
+    * [x] `function stake(...) external`
     * [ ] `function unstake(...) external`
     * [ ] `function withdraw() external`
     * [ ] `function restake() external`

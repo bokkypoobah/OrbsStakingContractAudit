@@ -578,17 +578,21 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// the required amount using ERC20 approve.
     /// @param _amount uint256 The amount of tokens to stake.
     // BK NOTE - function stake(uint256 _amount) external;
+    // BK Any user can stake tokens already approve(...)-d to this contract
     function stake(uint256 _amount) external onlyWhenAcceptingNewStakes {
+        // BK Ok
         address stakeOwner = msg.sender;
 
+        // BK Ok
         uint256 totalStakedAmount = stake(stakeOwner, _amount);
 
-        // BK NOTE - event Staked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+        // BK Ok - event Staked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit Staked(stakeOwner, _amount, totalStakedAmount);
 
         // Note: we aren't concerned with reentrancy since:
         //   1. At this point, due to the CEI pattern, a reentrant notifier can't affect the effects of this method.
         //   2. The notifier is set and managed by the migration manager.
+        // BK Ok
         stakeChange(stakeOwner, _amount, true, totalStakedAmount);
     }
 
@@ -971,17 +975,23 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // BK NOTE - Called by stake() and acceptMigration()
     // BK Ok - Private function callable by any account with tokens approved to this contract
     function stake(address _stakeOwner, uint256 _amount) private returns (uint256 totalStakedAmount) {
+        // BK Next 2 Ok
         require(_stakeOwner != address(0), "StakingContract::stake - stake owner can't be 0");
         require(_amount > 0, "StakingContract::stake - amount must be greater than 0");
 
+        // BK Ok - storage
         Stake storage stakeData = stakes[_stakeOwner];
+        // BK Ok
         stakeData.amount = stakeData.amount.add(_amount);
 
+        // BK Ok
         totalStakedTokens = totalStakedTokens.add(_amount);
 
+        // BK Ok
         totalStakedAmount = stakeData.amount;
 
         // Transfer the tokens to the smart contract and update the stake owners list accordingly.
+        // BK Ok
         require(token.transferFrom(msg.sender, address(this), _amount),
             "StakingContract::stake - insufficient allowance");
     }
