@@ -878,14 +878,21 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Requests withdraw of released tokens for a list of addresses.
     /// @param _stakeOwners address[] The addresses of the stake owners.
-    // BK TODO - Check what happens with dodgy data
+    // BK NOTE - Can hit gas limit for many `_stakeOwners`, but caller can adjust batch size
+    // BK Ok - Any account can execute on behalf of any other accounts with staked and/or unstaked tokens, after `emergencyManager` executes `releaseAllStakes()`
     function withdrawReleasedStakes(address[] calldata _stakeOwners) external onlyWhenStakesReleased {
+        // BK Ok
         uint256 stakeOwnersLength = _stakeOwners.length;
+        // BK Ok
         uint256[] memory stakedAmountDiffs = new uint256[](stakeOwnersLength);
+        // BK Ok
         bool[] memory signs = new bool[](stakeOwnersLength);
+        // BK Ok
         uint256[] memory totalStakedAmounts = new uint256[](stakeOwnersLength);
 
+        // BK Ok
         for (uint i = 0; i < stakeOwnersLength; ++i) {
+            // BK Ok
             address stakeOwner = _stakeOwners[i];
 
             // BK NOTE - struct WithdrawResult {
@@ -893,12 +900,14 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
             // BK NOTE -     uint256 stakedAmount;
             // BK NOTE -     uint256 stakedAmountDiff;
             // BK NOTE - }
+            // BK Ok
             WithdrawResult memory res = withdraw(stakeOwner);
+            // BK Next 3 Ok
             stakedAmountDiffs[i] = res.stakedAmountDiff;
             signs[i] = false;
             totalStakedAmounts[i] = res.stakedAmount;
 
-            // BK NOTE - event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+            // BK Ok - event Withdrew(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
             emit Withdrew(stakeOwner, res.withdrawnAmount, res.stakedAmount);
         }
 
@@ -990,40 +999,52 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// their ORBS tokens only after previously unstaking them and after the cooldown period has passed (unless the
     /// contract was requested to release all stakes).
     /// @return res WithdrawResult The result of the withdraw operation.
-    // BK NOTE - Called by withdraw() and withdrawReleasedStakes()
     // BK NOTE - struct WithdrawResult {
     // BK NOTE -     uint256 withdrawnAmount;
     // BK NOTE -     uint256 stakedAmount;
     // BK NOTE -     uint256 stakedAmountDiff;
     // BK NOTE - }
+    // BK Ok - Private function called by withdraw() and withdrawReleasedStakes()
     function withdraw(address _stakeOwner) private returns (WithdrawResult memory res) {
+        // BK Ok
         require(_stakeOwner != address(0), "StakingContract::withdraw - stake owner can't be 0");
 
+        // BK Ok - storage
         Stake storage stakeData = stakes[_stakeOwner];
+        // BK Next 3 Ok
         res.stakedAmount = stakeData.amount;
         res.withdrawnAmount = stakeData.cooldownAmount;
         res.stakedAmountDiff = 0;
 
+        // BK Ok
         if (!releasingAllStakes) {
+            // BK Next 2 OK
             require(res.withdrawnAmount > 0, "StakingContract::withdraw - no unstaked tokens");
             require(stakeData.cooldownEndTime <= now, "StakingContract::withdraw - tokens are still in cooldown");
         } else {
             // If the contract was requested to release all stakes - allow to withdraw all staked and unstaked tokens.
+            // BK Next 2 Ok
             res.withdrawnAmount = res.withdrawnAmount.add(res.stakedAmount);
             res.stakedAmountDiff = res.stakedAmount;
 
+            // BK Ok
             require(res.withdrawnAmount > 0, "StakingContract::withdraw - no staked or unstaked tokens");
 
+            // BK Ok
             stakeData.amount = 0;
 
+            // BK Ok
             totalStakedTokens = totalStakedTokens.sub(res.stakedAmount);
 
+            // BK Ok
             res.stakedAmount = 0;
         }
 
+        // BK Next 2 Ok
         stakeData.cooldownAmount = 0;
         stakeData.cooldownEndTime = 0;
 
+        // BK Ok
         require(token.transfer(_stakeOwner, res.withdrawnAmount),
             "StakingContract::withdraw - couldn't transfer stake");
     }

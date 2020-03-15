@@ -77,7 +77,7 @@ console.log("RESULT: ");
 
 // -----------------------------------------------------------------------------
 var deployGroup1_Message = "Deploy Group #1 - Contracts";
-var _cooldownPeriodInSec = 5;
+var _cooldownPeriodInSec = 10000;
 console.log("DATA: deployer=" + deployer);
 console.log("DATA: defaultGasPrice=" + defaultGasPrice);
 // -----------------------------------------------------------------------------
@@ -393,21 +393,21 @@ if (allTests || true) {
 if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testUnstaking1_Message = "Test Unstaking #1";
-  var tokensToUnstake1 = new BigNumber("10").shift(18);
+  // var tokensToUnstake1 = new BigNumber("10").shift(18);
   var tokensToUnstake2 = new BigNumber("20").shift(18);
-  var tokensToUnstake3 = new BigNumber("30").shift(18);
+  var tokensToUnstake3 = new BigNumber("300").shift(18);
   // -----------------------------------------------------------------------------
   console.log("RESULT: ---------- " + testUnstaking1_Message + " ----------");
-  var testUnstaking1_1Tx = staking.unstake(tokensToUnstake1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  // var testUnstaking1_1Tx = staking.unstake(tokensToUnstake1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
   var testUnstaking1_2Tx = staking.unstake(tokensToUnstake2.toString(), {from: user2, gas: 500000, gasPrice: defaultGasPrice});
   var testUnstaking1_3Tx = staking.unstake(tokensToUnstake3.toString(), {from: user3, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  failIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ")");
+  // failIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ")");
   failIfTxStatusError(testUnstaking1_2Tx, testUnstaking1_Message + " - user2 -> staking.unstake(" + tokensToUnstake2.shift(-18).toString() + ")");
   failIfTxStatusError(testUnstaking1_3Tx, testUnstaking1_Message + " - user3 -> staking.unstake(" + tokensToUnstake3.shift(-18).toString() + ")");
-  printTxData("testUnstaking1_1Tx", testUnstaking1_1Tx);
+  // printTxData("testUnstaking1_1Tx", testUnstaking1_1Tx);
   printTxData("testUnstaking1_2Tx", testUnstaking1_2Tx);
   printTxData("testUnstaking1_3Tx", testUnstaking1_3Tx);
   console.log("RESULT: ");
@@ -421,23 +421,29 @@ if (allTests || true) {
 
 
 // Withdraw Released Stakes #1
-if (false) {
+if (true) {
   // -----------------------------------------------------------------------------
   var withdrawReleasedStakes2_Message = "Withdraw Released Stakes #1";
-  var accountsToWithdraw = [user1, user2, user3, deployer];
   // -----------------------------------------------------------------------------
   console.log("RESULT: ---------- " + withdrawReleasedStakes2_Message + " ----------");
   var withdrawReleasedStakes2_1Tx = staking.releaseAllStakes({from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
-  var withdrawReleasedStakes2_2Tx = staking.withdrawReleasedStakes(accountsToWithdraw, {from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  var withdrawReleasedStakes2_2Tx = staking.withdrawReleasedStakes([user1, user2, user3, deployer], {from: deployer, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  var withdrawReleasedStakes2_3Tx = staking.withdrawReleasedStakes([user1, user2, user3], {from: deployer, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
   printBalances();
   failIfTxStatusError(withdrawReleasedStakes2_1Tx, withdrawReleasedStakes2_Message + " - emergencyManager -> staking.releaseAllStakes()");
-  failIfTxStatusError(withdrawReleasedStakes2_2Tx, withdrawReleasedStakes2_Message + " - user1 -> staking.withdrawReleasedStakes(" + JSON.stringify(accountsToWithdraw) + ")");
+  passIfTxStatusError(withdrawReleasedStakes2_2Tx, withdrawReleasedStakes2_Message + " - deployer -> staking.withdrawReleasedStakes([user1, user2, user3, deployer]) - Expecting to fail as deployer does not have unstaked tokens");
+  failIfTxStatusError(withdrawReleasedStakes2_3Tx, withdrawReleasedStakes2_Message + " - deployer -> staking.withdrawReleasedStakes([user1, user2, user3])");
   printTxData("withdrawReleasedStakes2_1Tx", withdrawReleasedStakes2_1Tx);
   printTxData("withdrawReleasedStakes2_2Tx", withdrawReleasedStakes2_2Tx);
+  printTxData("withdrawReleasedStakes2_3Tx", withdrawReleasedStakes2_3Tx);
+  console.log("RESULT: ");
+  printTokenContractDetails(0);
   console.log("RESULT: ");
   printStakingContractDetails(0);
   console.log("RESULT: ");
@@ -445,6 +451,7 @@ if (false) {
   console.log("RESULT: ");
 }
 
+exit;
 
 // Test Restake #1
 if (false) {

@@ -2,16 +2,16 @@
 ---------- Deploy Group #1 - Contracts ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.057664620000000000           0.000000000000000000           0.000000000000000000 miner
- 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.046863262000000000     1000000.000000000000000000           0.000000000000000000 deployer
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.057668532000000000           0.000000000000000000           0.000000000000000000 miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.046867174000000000     1000000.000000000000000000           0.000000000000000000 deployer
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976       -0.010801358000000000           0.000000000000000000           0.000000000000000000 migrationManager
  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000           0.000000000000000000 emergencyManager
  4 0xa44a08d3f6933c69212114bb66e2df1813651844        0.000000000000000000           0.000000000000000000           0.000000000000000000 user1
  5 0xa55a151eb00fded1634d27d1127b4be4627079ea        0.000000000000000000           0.000000000000000000           0.000000000000000000 user2
  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9        0.000000000000000000           0.000000000000000000           0.000000000000000000 user3
- 7 0xe8291b4dc4c7bfa6046b4502fc4a0465eff4a512        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
- 8 0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking
- 9 0x4c01da023142a1b222d185880f75cbb78916ac99        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
+ 7 0xe4d97f7a85d1454c2a4efc020742278f61030b4d        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
+ 8 0xbaded2da306b54bac880043418105f4491c3d617        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking
+ 9 0x63b72794f3efca62e570e127b774889c470bf238        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
                                                                               1000000.000000000000000000           0.000000000000000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -20,25 +20,25 @@ PASS Deploy Group #1 - Contracts - Token
 PASS Deploy Group #1 - Contracts - Staking
 PASS Deploy Group #1 - Contracts - Staking2
 PASS Deploy Group #1 - Contracts - staking.addMigrationDestination(staking2)
-tokenTx status=0x1 Success gas=4000000 gasUsed=790328 costETH=0.128823464 costUSD=13.24434033384 @ ETH/USD=102.81 gasPrice=163 gwei block=67497 txIx=0 txId=0x735530d9ba920a5a4f1901b6537897f495513d79633d037a0b57d80a70376314 @ 1584233637 Sun, 15 Mar 2020 00:53:57 UTC
-stakingTx status=0x1 Success gas=5000000 gasUsed=2816073 costETH=0.459019899 costUSD=47.19183581619 @ ETH/USD=102.81 gasPrice=163 gwei block=67499 txIx=0 txId=0xde250620b8154ebd45ae3b5e2e105f961dfe73fcffcd6cc1b47d82575a8d5513 @ 1584233639 Sun, 15 Mar 2020 00:53:59 UTC
-staking2Tx status=0x1 Success gas=5000000 gasUsed=2816073 costETH=0.459019899 costUSD=47.19183581619 @ ETH/USD=102.81 gasPrice=163 gwei block=67499 txIx=1 txId=0x2d14b5632c66021aaac4649f0abce3767a4f95dbaea624b4f72e0634ec775b20 @ 1584233639 Sun, 15 Mar 2020 00:53:59 UTC
-addMigrationDestination1_1Tx status=0x1 Success gas=500000 gasUsed=66266 costETH=0.010801358 costUSD=1.11048761598 @ ETH/USD=102.81 gasPrice=163 gwei block=67501 txIx=0 txId=0x4264badb1333dc80ce9a164cef6d97fbd084e069b9f9cd286870c555915c44c5 @ 1584233641 Sun, 15 Mar 2020 00:54:01 UTC
+tokenTx status=0x1 Success gas=4000000 gasUsed=790328 costETH=0.128823464 costUSD=13.24434033384 @ ETH/USD=102.81 gasPrice=163 gwei block=69665 txIx=0 txId=0xcf7a773a83ceb442c5d5d38b670d139ee55c065a225f036e85b7d4f61e177a76 @ 1584237342 Sun, 15 Mar 2020 01:55:42 UTC
+stakingTx status=0x1 Success gas=5000000 gasUsed=2816085 costETH=0.459021855 costUSD=47.19203691255 @ ETH/USD=102.81 gasPrice=163 gwei block=69667 txIx=0 txId=0x42cf1d780d94b8d340e9d4cbb62f816705427729283c08862154ee67d1c271df @ 1584237344 Sun, 15 Mar 2020 01:55:44 UTC
+staking2Tx status=0x1 Success gas=5000000 gasUsed=2816085 costETH=0.459021855 costUSD=47.19203691255 @ ETH/USD=102.81 gasPrice=163 gwei block=69667 txIx=1 txId=0x14e7b8033bcc1ff118b327be420137944769bb366b15fbf674f64e15fa626504 @ 1584237344 Sun, 15 Mar 2020 01:55:44 UTC
+addMigrationDestination1_1Tx status=0x1 Success gas=500000 gasUsed=66266 costETH=0.010801358 costUSD=1.11048761598 @ ETH/USD=102.81 gasPrice=163 gwei block=69669 txIx=0 txId=0xd18a1a1e5b0eaf4760b1da46482e40053a92a262aa967424fd102df2b915e7cd @ 1584237346 Sun, 15 Mar 2020 01:55:46 UTC
 
-token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe829
+token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe4d9
 token0.owner/new=deployer:0xa11a/null:0x0000
 token0.details='FIXED' 'Example Fixed Supply Token' 18 dp
 token0.totalSupply=1000000
-token0.Transfer 0 #67497 from=null:0x0000 to=deployer:0xa11a tokens=1000000
+token0.Transfer 0 #69665 from=null:0x0000 to=deployer:0xa11a tokens=1000000
 
-stakingContractAddress=0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f
+stakingContractAddress=0xbaded2da306b54bac880043418105f4491c3d617
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
-stakingContract.approvedStakingContracts[0]=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
+stakingContract.approvedStakingContracts[0]=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.approvedStakingContracts[1]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
@@ -50,15 +50,15 @@ stakingContract.getStakeBalanceOf(user2:0xa55a)=0
 stakingContract.getUnstakeStatus(user2:0xa55a)=0, cooldownEndTime=0
 stakingContract.getStakeBalanceOf(user3:0xa66a)=0
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
-MigrationDestinationAdded 0 #67501 {"stakingContract":"0x4c01da023142a1b222d185880f75cbb78916ac99"}
+MigrationDestinationAdded 0 #69669 {"stakingContract":"0x63b72794f3efca62e570e127b774889c470bf238"}
 
-stakingContractAddress=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContractAddress=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
 stakingContract.approvedStakingContracts[0]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
@@ -74,16 +74,16 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 ---------- Deploy Group #2 - Setup ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.111230169000000000           0.000000000000000000           0.000000000000000000 miner
- 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.078928459000000000      250000.000000000000000000           0.000000000000000000 deployer
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.111234081000000000           0.000000000000000000           0.000000000000000000 miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.078932371000000000      250000.000000000000000000           0.000000000000000000 deployer
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976       -0.010801358000000000           0.000000000000000000           0.000000000000000000 migrationManager
  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000           0.000000000000000000 emergencyManager
  4 0xa44a08d3f6933c69212114bb66e2df1813651844       -0.007166784000000000      250000.000000000000000000           0.000000000000000000 user1
  5 0xa55a151eb00fded1634d27d1127b4be4627079ea       -0.007166784000000000      250000.000000000000000000           0.000000000000000000 user2
  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9       -0.007166784000000000      250000.000000000000000000           0.000000000000000000 user3
- 7 0xe8291b4dc4c7bfa6046b4502fc4a0465eff4a512        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
- 8 0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking
- 9 0x4c01da023142a1b222d185880f75cbb78916ac99        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
+ 7 0xe4d97f7a85d1454c2a4efc020742278f61030b4d        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
+ 8 0xbaded2da306b54bac880043418105f4491c3d617        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking
+ 9 0x63b72794f3efca62e570e127b774889c470bf238        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
                                                                               1000000.000000000000000000           0.000000000000000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -95,34 +95,34 @@ PASS Deploy Group #2 - Setup - deployer -> token.approve(stakingContract, 1000)
 PASS Deploy Group #2 - Setup - user1 -> token.approve(stakingContract, 1000)
 PASS Deploy Group #2 - Setup - user2 -> token.approve(stakingContract, 1000)
 PASS Deploy Group #2 - Setup - user3 -> token.approve(stakingContract, 1000)
-deployGroup2_1Tx status=0x1 Success gas=100000 gasUsed=50917 costETH=0.008299471 costUSD=0.85326861351 @ ETH/USD=102.81 gasPrice=163 gwei block=67505 txIx=0 txId=0x68fab41ef7fe31265cd8cf3f57d56833c16fd1aedced52b62d54a7fc4996cad5 @ 1584233645 Sun, 15 Mar 2020 00:54:05 UTC
-deployGroup2_2Tx status=0x1 Success gas=100000 gasUsed=50917 costETH=0.008299471 costUSD=0.85326861351 @ ETH/USD=102.81 gasPrice=163 gwei block=67506 txIx=0 txId=0x0a81053dcb4b269de091d1c4e8a592628f778aeba6f958de044af310e5b13e8b @ 1584233646 Sun, 15 Mar 2020 00:54:06 UTC
-deployGroup2_3Tx status=0x1 Success gas=100000 gasUsed=50917 costETH=0.008299471 costUSD=0.85326861351 @ ETH/USD=102.81 gasPrice=163 gwei block=67506 txIx=1 txId=0x7ea455924c18bcc9c63fe48ef23a96773362e4a17d8549cb5c2ca414d8c7c911 @ 1584233646 Sun, 15 Mar 2020 00:54:06 UTC
-deployGroup2_4Tx status=0x1 Success gas=100000 gasUsed=43968 costETH=0.007166784 costUSD=0.73681706304 @ ETH/USD=102.81 gasPrice=163 gwei block=67506 txIx=2 txId=0xac3eed64f304c1f1b5e964da49e6ccb8c37ea9dcf1f76a6f296c10f2da87d6af @ 1584233646 Sun, 15 Mar 2020 00:54:06 UTC
-deployGroup2_5Tx status=0x1 Success gas=100000 gasUsed=43968 costETH=0.007166784 costUSD=0.73681706304 @ ETH/USD=102.81 gasPrice=163 gwei block=67506 txIx=5 txId=0xcaad37682ca1e7fc622b9b56338dea75ab3c73c6eec39c32bdfc111f81afba83 @ 1584233646 Sun, 15 Mar 2020 00:54:06 UTC
-deployGroup2_6Tx status=0x1 Success gas=100000 gasUsed=43968 costETH=0.007166784 costUSD=0.73681706304 @ ETH/USD=102.81 gasPrice=163 gwei block=67506 txIx=4 txId=0xecfc3edb1978f408352ee3fd51c3d9c0f5c304d0b91a35b913bf9a944a19ecfe @ 1584233646 Sun, 15 Mar 2020 00:54:06 UTC
-deployGroup2_7Tx status=0x1 Success gas=100000 gasUsed=43968 costETH=0.007166784 costUSD=0.73681706304 @ ETH/USD=102.81 gasPrice=163 gwei block=67506 txIx=3 txId=0x21e69aa7b4b78a612ea0d4569a72630ac4ed19f925b1b9a153e889dba0d7ecf4 @ 1584233646 Sun, 15 Mar 2020 00:54:06 UTC
+deployGroup2_1Tx status=0x1 Success gas=100000 gasUsed=50917 costETH=0.008299471 costUSD=0.85326861351 @ ETH/USD=102.81 gasPrice=163 gwei block=69673 txIx=0 txId=0x24ec2a9acb2fc95cd740feb5a4e68a4b0909e0fd0e252952864b1692ddff8c4c @ 1584237350 Sun, 15 Mar 2020 01:55:50 UTC
+deployGroup2_2Tx status=0x1 Success gas=100000 gasUsed=50917 costETH=0.008299471 costUSD=0.85326861351 @ ETH/USD=102.81 gasPrice=163 gwei block=69673 txIx=1 txId=0x4026ced7849452fb1580f7b4773cc9bd596361ed2b95d6db60cafbce7b9979c8 @ 1584237350 Sun, 15 Mar 2020 01:55:50 UTC
+deployGroup2_3Tx status=0x1 Success gas=100000 gasUsed=50917 costETH=0.008299471 costUSD=0.85326861351 @ ETH/USD=102.81 gasPrice=163 gwei block=69674 txIx=1 txId=0x7e5fdad3e7ecbe9cda2bf3d20116d9a030a837a4df3fa17cd36d3b06c1375de2 @ 1584237351 Sun, 15 Mar 2020 01:55:51 UTC
+deployGroup2_4Tx status=0x1 Success gas=100000 gasUsed=43968 costETH=0.007166784 costUSD=0.73681706304 @ ETH/USD=102.81 gasPrice=163 gwei block=69674 txIx=2 txId=0x1560b1a91afb22fccc4138979d8c5345b948ec0dd0cff3358fa749ec02f31f6a @ 1584237351 Sun, 15 Mar 2020 01:55:51 UTC
+deployGroup2_5Tx status=0x1 Success gas=100000 gasUsed=43968 costETH=0.007166784 costUSD=0.73681706304 @ ETH/USD=102.81 gasPrice=163 gwei block=69674 txIx=0 txId=0x8da58211f0e0f4a64b2d0a3722e39d4a71b0e7868553e64321e0d0f0dc80c827 @ 1584237351 Sun, 15 Mar 2020 01:55:51 UTC
+deployGroup2_6Tx status=0x1 Success gas=100000 gasUsed=43968 costETH=0.007166784 costUSD=0.73681706304 @ ETH/USD=102.81 gasPrice=163 gwei block=69674 txIx=4 txId=0x1f93ae93af9ef26795a83241ffa1362b771bc61a806a6d7ebdf74d1488dd3595 @ 1584237351 Sun, 15 Mar 2020 01:55:51 UTC
+deployGroup2_7Tx status=0x1 Success gas=100000 gasUsed=43968 costETH=0.007166784 costUSD=0.73681706304 @ ETH/USD=102.81 gasPrice=163 gwei block=69674 txIx=3 txId=0x6d73e7f21c745341a3309fd327e4c43de04cc74dfa31a9d3a1cfd30a0b13adce @ 1584237351 Sun, 15 Mar 2020 01:55:51 UTC
 
-token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe829
+token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe4d9
 token0.owner/new=deployer:0xa11a/null:0x0000
 token0.details='FIXED' 'Example Fixed Supply Token' 18 dp
 token0.totalSupply=1000000
-token0.Approval 0 #67506 tokenOwner=deployer:0xa11a spender=Staking:0x34f3 tokens=1000
-token0.Approval 1 #67506 tokenOwner=user3:0xa66a spender=Staking:0x34f3 tokens=1000
-token0.Approval 2 #67506 tokenOwner=user2:0xa55a spender=Staking:0x34f3 tokens=1000
-token0.Approval 3 #67506 tokenOwner=user1:0xa44a spender=Staking:0x34f3 tokens=1000
-token0.Transfer 0 #67505 from=deployer:0xa11a to=user1:0xa44a tokens=250000
-token0.Transfer 1 #67506 from=deployer:0xa11a to=user2:0xa55a tokens=250000
-token0.Transfer 2 #67506 from=deployer:0xa11a to=user3:0xa66a tokens=250000
+token0.Approval 0 #69674 tokenOwner=user1:0xa44a spender=Staking:0xbade tokens=1000
+token0.Approval 1 #69674 tokenOwner=deployer:0xa11a spender=Staking:0xbade tokens=1000
+token0.Approval 2 #69674 tokenOwner=user3:0xa66a spender=Staking:0xbade tokens=1000
+token0.Approval 3 #69674 tokenOwner=user2:0xa55a spender=Staking:0xbade tokens=1000
+token0.Transfer 0 #69673 from=deployer:0xa11a to=user1:0xa44a tokens=250000
+token0.Transfer 1 #69673 from=deployer:0xa11a to=user2:0xa55a tokens=250000
+token0.Transfer 2 #69674 from=deployer:0xa11a to=user3:0xa66a tokens=250000
 
-stakingContractAddress=0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f
+stakingContractAddress=0xbaded2da306b54bac880043418105f4491c3d617
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
-stakingContract.approvedStakingContracts[0]=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
+stakingContract.approvedStakingContracts[0]=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.approvedStakingContracts[1]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
@@ -135,13 +135,13 @@ stakingContract.getUnstakeStatus(user2:0xa55a)=0, cooldownEndTime=0
 stakingContract.getStakeBalanceOf(user3:0xa66a)=0
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 
-stakingContractAddress=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContractAddress=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
 stakingContract.approvedStakingContracts[0]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
@@ -157,16 +157,16 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 ---------- Test Staking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.153604953000000000           0.000000000000000000           0.000000000000000000 miner
- 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.078928459000000000      250000.000000000000000000           0.000000000000000000 deployer
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.153608865000000000           0.000000000000000000           0.000000000000000000 miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.078932371000000000      250000.000000000000000000           0.000000000000000000 deployer
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976       -0.010801358000000000           0.000000000000000000           0.000000000000000000 migrationManager
  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000           0.000000000000000000 emergencyManager
- 4 0xa44a08d3f6933c69212114bb66e2df1813651844       -0.024551712000000000      249900.000000000000000000           0.000000000000000000 user1
+ 4 0xa44a08d3f6933c69212114bb66e2df1813651844       -0.019661712000000000      249900.000000000000000000           0.000000000000000000 user1
  5 0xa55a151eb00fded1634d27d1127b4be4627079ea       -0.019661712000000000      249800.000000000000000000           0.000000000000000000 user2
- 6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9       -0.019661712000000000      249700.000000000000000000           0.000000000000000000 user3
- 7 0xe8291b4dc4c7bfa6046b4502fc4a0465eff4a512        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
- 8 0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f        0.000000000000000000         600.000000000000000000           0.000000000000000000 Staking
- 9 0x4c01da023142a1b222d185880f75cbb78916ac99        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
+ 6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9       -0.024551712000000000      249700.000000000000000000           0.000000000000000000 user3
+ 7 0xe4d97f7a85d1454c2a4efc020742278f61030b4d        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
+ 8 0xbaded2da306b54bac880043418105f4491c3d617        0.000000000000000000         600.000000000000000000           0.000000000000000000 Staking
+ 9 0x63b72794f3efca62e570e127b774889c470bf238        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
                                                                               1000000.000000000000000000           0.000000000000000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -174,26 +174,26 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 PASS Test Staking #1 - user1 -> staking.stake(100)
 PASS Test Staking #1 - user2 -> staking.stake(200)
 PASS Test Staking #1 - user3 -> staking.stake(300)
-testStaking1_1Tx status=0x1 Success gas=500000 gasUsed=106656 costETH=0.017384928 costUSD=1.78734444768 @ ETH/USD=102.81 gasPrice=163 gwei block=67511 txIx=0 txId=0xbf69fb61932b7cfe771df5057048b402e860e1036623ba6efb68f2430e7fef71 @ 1584233651 Sun, 15 Mar 2020 00:54:11 UTC
-testStaking1_2Tx status=0x1 Success gas=500000 gasUsed=76656 costETH=0.012494928 costUSD=1.28460354768 @ ETH/USD=102.81 gasPrice=163 gwei block=67511 txIx=2 txId=0x8a8ddf0368e565463f475a99160e1425fb4740fe2093e73a9b65315036b2e6e4 @ 1584233651 Sun, 15 Mar 2020 00:54:11 UTC
-testStaking1_3Tx status=0x1 Success gas=500000 gasUsed=76656 costETH=0.012494928 costUSD=1.28460354768 @ ETH/USD=102.81 gasPrice=163 gwei block=67511 txIx=1 txId=0x4e7cc581ed6ce43e709de796da67184ea7be3aa2d11a8d0a870e903f3ff371ba @ 1584233651 Sun, 15 Mar 2020 00:54:11 UTC
+testStaking1_1Tx status=0x1 Success gas=500000 gasUsed=76656 costETH=0.012494928 costUSD=1.28460354768 @ ETH/USD=102.81 gasPrice=163 gwei block=69678 txIx=2 txId=0x132b1d07953332f85df259c6cdddf84cd5d683b57d971d80b10a045b80bf0860 @ 1584237355 Sun, 15 Mar 2020 01:55:55 UTC
+testStaking1_2Tx status=0x1 Success gas=500000 gasUsed=76656 costETH=0.012494928 costUSD=1.28460354768 @ ETH/USD=102.81 gasPrice=163 gwei block=69678 txIx=1 txId=0x25553cdfa22892b711c013efd49843dc2acfad4abc04f0a4537fbeef7a537eea @ 1584237355 Sun, 15 Mar 2020 01:55:55 UTC
+testStaking1_3Tx status=0x1 Success gas=500000 gasUsed=106656 costETH=0.017384928 costUSD=1.78734444768 @ ETH/USD=102.81 gasPrice=163 gwei block=69678 txIx=0 txId=0x2f8f25b2e9a9075066f3c516fed07760214cfe22c8a8889e01a84126e45ac24c @ 1584237355 Sun, 15 Mar 2020 01:55:55 UTC
 
-token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe829
+token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe4d9
 token0.owner/new=deployer:0xa11a/null:0x0000
 token0.details='FIXED' 'Example Fixed Supply Token' 18 dp
 token0.totalSupply=1000000
-token0.Transfer 0 #67511 from=user1:0xa44a to=Staking:0x34f3 tokens=100
-token0.Transfer 1 #67511 from=user3:0xa66a to=Staking:0x34f3 tokens=300
-token0.Transfer 2 #67511 from=user2:0xa55a to=Staking:0x34f3 tokens=200
+token0.Transfer 0 #69678 from=user3:0xa66a to=Staking:0xbade tokens=300
+token0.Transfer 1 #69678 from=user2:0xa55a to=Staking:0xbade tokens=200
+token0.Transfer 2 #69678 from=user1:0xa44a to=Staking:0xbade tokens=100
 
-stakingContractAddress=0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f
+stakingContractAddress=0xbaded2da306b54bac880043418105f4491c3d617
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
-stakingContract.approvedStakingContracts[0]=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
+stakingContract.approvedStakingContracts[0]=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.approvedStakingContracts[1]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
@@ -205,17 +205,17 @@ stakingContract.getStakeBalanceOf(user2:0xa55a)=200
 stakingContract.getUnstakeStatus(user2:0xa55a)=0, cooldownEndTime=0
 stakingContract.getStakeBalanceOf(user3:0xa66a)=300
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
-Staked 0 #67511 stakeOwner=user1:0xa44a, amount=100, totalStakedAmount=100
-Staked 1 #67511 stakeOwner=user3:0xa66a, amount=300, totalStakedAmount=300
-Staked 2 #67511 stakeOwner=user2:0xa55a, amount=200, totalStakedAmount=200
+Staked 0 #69678 stakeOwner=user3:0xa66a, amount=300, totalStakedAmount=300
+Staked 1 #69678 stakeOwner=user2:0xa55a, amount=200, totalStakedAmount=200
+Staked 2 #69678 stakeOwner=user1:0xa44a, amount=100, totalStakedAmount=100
 
-stakingContractAddress=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContractAddress=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
 stakingContract.approvedStakingContracts[0]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
@@ -231,62 +231,59 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 ---------- Test Unstaking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.192519573000000000           0.000000000000000000           0.000000000000000000 miner
- 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.078928459000000000      250000.000000000000000000           0.000000000000000000 deployer
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.177108249000000000           0.000000000000000000           0.000000000000000000 miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.078932371000000000      250000.000000000000000000           0.000000000000000000 deployer
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976       -0.010801358000000000           0.000000000000000000           0.000000000000000000 migrationManager
  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000           0.000000000000000000 emergencyManager
- 4 0xa44a08d3f6933c69212114bb66e2df1813651844       -0.037521948000000000      249900.000000000000000000           0.000000000000000000 user1
+ 4 0xa44a08d3f6933c69212114bb66e2df1813651844       -0.019661712000000000      249900.000000000000000000           0.000000000000000000 user1
  5 0xa55a151eb00fded1634d27d1127b4be4627079ea       -0.032633904000000000      249800.000000000000000000           0.000000000000000000 user2
- 6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9       -0.032633904000000000      249700.000000000000000000           0.000000000000000000 user3
- 7 0xe8291b4dc4c7bfa6046b4502fc4a0465eff4a512        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
- 8 0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f        0.000000000000000000         600.000000000000000000           0.000000000000000000 Staking
- 9 0x4c01da023142a1b222d185880f75cbb78916ac99        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
+ 6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9       -0.035078904000000000      249700.000000000000000000           0.000000000000000000 user3
+ 7 0xe4d97f7a85d1454c2a4efc020742278f61030b4d        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
+ 8 0xbaded2da306b54bac880043418105f4491c3d617        0.000000000000000000         600.000000000000000000           0.000000000000000000 Staking
+ 9 0x63b72794f3efca62e570e127b774889c470bf238        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
                                                                               1000000.000000000000000000           0.000000000000000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
 
-PASS Test Unstaking #1 - user1 -> staking.unstake(10)
 PASS Test Unstaking #1 - user2 -> staking.unstake(20)
-PASS Test Unstaking #1 - user3 -> staking.unstake(30)
-testUnstaking1_1Tx status=0x1 Success gas=500000 gasUsed=79572 costETH=0.012970236 costUSD=1.33346996316 @ ETH/USD=102.81 gasPrice=163 gwei block=67515 txIx=0 txId=0x15b5213af0917dfa083930a5c2f64ca3cad45cbf9375cc0440a1740c8d2c4a96 @ 1584233655 Sun, 15 Mar 2020 00:54:15 UTC
-testUnstaking1_2Tx status=0x1 Success gas=500000 gasUsed=79584 costETH=0.012972192 costUSD=1.33367105952 @ ETH/USD=102.81 gasPrice=163 gwei block=67515 txIx=2 txId=0x62442e10be8c657d75cf36db047a7b126298aaf25b636a2b6ccff82ef5ac0bba @ 1584233655 Sun, 15 Mar 2020 00:54:15 UTC
-testUnstaking1_3Tx status=0x1 Success gas=500000 gasUsed=79584 costETH=0.012972192 costUSD=1.33367105952 @ ETH/USD=102.81 gasPrice=163 gwei block=67515 txIx=1 txId=0x5259610093f3e2bad1e07562638aada76a341b336a0ebca7c6f8d61edf9a65c1 @ 1584233655 Sun, 15 Mar 2020 00:54:15 UTC
+PASS Test Unstaking #1 - user3 -> staking.unstake(300)
+testUnstaking1_2Tx status=0x1 Success gas=500000 gasUsed=79584 costETH=0.012972192 costUSD=1.33367105952 @ ETH/USD=102.81 gasPrice=163 gwei block=69682 txIx=0 txId=0x03db564de79c82409135bf07b0ada4bc75cdf5a30df855df7990393f57f55661 @ 1584237359 Sun, 15 Mar 2020 01:55:59 UTC
+testUnstaking1_3Tx status=0x1 Success gas=500000 gasUsed=64584 costETH=0.010527192 costUSD=1.08230060952 @ ETH/USD=102.81 gasPrice=163 gwei block=69682 txIx=1 txId=0x636c6a00d45d96563453a943e5cc6a54e66d4e67839be39bfc7cbda790398aa6 @ 1584237359 Sun, 15 Mar 2020 01:55:59 UTC
 
-token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe829
+token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe4d9
 token0.owner/new=deployer:0xa11a/null:0x0000
 token0.details='FIXED' 'Example Fixed Supply Token' 18 dp
 token0.totalSupply=1000000
 
-stakingContractAddress=0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f
+stakingContractAddress=0xbaded2da306b54bac880043418105f4491c3d617
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
-stakingContract.approvedStakingContracts[0]=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
+stakingContract.approvedStakingContracts[0]=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.approvedStakingContracts[1]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
 stakingContract.releasingAllStakes=false
-stakingContract.getTotalStakedTokens=540
-stakingContract.getStakeBalanceOf(user1:0xa44a)=90
-stakingContract.getUnstakeStatus(user1:0xa44a)=10, cooldownEndTime=1584233660
+stakingContract.getTotalStakedTokens=280
+stakingContract.getStakeBalanceOf(user1:0xa44a)=100
+stakingContract.getUnstakeStatus(user1:0xa44a)=0, cooldownEndTime=0
 stakingContract.getStakeBalanceOf(user2:0xa55a)=180
-stakingContract.getUnstakeStatus(user2:0xa55a)=20, cooldownEndTime=1584233660
-stakingContract.getStakeBalanceOf(user3:0xa66a)=270
-stakingContract.getUnstakeStatus(user3:0xa66a)=30, cooldownEndTime=1584233660
-Unstaked 0 #67515 stakeOwner=user1:0xa44a, amount=10, totalStakedAmount=90
-Unstaked 1 #67515 stakeOwner=user3:0xa66a, amount=30, totalStakedAmount=270
-Unstaked 2 #67515 stakeOwner=user2:0xa55a, amount=20, totalStakedAmount=180
+stakingContract.getUnstakeStatus(user2:0xa55a)=20, cooldownEndTime=1584247359
+stakingContract.getStakeBalanceOf(user3:0xa66a)=0
+stakingContract.getUnstakeStatus(user3:0xa66a)=300, cooldownEndTime=1584247359
+Unstaked 0 #69682 stakeOwner=user2:0xa55a, amount=20, totalStakedAmount=180
+Unstaked 1 #69682 stakeOwner=user3:0xa66a, amount=300, totalStakedAmount=0
 
-stakingContractAddress=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContractAddress=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
 stakingContract.approvedStakingContracts[0]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
@@ -299,65 +296,69 @@ stakingContract.getUnstakeStatus(user2:0xa55a)=0, cooldownEndTime=0
 stakingContract.getStakeBalanceOf(user3:0xa66a)=0
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 
----------- Test Restake #1 ----------
+---------- Withdraw Released Stakes #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.204543105000000000           0.000000000000000000           0.000000000000000000 miner
- 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.078928459000000000      250000.000000000000000000           0.000000000000000000 deployer
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        1.212745917000000000           0.000000000000000000           0.000000000000000000 miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -1.109747684000000000      250000.000000000000000000           0.000000000000000000 deployer
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976       -0.010801358000000000           0.000000000000000000           0.000000000000000000 migrationManager
- 3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000           0.000000000000000000 emergencyManager
- 4 0xa44a08d3f6933c69212114bb66e2df1813651844       -0.041529792000000000      249900.000000000000000000           0.000000000000000000 user1
- 5 0xa55a151eb00fded1634d27d1127b4be4627079ea       -0.036641748000000000      249800.000000000000000000           0.000000000000000000 user2
- 6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9       -0.036641748000000000      249700.000000000000000000           0.000000000000000000 user3
- 7 0xe8291b4dc4c7bfa6046b4502fc4a0465eff4a512        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
- 8 0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f        0.000000000000000000         600.000000000000000000           0.000000000000000000 Staking
- 9 0x4c01da023142a1b222d185880f75cbb78916ac99        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
+ 3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0       -0.004822355000000000           0.000000000000000000           0.000000000000000000 emergencyManager
+ 4 0xa44a08d3f6933c69212114bb66e2df1813651844       -0.019661712000000000      250000.000000000000000000           0.000000000000000000 user1
+ 5 0xa55a151eb00fded1634d27d1127b4be4627079ea       -0.032633904000000000      250000.000000000000000000           0.000000000000000000 user2
+ 6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9       -0.035078904000000000      250000.000000000000000000           0.000000000000000000 user3
+ 7 0xe4d97f7a85d1454c2a4efc020742278f61030b4d        0.000000000000000000           0.000000000000000000           0.000000000000000000 'FIXED' 'Example Fixed Supply Token'
+ 8 0xbaded2da306b54bac880043418105f4491c3d617        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking
+ 9 0x63b72794f3efca62e570e127b774889c470bf238        0.000000000000000000           0.000000000000000000           0.000000000000000000 Staking2
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
                                                                               1000000.000000000000000000           0.000000000000000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
 
-PASS Test Restake #1 - user1 -> staking.restake()
-PASS Test Restake #1 - user2 -> staking.restake()
-PASS Test Restake #1 - user3 -> staking.restake()
-testRestake1_1Tx status=0x1 Success gas=500000 gasUsed=24588 costETH=0.004007844 costUSD=0.41204644164 @ ETH/USD=102.81 gasPrice=163 gwei block=67519 txIx=1 txId=0x2a09292584bb3e54f573dadfc9c419cfd4c705f9a49bc0d64d3b1433e4ab5dee @ 1584233659 Sun, 15 Mar 2020 00:54:19 UTC
-testRestake1_2Tx status=0x1 Success gas=500000 gasUsed=24588 costETH=0.004007844 costUSD=0.41204644164 @ ETH/USD=102.81 gasPrice=163 gwei block=67519 txIx=0 txId=0x7c09c36c7d4b8c4be52a880abf69a5c2fd4f3534123f0daf92a889fb682bbb67 @ 1584233659 Sun, 15 Mar 2020 00:54:19 UTC
-testRestake1_3Tx status=0x1 Success gas=500000 gasUsed=24588 costETH=0.004007844 costUSD=0.41204644164 @ ETH/USD=102.81 gasPrice=163 gwei block=67519 txIx=2 txId=0x956af01be5d0a7b04de41477d98b204c023001d2a4bb7fdbd04d9fd974707199 @ 1584233659 Sun, 15 Mar 2020 00:54:19 UTC
+PASS Withdraw Released Stakes #1 - emergencyManager -> staking.releaseAllStakes()
+PASS Withdraw Released Stakes #1 - deployer -> staking.withdrawReleasedStakes([user1, user2, user3, deployer]) - Expecting to fail as deployer does not have unstaked tokens
+PASS Withdraw Released Stakes #1 - deployer -> staking.withdrawReleasedStakes([user1, user2, user3])
+withdrawReleasedStakes2_1Tx status=0x1 Success gas=500000 gasUsed=29585 costETH=0.004822355 costUSD=0.49578631755 @ ETH/USD=102.81 gasPrice=163 gwei block=69686 txIx=0 txId=0xbbcea1cda73469b0948798b193be37b3d0e0a2fae7c60a586fa5297dce87337a @ 1584237363 Sun, 15 Mar 2020 01:56:03 UTC
+withdrawReleasedStakes2_2Tx status=0x0 Failure gas=500000 gasUsed=126863 costETH=0.020678669 costUSD=2.12597395989 @ ETH/USD=102.81 gasPrice=163 gwei block=69688 txIx=0 txId=0xd3c84338c0d69d550aa4cdd61798643e3dcbeeabbe310b53e2ada7db1d0b02d0 @ 1584237365 Sun, 15 Mar 2020 01:56:05 UTC
+withdrawReleasedStakes2_3Tx status=0x1 Success gas=500000 gasUsed=62188 costETH=0.010136644 costUSD=1.04214836964 @ ETH/USD=102.81 gasPrice=163 gwei block=69690 txIx=0 txId=0xa69a84764d29c20c0443802fda10ea2b89d67151d0227da63a80e0b896c91625 @ 1584237367 Sun, 15 Mar 2020 01:56:07 UTC
 
-token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe829
+token0ContractAddress='FIXED' 'Example Fixed Supply Token':0xe4d9
 token0.owner/new=deployer:0xa11a/null:0x0000
 token0.details='FIXED' 'Example Fixed Supply Token' 18 dp
 token0.totalSupply=1000000
+token0.Transfer 0 #69690 from=Staking:0xbade to=user1:0xa44a tokens=100
+token0.Transfer 1 #69690 from=Staking:0xbade to=user2:0xa55a tokens=200
+token0.Transfer 2 #69690 from=Staking:0xbade to=user3:0xa66a tokens=300
 
-stakingContractAddress=0x34f34f5d54c022463622b9e9bc77b10edd2b5b3f
+stakingContractAddress=0xbaded2da306b54bac880043418105f4491c3d617
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
-stakingContract.approvedStakingContracts[0]=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
+stakingContract.approvedStakingContracts[0]=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.approvedStakingContracts[1]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
-stakingContract.releasingAllStakes=false
-stakingContract.getTotalStakedTokens=600
-stakingContract.getStakeBalanceOf(user1:0xa44a)=100
+stakingContract.releasingAllStakes=true
+stakingContract.getTotalStakedTokens=0
+stakingContract.getStakeBalanceOf(user1:0xa44a)=0
 stakingContract.getUnstakeStatus(user1:0xa44a)=0, cooldownEndTime=0
-stakingContract.getStakeBalanceOf(user2:0xa55a)=200
+stakingContract.getStakeBalanceOf(user2:0xa55a)=0
 stakingContract.getUnstakeStatus(user2:0xa55a)=0, cooldownEndTime=0
-stakingContract.getStakeBalanceOf(user3:0xa66a)=300
+stakingContract.getStakeBalanceOf(user3:0xa66a)=0
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
-Restaked 0 #67519 stakeOwner=user2:0xa55a, amount=20, totalStakedAmount=200
-Restaked 1 #67519 stakeOwner=user1:0xa44a, amount=10, totalStakedAmount=100
-Restaked 2 #67519 stakeOwner=user3:0xa66a, amount=30, totalStakedAmount=300
+Withdrew 0 #69690 stakeOwner=user1:0xa44a, amount=100, totalStakedAmount=0
+Withdrew 1 #69690 stakeOwner=user2:0xa55a, amount=200, totalStakedAmount=0
+Withdrew 2 #69690 stakeOwner=user3:0xa66a, amount=300, totalStakedAmount=0
+ReleasedAllStakes 0 #69686 {}
 
-stakingContractAddress=0x4c01da023142a1b222d185880f75cbb78916ac99
+stakingContractAddress=0x63b72794f3efca62e570e127b774889c470bf238
 stakingContract.VERSION=1
 stakingContract.MAX_APPROVED_STAKING_CONTRACTS=10
-stakingContract.cooldownPeriodInSec=5
+stakingContract.cooldownPeriodInSec=10000
 stakingContract.migrationManager=migrationManager:0xa22a
 stakingContract.emergencyManager=emergencyManager:0xa33a
-stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe829
+stakingContract.getToken='FIXED' 'Example Fixed Supply Token':0xe4d9
 stakingContract.approvedStakingContracts[0]=0x
 stakingContract.notifier=0x0000000000000000000000000000000000000000
 stakingContract.acceptingNewStakes=true
