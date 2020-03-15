@@ -577,6 +577,8 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 * [x] Intended state changes & logs
 * [ ] CHECK - Can distribute to account with no staked tokens?
 
+Results:
+```
 ---------- Test Distribute Rewards #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -648,7 +650,15 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 
 <br />
 
+#### `migrateStakedTokens(...)`
 
+`user1` migrates 1 token from the first staking contract to the second, `user2` migrates 2 tokens and `user3` migrates 3 tokens
+
+* [x] Any account with staked tokens can migrate tokens to the new approved staking contract
+  * [x] Tokens transferred to the new staking contract
+* [x] Intended state changes & logs
+
+Results:
 ```
 ---------- Test Migrate #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
@@ -727,6 +737,20 @@ stakingContract.getUnstakeStatus(user2:0xa55a)=0, cooldownEndTime=0
 stakingContract.getStakeBalanceOf(user3:0xa66a)=3
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 
+```
+
+<br />
+
+#### `withdraw(...)`
+
+`user1`, `user2` and `user3` withdraw unstaked tokens
+
+* [x] Any account with unstaked tokens can withdraw their unstaked tokens
+  * [x] Tokens transferred back to account from the staking contract
+* [x] Intended state changes & logs
+
+Results:
+```
 ---------- Test Withdraw #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -802,16 +826,17 @@ stakingContract.getStakeBalanceOf(user3:0xa66a)=3
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 ```
 
+<br />
+
+<hr />
+
+### Other workflows
+
+Set up with `cooldownPeriodInSec` set to 5 seconds to test the withdrawal.
+
+<br />
+
 #### `stake(...)`
-
-#### `unstake(...)`
-
-#### `distributeRewards(...)`
-
-#### `migrateStakedTokens(...)`
-Also tests `acceptMigration(...)`
-
-#### `withdraw()`
 
 ### Other
 * `restake()`
