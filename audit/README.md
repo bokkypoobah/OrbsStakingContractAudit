@@ -55,6 +55,56 @@ Status: Work in progress
 
 <hr />
 
+## Code Review
+
+[OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0)
+
+Contracts reviewed:
+
+* [ ] [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol)
+  * [x] library SafeMath
+    * [x] function `add(...)`
+    * [x] function `sub(...)`
+    * [x] functions `mul(...)`, `div(...)` and `mod(...)` are unused in these smart contracts
+  * [x] interface IERC20
+  * [x] interface IMigratableStakingContract
+  * [x] interface IStakingContract
+  * [ ] interface IStakeChangeNotifier
+  * [ ] contract StakingContract is IStakingContract, IMigratableStakingContract
+    * [ ] using SafeMath for uint256;
+    * [x] `constructor(...)`
+    * [x] `function setMigrationManager(...) external`
+    * [x] `function setEmergencyManager(...) external`
+    * [x] `function setStakeChangeNotifier(...) external`
+    * [x] `function addMigrationDestination(...) external`
+    * [x] `function removeMigrationDestination(...) external`
+    * [ ] `function stake(...) external`
+    * [ ] `function unstake(...) external`
+    * [ ] `function withdraw() external`
+    * [ ] `function restake() external`
+    * [ ] `function acceptMigration(...) external`
+    * [ ] `function migrateStakedTokens(...) external`
+    * [ ] `function distributeRewards(...) external`
+    * [ ] `function getStakeBalanceOf(...) external view`
+    * [ ] `function getTotalStakedTokens() external view`
+    * [ ] `function getUnstakeStatus(...) external view`
+    * [ ] `function getToken() external view`
+    * [ ] `function stopAcceptingNewStakes() external`
+    * [ ] `function releaseAllStakes() external`
+    * [ ] `function withdrawReleasedStakes(...) external`
+    * [ ] `function isApprovedStakingContract(...) public view`
+    * [ ] `function shouldNotifyStakeChange() view internal`
+    * [ ] `function stakeChange(...) internal`
+    * [ ] `function stakeChangeBatch(...) internal`
+    * [ ] `function stakeMigration(...) internal`
+    * [ ] `function stake(...) private`
+    * [ ] `function withdraw(...) private`
+    * [ ] `function findApprovedStakingContractIndex(...) private view`
+
+<br />
+
+<hr />
+
 ## Testing
 
 General testing setup with 250,000 (18 decimals) ERC20 token allocated to `deployer`, `user1`, `user2` and `user3`. 2 staking contracts, with the second staking contract
@@ -1538,25 +1588,6 @@ stakingContract.getUnstakeStatus(user2:0xa55a)=0, cooldownEndTime=0
 stakingContract.getStakeBalanceOf(user3:0xa66a)=0
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 ```
-
-<br />
-
-<hr />
-
-## Code Review
-
-[OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0)
-
-Contracts reviewed:
-
-* [ ] [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol)
-  * [x] library SafeMath
-  * [x] interface IERC20
-  * [ ] interface IMigratableStakingContract
-  * [x] interface IStakingContract
-  * [ ] interface IStakeChangeNotifier
-  * [ ] contract StakingContract is IStakingContract, IMigratableStakingContract
-    * [ ] using SafeMath for uint256;
 
 <br />
 
