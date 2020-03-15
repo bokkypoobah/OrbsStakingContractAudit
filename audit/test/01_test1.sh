@@ -206,6 +206,8 @@ console.log("RESULT: ");
 printStakingContractDetails(1);
 console.log("RESULT: ");
 
+
+// Test Migration Manager Functions #1
 if (false) {
   // -----------------------------------------------------------------------------
   var testMigrationManagerFunctions1_Message = "Test Migration Manager Functions #1";
@@ -287,8 +289,8 @@ if (false) {
   var testEmergencyManagerFunctions1_4Tx = staking.releaseAllStakes({from: user2, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
-  var testEmergencyManagerFunctions1_6Tx = staking.releaseAllStakes({from: deployer, gas: 500000, gasPrice: defaultGasPrice});
   var testEmergencyManagerFunctions1_5Tx = staking.stopAcceptingNewStakes({from: deployer, gas: 500000, gasPrice: defaultGasPrice});
+  var testEmergencyManagerFunctions1_6Tx = staking.releaseAllStakes({from: deployer, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
   printBalances();
@@ -311,6 +313,7 @@ if (false) {
   printStakingContractDetails(1);
   console.log("RESULT: ");
 }
+
 
 var allTests = false;
 
@@ -409,6 +412,32 @@ if (allTests || true) {
   printTxData("testUnstaking1_3Tx", testUnstaking1_3Tx);
   console.log("RESULT: ");
   printTokenContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
+  console.log("RESULT: ");
+}
+
+
+// Withdraw Released Stakes #1
+if (false) {
+  // -----------------------------------------------------------------------------
+  var withdrawReleasedStakes2_Message = "Withdraw Released Stakes #1";
+  var accountsToWithdraw = [user1, user2, user3, deployer];
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + withdrawReleasedStakes2_Message + " ----------");
+  var withdrawReleasedStakes2_1Tx = staking.releaseAllStakes({from: emergencyManager, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  var withdrawReleasedStakes2_2Tx = staking.withdrawReleasedStakes(accountsToWithdraw, {from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(withdrawReleasedStakes2_1Tx, withdrawReleasedStakes2_Message + " - emergencyManager -> staking.releaseAllStakes()");
+  failIfTxStatusError(withdrawReleasedStakes2_2Tx, withdrawReleasedStakes2_Message + " - user1 -> staking.withdrawReleasedStakes(" + JSON.stringify(accountsToWithdraw) + ")");
+  printTxData("withdrawReleasedStakes2_1Tx", withdrawReleasedStakes2_1Tx);
+  printTxData("withdrawReleasedStakes2_2Tx", withdrawReleasedStakes2_2Tx);
   console.log("RESULT: ");
   printStakingContractDetails(0);
   console.log("RESULT: ");
