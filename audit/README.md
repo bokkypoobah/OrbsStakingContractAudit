@@ -82,7 +82,7 @@ Contracts reviewed:
     * [x] `function stake(...) external`
     * [x] `function unstake(...) external`
     * [x] `function withdraw() external`
-    * [ ] `function restake() external`
+    * [x] `function restake() external`
     * [ ] `function acceptMigration(...) external`
     * [ ] `function migrateStakedTokens(...) external`
     * [ ] `function distributeRewards(...) external`

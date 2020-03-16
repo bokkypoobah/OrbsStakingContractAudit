@@ -681,27 +681,34 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
 
     /// @dev Restakes unstaked ORBS tokens (in or after cooldown) for msg.sender.
     // BK NOTE - function restake() external;
+    // BK Ok - Any account with unstaked tokens in the cooldown period, or outside the cooldown period, can restake these tokens
     function restake() external onlyWhenAcceptingNewStakes {
+        // BK Next 3 Ok
         address stakeOwner = msg.sender;
         Stake storage stakeData = stakes[stakeOwner];
         uint256 cooldownAmount = stakeData.cooldownAmount;
 
+        // BK Ok
         require(cooldownAmount > 0, "StakingContract::restake - no unstaked tokens");
 
+        // BK Next 3 Ok
         stakeData.amount = stakeData.amount.add(cooldownAmount);
         stakeData.cooldownAmount = 0;
         stakeData.cooldownEndTime = 0;
 
+        // BK Ok
         totalStakedTokens = totalStakedTokens.add(cooldownAmount);
 
+        // BK Ok
         uint256 totalStakedAmount = stakeData.amount;
 
-        // BK NOTE - event Restaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+        // BK Ok - event Restaked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit Restaked(stakeOwner, cooldownAmount, totalStakedAmount);
 
         // Note: we aren't concerned with reentrancy since:
         //   1. At this point, due to the CEI pattern, a reentrant notifier can't affect the effects of this method.
         //   2. The notifier is set and managed by the migration manager.
+        // BK Ok
         stakeChange(stakeOwner, cooldownAmount, true, totalStakedAmount);
     }
 
