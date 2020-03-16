@@ -1613,7 +1613,7 @@ Tests:
 * [x] Any account staked tokens cannot unstake or withdraw if `notifier` is set to an invalid address
 
 Results:
-```bash
+```javascript
 ---------- Test Staking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
