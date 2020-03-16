@@ -389,7 +389,7 @@ if (allTests || true) {
 
 
 // Test Blocking #1
-if (true) {
+if (false) {
   // -----------------------------------------------------------------------------
   var testBlocking1_Message = "Test Blocking #1";
   // -----------------------------------------------------------------------------
@@ -423,9 +423,9 @@ if (allTests || true) {
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  passIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ") - Expecting failure due to invalid notifier");
-  passIfTxStatusError(testUnstaking1_2Tx, testUnstaking1_Message + " - user2 -> staking.unstake(" + tokensToUnstake2.shift(-18).toString() + ") - Expecting failure due to invalid notifier");
-  passIfTxStatusError(testUnstaking1_3Tx, testUnstaking1_Message + " - user3 -> staking.unstake(" + tokensToUnstake3.shift(-18).toString() + ") - Expecting failure due to invalid notifier");
+  failIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ")");
+  failIfTxStatusError(testUnstaking1_2Tx, testUnstaking1_Message + " - user2 -> staking.unstake(" + tokensToUnstake2.shift(-18).toString() + ")");
+  failIfTxStatusError(testUnstaking1_3Tx, testUnstaking1_Message + " - user3 -> staking.unstake(" + tokensToUnstake3.shift(-18).toString() + ")");
   printTxData("testUnstaking1_1Tx", testUnstaking1_1Tx);
   printTxData("testUnstaking1_2Tx", testUnstaking1_2Tx);
   printTxData("testUnstaking1_3Tx", testUnstaking1_3Tx);
@@ -521,20 +521,20 @@ if (false) {
 
 
 // Test Distribute Rewards #1
-if (allTests || false) {
+if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testDistributeRewards1_Message = "Test Distribute Rewards #1";
   // Check with _cooldownPeriodInSec 1 and 10000
-  var totalAmount = new BigNumber(66).shift(18).toString();
-  var stakeOwners = [user1, user2, user3];
-  var amounts = [new BigNumber(11).shift(18).toString(), new BigNumber(22).shift(18).toString(), new BigNumber(33).shift(18).toString()];
+  var totalAmount = new BigNumber(110).shift(18).toString();
+  var stakeOwners = [user1, user2, user3, miner];
+  var amounts = [new BigNumber(11).shift(18).toString(), new BigNumber(22).shift(18).toString(), new BigNumber(33).shift(18).toString(), new BigNumber(44).shift(18).toString()];
   // -----------------------------------------------------------------------------
   console.log("RESULT: ---------- " + testDistributeRewards1_Message + " ----------");
   var testDistributeRewards1_1Tx = staking.distributeRewards(totalAmount, stakeOwners, amounts, {from: deployer, gas: 1000000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  failIfTxStatusError(testDistributeRewards1_1Tx, testDistributeRewards1_Message + " - deployer -> staking.distributeRewards(66, [user1, user2, user3], [11, 22, 33])");
+  failIfTxStatusError(testDistributeRewards1_1Tx, testDistributeRewards1_Message + " - deployer -> staking.distributeRewards(66, [user1, user2, user3, miner], [11, 22, 33, 44])");
   printTxData("testDistributeRewards1_1Tx", testDistributeRewards1_1Tx);
   console.log("RESULT: ");
   printTokenContractDetails(0);
@@ -547,7 +547,7 @@ if (allTests || false) {
 
 
 // Test Migrate #1
-if (allTests || false) {
+if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testMigrateStakedTokens1_Message = "Test Migrate #1";
   var tokensToMigrate1 = new BigNumber("1").shift(18);
@@ -582,21 +582,29 @@ if (allTests || false) {
 if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testWithdraw1_Message = "Test Withdraw #1";
-  // Check with _cooldownPeriodInSec 1 and 10000
+  var minerTokensToWithdraw = new BigNumber("4.4444").shift(18);
   // -----------------------------------------------------------------------------
   console.log("RESULT: ---------- " + testWithdraw1_Message + " ----------");
   var testWithdraw1_1Tx = staking.withdraw({from: user1, gas: 500000, gasPrice: defaultGasPrice});
   var testWithdraw1_2Tx = staking.withdraw({from: user2, gas: 500000, gasPrice: defaultGasPrice});
   var testWithdraw1_3Tx = staking.withdraw({from: user3, gas: 500000, gasPrice: defaultGasPrice});
+  var testWithdraw1_4Tx = staking.unstake(minerTokensToWithdraw.toString(), {from: miner, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  var testWithdraw1_5Tx = staking.withdraw({from: miner, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  passIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw() - Expecting failure due to invalid notifier");
-  passIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw() - Expecting failure due to invalid notifier");
-  passIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw() - Expecting failure due to invalid notifier");
+  failIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_4Tx, testWithdraw1_Message + " - miner -> staking.unstake(" + minerTokensToWithdraw.shift(-18).toString() + ")");
+  failIfTxStatusError(testWithdraw1_5Tx, testWithdraw1_Message + " - miner -> staking.withdraw()");
   printTxData("testWithdraw1_1Tx", testWithdraw1_1Tx);
   printTxData("testWithdraw1_2Tx", testWithdraw1_2Tx);
   printTxData("testWithdraw1_3Tx", testWithdraw1_3Tx);
+  printTxData("testWithdraw1_4Tx", testWithdraw1_4Tx);
+  printTxData("testWithdraw1_5Tx", testWithdraw1_5Tx);
   console.log("RESULT: ");
   printTokenContractDetails(0);
   console.log("RESULT: ");
