@@ -423,9 +423,9 @@ if (allTests || true) {
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  failIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ")");
-  failIfTxStatusError(testUnstaking1_2Tx, testUnstaking1_Message + " - user2 -> staking.unstake(" + tokensToUnstake2.shift(-18).toString() + ")");
-  failIfTxStatusError(testUnstaking1_3Tx, testUnstaking1_Message + " - user3 -> staking.unstake(" + tokensToUnstake3.shift(-18).toString() + ")");
+  passIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ") - Expecting failure due to invalid notifier");
+  passIfTxStatusError(testUnstaking1_2Tx, testUnstaking1_Message + " - user2 -> staking.unstake(" + tokensToUnstake2.shift(-18).toString() + ") - Expecting failure due to invalid notifier");
+  passIfTxStatusError(testUnstaking1_3Tx, testUnstaking1_Message + " - user3 -> staking.unstake(" + tokensToUnstake3.shift(-18).toString() + ") - Expecting failure due to invalid notifier");
   printTxData("testUnstaking1_1Tx", testUnstaking1_1Tx);
   printTxData("testUnstaking1_2Tx", testUnstaking1_2Tx);
   printTxData("testUnstaking1_3Tx", testUnstaking1_3Tx);
@@ -591,9 +591,9 @@ if (allTests || true) {
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  failIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw()");
-  failIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw()");
-  failIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw()");
+  passIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw() - Expecting failure due to invalid notifier");
+  passIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw() - Expecting failure due to invalid notifier");
+  passIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw() - Expecting failure due to invalid notifier");
   printTxData("testWithdraw1_1Tx", testWithdraw1_1Tx);
   printTxData("testWithdraw1_2Tx", testWithdraw1_2Tx);
   printTxData("testWithdraw1_3Tx", testWithdraw1_3Tx);
