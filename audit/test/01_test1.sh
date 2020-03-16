@@ -77,7 +77,7 @@ console.log("RESULT: ");
 
 // -----------------------------------------------------------------------------
 var deployGroup1_Message = "Deploy Group #1 - Contracts";
-var _cooldownPeriodInSec = 10000;
+var _cooldownPeriodInSec = 1;
 console.log("DATA: deployer=" + deployer);
 console.log("DATA: defaultGasPrice=" + defaultGasPrice);
 // -----------------------------------------------------------------------------
@@ -268,7 +268,6 @@ if (false) {
   console.log("RESULT: ");
   printStakingContractDetails(1);
   console.log("RESULT: ");
-
 }
 
 
@@ -389,25 +388,45 @@ if (allTests || true) {
 }
 
 
+// Test Blocking #1
+if (true) {
+  // -----------------------------------------------------------------------------
+  var testBlocking1_Message = "Test Blocking #1";
+  // -----------------------------------------------------------------------------
+  console.log("RESULT: ---------- " + testBlocking1_Message + " ----------");
+  var testBlocking1_1Tx = staking.setStakeChangeNotifier("0x0000000000000000000000000000000000000001", {from: migrationManager, gas: 500000, gasPrice: defaultGasPrice});
+  while (txpool.status.pending > 0) {
+  }
+  printBalances();
+  failIfTxStatusError(testBlocking1_1Tx, testBlocking1_Message + " - migrationManager -> staking.setStakeChangeNotifier(0x0000000000000000000000000000000000000001)");
+  printTxData("testBlocking1_1Tx", testBlocking1_1Tx);
+  console.log("RESULT: ");
+  printStakingContractDetails(0);
+  console.log("RESULT: ");
+  printStakingContractDetails(1);
+  console.log("RESULT: ");
+}
+
+
 // Test Unstaking #1
 if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testUnstaking1_Message = "Test Unstaking #1";
-  // var tokensToUnstake1 = new BigNumber("10").shift(18);
+  var tokensToUnstake1 = new BigNumber("10").shift(18);
   var tokensToUnstake2 = new BigNumber("20").shift(18);
-  var tokensToUnstake3 = new BigNumber("300").shift(18);
+  var tokensToUnstake3 = new BigNumber("30").shift(18);
   // -----------------------------------------------------------------------------
   console.log("RESULT: ---------- " + testUnstaking1_Message + " ----------");
-  // var testUnstaking1_1Tx = staking.unstake(tokensToUnstake1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
+  var testUnstaking1_1Tx = staking.unstake(tokensToUnstake1.toString(), {from: user1, gas: 500000, gasPrice: defaultGasPrice});
   var testUnstaking1_2Tx = staking.unstake(tokensToUnstake2.toString(), {from: user2, gas: 500000, gasPrice: defaultGasPrice});
   var testUnstaking1_3Tx = staking.unstake(tokensToUnstake3.toString(), {from: user3, gas: 500000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  // failIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ")");
+  failIfTxStatusError(testUnstaking1_1Tx, testUnstaking1_Message + " - user1 -> staking.unstake(" + tokensToUnstake1.shift(-18).toString() + ")");
   failIfTxStatusError(testUnstaking1_2Tx, testUnstaking1_Message + " - user2 -> staking.unstake(" + tokensToUnstake2.shift(-18).toString() + ")");
   failIfTxStatusError(testUnstaking1_3Tx, testUnstaking1_Message + " - user3 -> staking.unstake(" + tokensToUnstake3.shift(-18).toString() + ")");
-  // printTxData("testUnstaking1_1Tx", testUnstaking1_1Tx);
+  printTxData("testUnstaking1_1Tx", testUnstaking1_1Tx);
   printTxData("testUnstaking1_2Tx", testUnstaking1_2Tx);
   printTxData("testUnstaking1_3Tx", testUnstaking1_3Tx);
   console.log("RESULT: ");
@@ -572,9 +591,9 @@ if (allTests || true) {
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  passIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw() - Expecting failure - no unstaked amount");
-  passIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw() - Expecting failure - in cooldown period");
-  passIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw() - Expecting failure - in cooldown period");
+  failIfTxStatusError(testWithdraw1_1Tx, testWithdraw1_Message + " - user1 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_2Tx, testWithdraw1_Message + " - user2 -> staking.withdraw()");
+  failIfTxStatusError(testWithdraw1_3Tx, testWithdraw1_Message + " - user3 -> staking.withdraw()");
   printTxData("testWithdraw1_1Tx", testWithdraw1_1Tx);
   printTxData("testWithdraw1_2Tx", testWithdraw1_2Tx);
   printTxData("testWithdraw1_3Tx", testWithdraw1_3Tx);

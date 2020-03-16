@@ -1014,6 +1014,8 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         totalStakedAmount = stakeData.amount;
 
         // Transfer the tokens to the smart contract and update the stake owners list accordingly.
+        // BK NOTE - Tokens are transferred from `msg.sender` while the accounting is done with `stakeOwner`
+        // BK NOTE - Does not matter with `stake(uint256)`, but can be different if an account directly calls `acceptMigration(...)` but this is not an expected use case
         // BK Ok
         require(token.transferFrom(msg.sender, address(this), _amount),
             "StakingContract::stake - insufficient allowance");
