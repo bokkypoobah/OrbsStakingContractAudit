@@ -118,7 +118,7 @@ added as an `approvedStakingContracts` in the first staking contract.
 * [x] Variables set correctly - `cooldownPeriodInSec`, `migrationManager`, `emergencyManager` and `token`
 
 Results:
-```
+```javascript
 ---------- Deploy Group #2 - Setup ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -213,7 +213,8 @@ Admin functions `setMigrationManager(...)`, `setStakeChangeNotifier(...)`, `addM
 * [x] Can only remove added migration destination
 * [x] Intended state changes & logs
 
-```
+Results:
+```javascript
 ---------- Test Migration Manager Functions #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -366,8 +367,7 @@ Admin functions - `setEmergencyManager(...)`, `stopAcceptingNewStakes()`, `relea
 NOTE: If `releaseAllStakes()` is executed before `stopAcceptingNewStakes()` is executed, `stopAcceptingNewStakes()` can never be executed. This does not alter the program logic as the modifier `onlyWhenAcceptingNewStakes()` checks for both conditions.
 
 Results:
-
-```
+```javascript
 ---------- Test Emergency Manager Functions #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -460,7 +460,7 @@ Set up with `cooldownPeriodInSec` set to 5 seconds to test the withdrawal.
 * [x] Intended state changes & logs
 
 Results:
-```
+```javascript
 ---------- Test Staking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -546,7 +546,7 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 * [x] Intended state changes & logs
 
 Results:
-```
+```javascript
 ---------- Test Unstaking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -625,12 +625,13 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 
 `deployer` distributes 11 tokens to `user1`, 22 tokens to `user2` and 33 tokens to `user3`
 
-* [x] Any account with `approve(...)``-d tokens can distribute rewards to other accounts
+* [x] Any account with `approve(...)`-d tokens can distribute rewards to other accounts
 * [x] Intended state changes & logs
 * [ ] CHECK - Can distribute to account with no staked tokens?
 
 Results:
-```
+
+```javascript
 ---------- Test Distribute Rewards #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -711,7 +712,7 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 * [x] Intended state changes & logs
 
 Results:
-```
+```javascript
 ---------- Test Migrate #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -788,7 +789,6 @@ stakingContract.getStakeBalanceOf(user2:0xa55a)=2
 stakingContract.getUnstakeStatus(user2:0xa55a)=0, cooldownEndTime=0
 stakingContract.getStakeBalanceOf(user3:0xa66a)=3
 stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
-
 ```
 
 <br />
@@ -802,7 +802,7 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 * [x] Intended state changes & logs
 
 Results:
-```
+```javascript
 ---------- Test Withdraw #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -896,7 +896,7 @@ Like regular workflows section, but with small differences.
 * [x] Intended state changes & logs
 
 Results:
-```
+```javascript
 ---------- Test Unstaking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -1061,7 +1061,7 @@ Tests:
 * [x] Cannot execute this function for accounts without any staked or unstaked tokens
 
 Results:
-```
+```javascript
 ---------- Test Unstaking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -1231,7 +1231,7 @@ Tests:
 * [x] Cannot execute this function for accounts without any staked or unstaked tokens
 
 Results:
-```
+```javascript
 ---------- Test Unstaking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
@@ -1455,7 +1455,7 @@ Tests:
 * [x] Intended state changes & logs
 
 Results:
-```
+```javascript
 ---------- Test Unstaking #1 ----------
  # Account                                             EtherBalanceChange                          FIXED                              1 Name
 -- ------------------------------------------ --------------------------- ------------------------------ ------------------------------ ---------------------------
