@@ -84,6 +84,7 @@ Contracts reviewed:
     * [x] `function withdraw() external`
     * [x] `function restake() external`
     * [ ] `function acceptMigration(...) external`
+      * NOTE: See comments in `stake(...)` below
     * [ ] `function migrateStakedTokens(...) external`
     * [ ] `function distributeRewards(...) external`
     * [x] `function getStakeBalanceOf(...) external view`
@@ -458,6 +459,10 @@ Set up with `cooldownPeriodInSec` set to 1 seconds to test the withdrawal.
 
 * [x] Any account with tokens `approve(...)`-d to the staking contract can stake
 * [x] Intended state changes & logs
+* Also tested
+  * [x] Cannot stake more than approved amount
+  * [x] Cannot stake 0 tokens
+  * [x] Account without approve tokens/token balance cannot stake
 
 Results:
 ```javascript
