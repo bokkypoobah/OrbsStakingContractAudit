@@ -525,16 +525,16 @@ if (allTests || true) {
   // -----------------------------------------------------------------------------
   var testDistributeRewards1_Message = "Test Distribute Rewards #1";
   // Check with _cooldownPeriodInSec 1 and 10000
-  var totalAmount = new BigNumber(110).shift(18).toString();
+  var totalAmount = new BigNumber("110").shift(18).toString();
   var stakeOwners = [user1, user2, user3, miner];
-  var amounts = [new BigNumber(11).shift(18).toString(), new BigNumber(22).shift(18).toString(), new BigNumber(33).shift(18).toString(), new BigNumber(44).shift(18).toString()];
+  var amounts = [new BigNumber("11").shift(18).toString(), new BigNumber("22").shift(18).toString(), new BigNumber("33").shift(18).toString(), new BigNumber(44).shift(18).toString()];
   // -----------------------------------------------------------------------------
   console.log("RESULT: ---------- " + testDistributeRewards1_Message + " ----------");
   var testDistributeRewards1_1Tx = staking.distributeRewards(totalAmount, stakeOwners, amounts, {from: deployer, gas: 1000000, gasPrice: defaultGasPrice});
   while (txpool.status.pending > 0) {
   }
   printBalances();
-  failIfTxStatusError(testDistributeRewards1_1Tx, testDistributeRewards1_Message + " - deployer -> staking.distributeRewards(66, [user1, user2, user3, miner], [11, 22, 33, 44])");
+  failIfTxStatusError(testDistributeRewards1_1Tx, testDistributeRewards1_Message + " - deployer -> staking.distributeRewards(" + totalAmount + ", [user1, user2, user3, miner], " + JSON.stringify(amounts) + ")");
   printTxData("testDistributeRewards1_1Tx", testDistributeRewards1_1Tx);
   console.log("RESULT: ");
   printTokenContractDetails(0);

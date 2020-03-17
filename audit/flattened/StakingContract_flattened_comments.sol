@@ -719,6 +719,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // BK NOTE - function acceptMigration(address _stakeOwner, uint256 _amount) external;
     // BK NOTE - msg.sender will be the new instance of this contract
     // BK NOTE - If an account executes this directly, the effects are the same as executing stake(uint256), & different events emitted
+    // BK NOTE - State will throw if there is an error
     function acceptMigration(address _stakeOwner, uint256 _amount) external onlyWhenAcceptingNewStakes {
         uint256 totalStakedAmount = stake(_stakeOwner, _amount);
 
@@ -737,36 +738,43 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // BK NOTE - function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external;
     function migrateStakedTokens(IMigratableStakingContract _newStakingContract, uint256 _amount) external
         onlyWhenStakesNotReleased {
-        // BK Ok
+        // BK Next 2 Ok
         require(isApprovedStakingContract(_newStakingContract),
             "StakingContract::migrateStakedTokens - migration destination wasn't approved");
         require(_amount > 0, "StakingContract::migrateStakedTokens - amount must be greater than 0");
 
+        // BK Next 3 Ok
         address stakeOwner = msg.sender;
         Stake storage stakeData = stakes[stakeOwner];
         uint256 stakedAmount = stakeData.amount;
 
+        // BK Next 2 Ok
         require(stakedAmount > 0, "StakingContract::migrateStakedTokens - no staked tokens");
         require(_amount <= stakedAmount, "StakingContract::migrateStakedTokens - amount exceeds staked token balance");
 
+        // BK Ok
         stakeData.amount = stakedAmount.sub(_amount);
 
+        // BK Ok
         totalStakedTokens = totalStakedTokens.sub(_amount);
 
         // BK Ok
         require(_newStakingContract.getToken() == token,
             "StakingContract::migrateStakedTokens - staked tokens must be the same");
+        // BK Ok
         require(token.approve(address(_newStakingContract), _amount),
             "StakingContract::migrateStakedTokens - couldn't approve transfer");
 
-        // BK NOTE - event MigratedStake(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+        // BK Ok - event MigratedStake(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
         emit MigratedStake(stakeOwner, _amount, stakeData.amount);
 
+        // BK Ok - `acceptMigration(...)` -> `stake(...)` that will throw if the transfer fails
         _newStakingContract.acceptMigration(stakeOwner, _amount);
 
         // Note: we aren't concerned with reentrancy since:
         //   1. At this point, due to the CEI pattern, a reentrant notifier can't affect the effects of this method.
         //   2. The notifier is set and managed by the migration manager.
+        // BK Ok
         stakeMigration(stakeOwner, _amount);
     }
 
