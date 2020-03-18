@@ -4,6 +4,20 @@ Status: Work in progress
 
 ## Summary
 
+[Orbs](https://www.orbs.com/) intends to deploy a token staking contract on the Ethereum mainnet.
+
+Bok Consulting Pty Ltd was commissioned to perform an audit on these Solidity smart contracts.
+The deployed staking smart contract will be used with the **ORB** ERC20 token deployed to [0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa](https://etherscan.io/token/0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa).
+
+This audit has been conducted on the source code in commit
+[92abd6b](https://github.com/orbs-network/orbs-staking-contract/tree/92abd6b1dea152f958f1fc90afd03849e9f2f674).
+
+TODO: Regular workflow
+
+TODO: Admin functions
+
+TODO: EmergencyManager functions
+
 <br />
 
 <hr />
@@ -57,52 +71,66 @@ Status: Work in progress
 
 ## Code Review
 
+Solidity 0.5.16
+
 [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0)
 
-Contracts reviewed:
+The flattened contract [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol) was generated using [scripts/solidityFlattener.pl](scripts/solidityFlattener.pl) from the following source files:
 
-* [ ] [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol)
-  * [x] library SafeMath
-    * [x] `function add(...) internal`
-    * [x] `function sub(...) internal`
-    * [x] functions `mul(...)`, `div(...)` and `mod(...)` are unused in these smart contracts
-  * [x] interface IERC20
-  * [x] interface IMigratableStakingContract
-  * [x] interface IStakingContract
-  * [x] interface IStakeChangeNotifier
-  * [ ] contract StakingContract is IStakingContract, IMigratableStakingContract
-    * [x] using SafeMath for uint256;
-    * [x] Structs, constants, variables, events and modifiers
-    * [x] `constructor(...)`
-    * [x] `function setMigrationManager(...) external`
-    * [x] `function setEmergencyManager(...) external`
-    * [x] `function setStakeChangeNotifier(...) external`
-    * [x] `function addMigrationDestination(...) external`
-    * [x] `function removeMigrationDestination(...) external`
-    * [x] `function stake(...) external`
-    * [x] `function unstake(...) external`
-    * [x] `function withdraw() external`
-    * [x] `function restake() external`
-    * [ ] `function acceptMigration(...) external`
-      * NOTE: See comments in `stake(...)` below
-    * [ ] `function migrateStakedTokens(...) external`
-    * [ ] `function distributeRewards(...) external`
-    * [x] `function getStakeBalanceOf(...) external view`
-    * [x] `function getTotalStakedTokens() external view`
-    * [x] `function getUnstakeStatus(...) external view`
-    * [x] `function getToken() external view`
-    * [x] `function stopAcceptingNewStakes() external`
-    * [x] `function releaseAllStakes() external`
-    * [x] `function withdrawReleasedStakes(...) external`
-    * [x] `function isApprovedStakingContract(...) public view`
-    * [x] `function shouldNotifyStakeChange() view internal`
-    * [ ] `function stakeChange(...) internal`
-    * [ ] `function stakeChangeBatch(...) internal`
-    * [ ] `function stakeMigration(...) internal`
-    * [x] `function stake(...) private`
-      * NOTE: Token balance is staked for `_stakeOwner`, while tokens are transferred from `msg.sender`'s account in the '`transferFrom(msg.sender, ...)` statement. This does not matter for the call from `stake(uint256)`, but can be different if an externally-owned-account directly executes `acceptMigration(...)`.
-    * [x] `function withdraw(...) private`
-    * [x] `function findApprovedStakingContractIndex(...) private view`
+* [StakingContract.sol](../contracts/StakingContract.sol)
+  * import [@openzeppelin/contracts/math/SafeMath.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.3.0/contracts/math/SafeMath.sol)
+  * import [./IStakingContract.sol](../contracts/IStakingContract.sol)
+    * import [./IMigratableStakingContract.sol](../contracts/IMigratableStakingContract.sol)
+      * import [@openzeppelin/contracts/token/ERC20/IERC20.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.3.0/contracts/token/ERC20/IERC20.sol)
+  * import [./IStakeChangeNotifier.sol](../contracts/IStakeChangeNotifier.sol);
+
+
+The flattened contract reviewed below was generated using a Solidity flattener
+
+
+The contracts in the [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol):
+
+* [x] library SafeMath
+  * [x] `function add(...) internal`
+  * [x] `function sub(...) internal`
+  * [x] functions `mul(...)`, `div(...)` and `mod(...)` are unused in these smart contracts
+* [x] interface IERC20
+* [x] interface IMigratableStakingContract
+* [x] interface IStakingContract
+* [x] interface IStakeChangeNotifier
+* [ ] contract StakingContract is IStakingContract, IMigratableStakingContract
+  * [x] using SafeMath for uint256;
+  * [x] Structs, constants, variables, events and modifiers
+  * [x] `constructor(...)`
+  * [x] `function setMigrationManager(...) external`
+  * [x] `function setEmergencyManager(...) external`
+  * [x] `function setStakeChangeNotifier(...) external`
+  * [x] `function addMigrationDestination(...) external`
+  * [x] `function removeMigrationDestination(...) external`
+  * [x] `function stake(...) external`
+  * [x] `function unstake(...) external`
+  * [x] `function withdraw() external`
+  * [x] `function restake() external`
+  * [ ] `function acceptMigration(...) external`
+    * NOTE: See comments in `stake(...)` below
+  * [ ] `function migrateStakedTokens(...) external`
+  * [ ] `function distributeRewards(...) external`
+  * [x] `function getStakeBalanceOf(...) external view`
+  * [x] `function getTotalStakedTokens() external view`
+  * [x] `function getUnstakeStatus(...) external view`
+  * [x] `function getToken() external view`
+  * [x] `function stopAcceptingNewStakes() external`
+  * [x] `function releaseAllStakes() external`
+  * [x] `function withdrawReleasedStakes(...) external`
+  * [x] `function isApprovedStakingContract(...) public view`
+  * [x] `function shouldNotifyStakeChange() view internal`
+  * [ ] `function stakeChange(...) internal`
+  * [ ] `function stakeChangeBatch(...) internal`
+  * [ ] `function stakeMigration(...) internal`
+  * [x] `function stake(...) private`
+    * NOTE: Token balance is staked for `_stakeOwner`, while tokens are transferred from `msg.sender`'s account in the '`transferFrom(msg.sender, ...)` statement. This does not matter for the call from `stake(uint256)`, but can be different if an externally-owned-account directly executes `acceptMigration(...)`.
+  * [x] `function withdraw(...) private`
+  * [x] `function findApprovedStakingContractIndex(...) private view`
 
 <br />
 
