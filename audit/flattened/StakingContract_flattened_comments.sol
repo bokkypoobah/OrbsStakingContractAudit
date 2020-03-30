@@ -720,6 +720,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // BK NOTE - msg.sender will be the new instance of this contract
     // BK NOTE - If an account executes this directly, the effects are the same as executing stake(uint256), & different events emitted
     // BK NOTE - State will throw if there is an error
+    // BK Ok
     function acceptMigration(address _stakeOwner, uint256 _amount) external onlyWhenAcceptingNewStakes {
         uint256 totalStakedAmount = stake(_stakeOwner, _amount);
 
@@ -729,6 +730,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         // Note: we aren't concerned with reentrancy since:
         //   1. At this point, due to the CEI pattern, a reentrant notifier can't affect the effects of this method.
         //   2. The notifier is set and managed by the migration manager.
+        // BK Ok
         stakeChange(_stakeOwner, _amount, true, totalStakedAmount);
     }
 
@@ -786,55 +788,70 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _stakeOwners address[] The addresses of the stake owners.
     /// @param _amounts uint256[] The amounts of the rewards.
     // BK NOTE - function distributeRewards(uint256 _totalAmount, address[] calldata _stakeOwners, uint256[] calldata _amounts) external;
-    // BK TODO - Check if sum(_amounts) can overflow to _totalAmount
-    // BK TODO - Check duplicate _stakeOwners
+    // BK Ok
     function distributeRewards(uint256 _totalAmount, address[] calldata _stakeOwners, uint256[] calldata _amounts) external
         onlyWhenAcceptingNewStakes {
+        // BK Ok
         require(_totalAmount > 0, "StakingContract::distributeRewards - total amount must be greater than 0");
 
+        // BK Next 2 Ok
         uint256 stakeOwnersLength = _stakeOwners.length;
         uint256 amountsLength = _amounts.length;
 
+        // BK Next 2 Ok
         require(stakeOwnersLength > 0 && amountsLength > 0,
             "StakingContract::distributeRewards - lists can't be empty");
         require(stakeOwnersLength == amountsLength,
             "StakingContract::distributeRewards - lists must be of the same size");
 
         // Transfer all the tokens to the smart contract and update the stake owners list accordingly.
+        // BK Ok
         require(token.transferFrom(msg.sender, address(this), _totalAmount),
             "StakingContract::distributeRewards - insufficient allowance");
 
+        // BK Next 2 Ok
         bool[] memory signs = new bool[](amountsLength);
         uint256[] memory totalStakedAmounts = new uint256[](amountsLength);
 
+        // BK Ok
         uint256 expectedTotalAmount = 0;
+        // BK Ok
         for (uint i = 0; i < stakeOwnersLength; ++i) {
+            // BK Next 2 Ok
             address stakeOwner = _stakeOwners[i];
             uint256 amount = _amounts[i];
 
+            // BK Next 2 Ok
             require(stakeOwner != address(0), "StakingContract::distributeRewards - stake owner can't be 0");
             require(amount > 0, "StakingContract::distributeRewards - amount must be greater than 0");
 
+            // BK Next 2 Ok
             Stake storage stakeData = stakes[stakeOwner];
             stakeData.amount = stakeData.amount.add(amount);
 
+            // BK Ok
             expectedTotalAmount = expectedTotalAmount.add(amount);
 
+            // BK Next 3 Ok
             uint256 totalStakedAmount = stakeData.amount;
             signs[i] = true;
             totalStakedAmounts[i] = totalStakedAmount;
 
             // BK NOTE - event Staked(address indexed stakeOwner, uint256 amount, uint256 totalStakedAmount);
+            // BK Ok
             emit Staked(stakeOwner, amount, totalStakedAmount);
         }
 
+        // BK Ok
         require(_totalAmount == expectedTotalAmount, "StakingContract::distributeRewards - incorrect total amount");
 
+        // BK Ok
         totalStakedTokens = totalStakedTokens.add(_totalAmount);
 
         // Note: we aren't concerned with reentrancy since:
         //   1. At this point, due to the CEI pattern, a reentrant notifier can't affect the effects of this method.
         //   2. The notifier is set and managed by the migration manager.
+        // BK Ok
         stakeChangeBatch(_stakeOwners, _amounts, signs, totalStakedAmounts);
     }
 
@@ -937,6 +954,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
         // Note: we aren't concerned with reentrancy since:
         //   1. At this point, due to the CEI pattern, a reentrant notifier can't affect the effects of this method.
         //   2. The notifier is set and managed by the migration manager.
+        // BK Ok
         stakeChangeBatch(_stakeOwners, stakedAmountDiffs, signs, totalStakedAmounts);
     }
 
@@ -954,6 +972,7 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     // BK NOTE - Called by stakeChange(), stakeChangeBatch() and stakeMigration
     // BK Ok - View internal function
     function shouldNotifyStakeChange() view internal returns (bool) {
+        // BK Ok
         return address(notifier) != address(0);
     }
 
@@ -962,13 +981,16 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _amount int256 The difference in the total staked amount.
     /// @param _sign bool The sign of the added (true) or subtracted (false) amount.
     /// @param _updatedStake uint256 The updated total staked amount.
+    // BK Ok
     function stakeChange(address _stakeOwner, uint256 _amount, bool _sign, uint256 _updatedStake) internal {
+        // BK Ok
         if (!shouldNotifyStakeChange()) {
+            // BK Ok
             return;
         }
 
         // BK NOTE - function stakeChange(address _stakeOwner, uint256 _amount, bool _sign, uint256 _updatedStake) external;
-        // BK TODO - Check what happens if an invalid notifier is specified
+        // BK Ok - Invalid `notifier` can cause an exception
         notifier.stakeChange(_stakeOwner, _amount, _sign, _updatedStake);
     }
 
@@ -977,25 +999,33 @@ contract StakingContract is IStakingContract, IMigratableStakingContract {
     /// @param _amounts uint256[] The differences in total staked amounts.
     /// @param _signs bool[] The signs of the added (true) or subtracted (false) amounts.
     /// @param _updatedStakes uint256[] The updated total staked amounts.
+    // BK Ok
     function stakeChangeBatch(address[] memory _stakeOwners, uint256[] memory _amounts, bool[] memory _signs,
         uint256[] memory _updatedStakes) internal {
+        // BK Ok
         if (!shouldNotifyStakeChange()) {
+            // BK Ok
             return;
         }
 
         // BK NOTE - function stakeChangeBatch(address[] calldata _stakeOwners, uint256[] calldata _amounts, bool[] calldata _signs,
+        // BK Ok - Invalid `notifier` can cause an exception
         notifier.stakeChangeBatch(_stakeOwners, _amounts, _signs, _updatedStakes);
     }
 
     /// @dev Notifies of stake migration event.
     /// @param _stakeOwner address The address of the subject stake owner.
     /// @param _amount uint256 The migrated amount.
+    // BK Ok
     function stakeMigration(address _stakeOwner, uint256 _amount) internal {
+        // BK Ok
         if (!shouldNotifyStakeChange()) {
+            // BK Ok
             return;
         }
 
         // BK NOTE - function stakeMigration(address _stakeOwner, uint256 _amount) external;
+        // BK Ok - Invalid `notifier` can cause an exception
         notifier.stakeMigration(_stakeOwner, _amount);
     }
 

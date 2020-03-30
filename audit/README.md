@@ -30,7 +30,7 @@ The `emergencyManager` account can execute `setEmergencyManager(...)` to transfe
 
 The staking smart contract has a variable `notifier`, which if set to a non-`0x0000000000000000000000000000000000000000` address, will allow sets of staking contracts to report changes to the staked amounts in one `notifier` smart contract. Only the `migrationManager` has the premission to update this `notifier` field using the `setStakeChangeNotifier(...)` function. If `notifier` is set to an invalid non-`0x0000000000000000000000000000000000000000` address, the `stake(...)`, `unstake(...)`, `withdraw()`, `restake()` and `migrateStakedTokens(...)` functions will fail to execute correctly. Orbs have stated that for the purpose of this audit, the `notifier` variable will be set to the null address `0x0000000000000000000000000000000000000000`.
 
-#### Potential Vulnerabilities
+#### Results
 
 No potential vulnerabilities have been identified in the staking contract.
 
@@ -80,7 +80,7 @@ This audit is into the technical aspects of the staking smart contract. The code
 
 ## Limitations
 
-This audit makes no statements or warranties about the viability of the Orbs' business proposition.
+This audit makes no statements or warranties about the viability of the Orbs' business proposition with respect to these smart contracts.
 
 <br />
 
@@ -88,7 +88,7 @@ This audit makes no statements or warranties about the viability of the Orbs' bu
 
 ## Risks
 
-* The normal workflow functionality can be halted if `notifier` is set incorrectly
+* The normal workflow functionality can be halted if `notifier` is set incorrectly. This field should not be used until the target notifier smart contracts have been reviewed and tested.
 
 <br />
 
@@ -118,7 +118,7 @@ The following smart contract modules were "flattened" using [scripts/solidityFla
       * import [@openzeppelin/contracts/token/ERC20/IERC20.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.3.0/contracts/token/ERC20/IERC20.sol)
   * import [./IStakeChangeNotifier.sol](../contracts/IStakeChangeNotifier.sol);
 
-The flattened contract has been reviewed in [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol):
+The flattened contract has been reviewed in [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol) with the following main features:
 
 * [x] library SafeMath
   * [x] `function add(...) internal`
