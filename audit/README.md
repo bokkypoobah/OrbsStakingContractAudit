@@ -128,7 +128,7 @@ The flattened contract has been reviewed in [flattened/StakingContract_flattened
 * [x] interface IMigratableStakingContract
 * [x] interface IStakingContract
 * [x] interface IStakeChangeNotifier
-* [ ] contract StakingContract is IStakingContract, IMigratableStakingContract
+* [x] contract StakingContract is IStakingContract, IMigratableStakingContract
   * [x] using SafeMath for uint256;
   * [x] Structs, constants, variables, events and modifiers
   * [x] `constructor(...)`
