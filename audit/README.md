@@ -1,7 +1,5 @@
 # Orbs Staking Contract Audit
 
-Status: Work in progress
-
 ## Summary
 
 [Orbs](https://www.orbs.com/) intends to deploy an ERC20 token staking smart contract on the Ethereum mainnet and commissioned Bok Consulting Pty Ltd to perform an audit on the staking smart contract written in Solidity.
