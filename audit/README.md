@@ -4,19 +4,35 @@ Status: Work in progress
 
 ## Summary
 
-[Orbs](https://www.orbs.com/) intends to deploy a token staking contract on the Ethereum mainnet.
+[Orbs](https://www.orbs.com/) intends to deploy an ERC20 token staking smart contract on the Ethereum mainnet and commissioned Bok Consulting Pty Ltd to perform an audit on the staking smart contract written in Solidity.
 
-Bok Consulting Pty Ltd was commissioned to perform an audit on these Solidity smart contracts.
-The deployed staking smart contract will be used with the **ORB** ERC20 token deployed to [0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa](https://etherscan.io/token/0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa).
+#### Staking Contract Source Code
 
-This audit has been conducted on the source code in commit
-[92abd6b](https://github.com/orbs-network/orbs-staking-contract/tree/92abd6b1dea152f958f1fc90afd03849e9f2f674).
+The staking contract source code is in commit [92abd6b](https://github.com/orbs-network/orbs-staking-contract/tree/92abd6b1dea152f958f1fc90afd03849e9f2f674). This smart contract source code will be compiled with Solidity 0.5.16 (or minor versions later), and references a few smart contract modules in [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0).
 
-TODO: Regular workflow
+#### ERC20 Token
 
-TODO: Admin functions
+Orbs will be deploying one or more instances of these staking smart contracts, for use with the **ORBS** ERC20 token contract deployed to [0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa](https://etherscan.io/token/0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa).
 
-TODO: EmergencyManager functions
+#### Regular Workflow
+
+Any account with an ORBS token balance can `stake(...)`, `unstake(...)`, `withdraw()`, `restake()` or `migrateStakedTokens(...)` their ORBS token. Any account with an ORBS token balance can also `distributeRewards(...)` to any other account. Any account can also execute `withdrawReleasedStakes(...)` to withdraw released staked amounts on behalf of other accounts. Note that `unstake(...)`-d can only be withdrawn after a cooldown period, unless the `emergencyManager` has executed `releaseAllStakes()`.
+
+#### `migrationManager` Admin Functions
+
+The `migrationManager` account can execute `setMigrationManager(...)` to transfer ownership of this functionality to another account. The `migrationManager` can set and remove new instances of the staking contract for staked token migration using `addMigrationDestination(...)` and `removeMigrationDestination(...)`. The `migrationManager` account can also execute `setStakeChangeNotifier(...)` to update the `notifier`.
+
+#### `emergencyManager` Admin Functions
+
+The `emergencyManager` account can execute `setEmergencyManager(...)` to transfer ownership of this functionality to another account. The `emergencyManager` account can execute `stopAcceptingNewStakes()` to prevent any further staking, and `releaseAllStakes()` to release all staked tokens regardless of the cooldown period.
+
+#### The `notifier` Variable
+
+The staking smart contract has a variable `notifier`, which if set to a non-`0x0000000000000000000000000000000000000000` address, will allow sets of staking contracts to report changes to the staked amounts in one `notifier` smart contract. Only the `migrationManager` has the premission to update this `notifier` field using the `setStakeChangeNotifier(...)` function. If `notifier` is set to an invalid non-`0x0000000000000000000000000000000000000000` address, the `stake(...)`, `unstake(...)`, `withdraw()`, `restake()` and `migrateStakedTokens(...)` functions will fail to execute correctly. Orbs have stated that for the purpose of this audit, the `notifier` variable will be set to the null address `0x0000000000000000000000000000000000000000`.
+
+#### Potential Vulnerabilities
+
+No potential vulnerabilities have been identified in the staking contract.
 
 <br />
 
@@ -27,11 +43,12 @@ TODO: EmergencyManager functions
 * [Summary](#summary)
 * [Recommendations](#recommendations)
 * [Potential Vulnerabilities](#potential-vulnerabilities)
-* [Scope](#scope)
+* [Scope And Methodology](#scope-and-methodology)
 * [Limitations](#limitations)
 * [Risks](#risks)
-* [Testing](#testing)
+* [Notes](#notes)
 * [Code Review](#code-review)
+* [Testing](#testing)
 
 <br />
 
@@ -47,11 +64,15 @@ TODO: EmergencyManager functions
 
 ## Potential Vulnerabilities
 
+No potential vulnerabilities have been identified in the staking contract.
+
 <br />
 
 <hr />
 
-## Scope
+## Scope And Methodology
+
+This audit is into the technical aspects of the staking smart contract. The code was [reviewed](#code-review) and a [testing suite](#testing) was built (separate from the developer's testing suite) and executed. This audit does not guarantee that the code is bug-free, but intends to highlight any areas of weaknesses.
 
 <br />
 
@@ -59,11 +80,24 @@ TODO: EmergencyManager functions
 
 ## Limitations
 
+This audit makes no statements or warranties about the viability of the Orbs' business proposition.
+
 <br />
 
 <hr />
 
 ## Risks
+
+* The normal workflow functionality can be halted if `notifier` is set incorrectly
+
+<br />
+
+<hr />
+
+## Notes
+
+* Non-ORBS and ORBS ERC20 tokens can be trapped in this contract, as there is no mechanism to withdraw accidental transfers. This smart contract has specific functions to deposit and withdraw ORBS ERC20 tokens.
+* Ethers can be trapped in this contract (e.g., using `selfdestruct`) but this is not in the normal workflow. And there is no mechanism to withdraw these ethers.
 
 <br />
 
@@ -75,20 +109,16 @@ Solidity 0.5.16
 
 [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0)
 
-The flattened contract [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol) was generated using [scripts/solidityFlattener.pl](scripts/solidityFlattener.pl) from the following source files:
+The following smart contract modules were "flattened" using [scripts/solidityFlattener.pl](scripts/solidityFlattener.pl), with the referenced [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0) files:
 
-* [StakingContract.sol](../contracts/StakingContract.sol)
+* [../contracts/StakingContract.sol](../contracts/StakingContract.sol)
   * import [@openzeppelin/contracts/math/SafeMath.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.3.0/contracts/math/SafeMath.sol)
   * import [./IStakingContract.sol](../contracts/IStakingContract.sol)
     * import [./IMigratableStakingContract.sol](../contracts/IMigratableStakingContract.sol)
       * import [@openzeppelin/contracts/token/ERC20/IERC20.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.3.0/contracts/token/ERC20/IERC20.sol)
   * import [./IStakeChangeNotifier.sol](../contracts/IStakeChangeNotifier.sol);
 
-
-The flattened contract reviewed below was generated using a Solidity flattener
-
-
-The contracts in the [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol):
+The flattened contract has been reviewed in [flattened/StakingContract_flattened_comments.sol](flattened/StakingContract_flattened_comments.sol):
 
 * [x] library SafeMath
   * [x] `function add(...) internal`
@@ -111,10 +141,9 @@ The contracts in the [flattened/StakingContract_flattened_comments.sol](flattene
   * [x] `function unstake(...) external`
   * [x] `function withdraw() external`
   * [x] `function restake() external`
-  * [ ] `function acceptMigration(...) external`
-    * NOTE: See comments in `stake(...)` below
-  * [ ] `function migrateStakedTokens(...) external`
-  * [ ] `function distributeRewards(...) external`
+  * [x] `function acceptMigration(...) external`
+  * [x] `function migrateStakedTokens(...) external`
+  * [x] `function distributeRewards(...) external`
   * [x] `function getStakeBalanceOf(...) external view`
   * [x] `function getTotalStakedTokens() external view`
   * [x] `function getUnstakeStatus(...) external view`
@@ -124,11 +153,10 @@ The contracts in the [flattened/StakingContract_flattened_comments.sol](flattene
   * [x] `function withdrawReleasedStakes(...) external`
   * [x] `function isApprovedStakingContract(...) public view`
   * [x] `function shouldNotifyStakeChange() view internal`
-  * [ ] `function stakeChange(...) internal`
-  * [ ] `function stakeChangeBatch(...) internal`
-  * [ ] `function stakeMigration(...) internal`
+  * [x] `function stakeChange(...) internal`
+  * [x] `function stakeChangeBatch(...) internal`
+  * [x] `function stakeMigration(...) internal`
   * [x] `function stake(...) private`
-    * NOTE: Token balance is staked for `_stakeOwner`, while tokens are transferred from `msg.sender`'s account in the '`transferFrom(msg.sender, ...)` statement. This does not matter for the call from `stake(uint256)`, but can be different if an externally-owned-account directly executes `acceptMigration(...)`.
   * [x] `function withdraw(...) private`
   * [x] `function findApprovedStakingContractIndex(...) private view`
 
@@ -1943,54 +1971,6 @@ stakingContract.getUnstakeStatus(user3:0xa66a)=0, cooldownEndTime=0
 
 <br />
 
-<hr />
-
-## Notes
-
-### Admin Keys
-
-Account `migrationManager` can execute:
-
-* `setMigrationManager(...)`
-* `setStakeChangeNotifier(...)`
-* `addMigrationDestination(...)`
-* `removeMigrationDestination(...)`
-
-Account `emergencyManager` can execute:
-
-* `setEmergencyManager(...)`
-* `stopAcceptingNewStakes(...)`
-* `releaseAllStakes()`
-
 <br />
 
-### States
-
-`acceptingNewStakes`
-
-`releasingAllStakes`
-
-### Check
-
-* `totalStakedTokens` - should not include unstaked tokens in cooldown period or pending withdrawal
-* Check that can unstake and withdraw tokens if not `acceptingNewStakes`
-* [x] If `releaseAllStakes()` is called before `stopAcceptingNewStakes()`, `stopAcceptingNewStakes()` cannot be executed. But this does not affect the result of the modifier `onlyWhenAcceptingNewStakes()` as both variables are checked in `require(acceptingNewStakes && !releasingAllStakes, ...)`
-* Check migration during cooldown period
-* Can a sequence of calls within a single tx cause any unexpected changes?
-* Can `migrationManager` set a notifier that transfers away a user's staked/unstaked tokens?
-* Can a user with staked/unstaked tokens withdraw/migrate more tokens than they stake
-* `migrationManager` could add new staking contract `IMigratableStakingContract` - users should check the new staking contract before migrating their tokens
-* Can `totalStakedTokens` and individual `stakes[account]` be unbalanced?
-
-* Admin can set invalid accepted migration contract, or invalid notifier
-
-### Assumptions
-
-* ORBs token contract at [0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa](https://etherscan.io/address/0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa#code)
-* `notifier` will be set to 0x0000000000000000000000000000000000000000
-
-<br />
-
-<br />
-
-(c) BokkyPooBah / Bok Consulting Pty Ltd for Orbs - Mar 17 2020. The MIT Licence.
+(c) BokkyPooBah / Bok Consulting Pty Ltd for Orbs - Mar 30 2020. The MIT Licence.
