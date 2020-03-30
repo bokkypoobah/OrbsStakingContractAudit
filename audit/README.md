@@ -2,31 +2,31 @@
 
 ## Summary
 
-[Orbs](https://www.orbs.com/) intends to deploy an ERC20 token staking smart contract on the Ethereum mainnet and commissioned Bok Consulting Pty Ltd to perform an audit on the staking smart contract written in Solidity.
+[Orbs](https://www.orbs.com/) intends to deploy one or more instances of an ERC20 token staking contract on the Ethereum mainnet and commissioned Bok Consulting Pty Ltd to perform an audit on the staking contract source code written in Solidity.
 
 #### Staking Contract Source Code
 
-The staking contract source code is in commit [92abd6b](https://github.com/orbs-network/orbs-staking-contract/tree/92abd6b1dea152f958f1fc90afd03849e9f2f674). This smart contract source code will be compiled with Solidity 0.5.16 (or minor versions later), and references a few smart contract modules in [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0).
+The staking contract source code audited is available at [https://github.com/orbs-network/orbs-staking-contract/tree/92abd6b1dea152f958f1fc90afd03849e9f2f674](https://github.com/orbs-network/orbs-staking-contract/tree/92abd6b1dea152f958f1fc90afd03849e9f2f674). This source code will be compiled with Solidity 0.5.16 (or a later minor version), and references a few contract modules in [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0).
 
 #### ERC20 Token
 
-Orbs will be deploying one or more instances of these staking smart contracts, for use with the **ORBS** ERC20 token contract deployed to [0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa](https://etherscan.io/token/0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa).
+Orbs will be deploying one or more instances of these staking contracts, for use with the **ORBS** ERC20 token contract deployed to [0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa](https://etherscan.io/token/0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa).
 
 #### Regular Workflow
 
-Any account with an ORBS token balance can `stake(...)`, `unstake(...)`, `withdraw()`, `restake()` or `migrateStakedTokens(...)` their ORBS token. Any account with an ORBS token balance can also `distributeRewards(...)` to any other account. Any account can also execute `withdrawReleasedStakes(...)` to withdraw released staked amounts on behalf of other accounts. Note that `unstake(...)`-d can only be withdrawn after a cooldown period, unless the `emergencyManager` has executed `releaseAllStakes()`.
+Any account with sufficient ORBS token balances can `stake(...)`, `unstake(...)`, `withdraw()`, `restake()` or `migrateStakedTokens(...)` their ORBS token. Any account with sufficient ORBS token balance can also `distributeRewards(...)` to any other account. Any account can also execute `withdrawReleasedStakes(...)` to withdraw released staked amounts on behalf of other accounts. Note that `unstake(...)`-d tokens can only be withdrawn after a cooldown period, unless the `emergencyManager` has executed `releaseAllStakes()`.
 
 #### `migrationManager` Admin Functions
 
-The `migrationManager` account can execute `setMigrationManager(...)` to transfer ownership of this functionality to another account. The `migrationManager` can set and remove new instances of the staking contract for staked token migration using `addMigrationDestination(...)` and `removeMigrationDestination(...)`. The `migrationManager` account can also execute `setStakeChangeNotifier(...)` to update the `notifier`.
+Only the `migrationManager` account can execute `setMigrationManager(...)` to transfer ownership of this functionality to another account. Only the `migrationManager` can set and remove new instances of the staking contract for staked token migration using `addMigrationDestination(...)` and `removeMigrationDestination(...)`. And only the `migrationManager` account can execute `setStakeChangeNotifier(...)` to update the `notifier` (see below).
 
 #### `emergencyManager` Admin Functions
 
-The `emergencyManager` account can execute `setEmergencyManager(...)` to transfer ownership of this functionality to another account. The `emergencyManager` account can execute `stopAcceptingNewStakes()` to prevent any further staking, and `releaseAllStakes()` to release all staked tokens regardless of the cooldown period.
+Only the `emergencyManager` account can execute `setEmergencyManager(...)` to transfer ownership of this functionality to another account. Only the `emergencyManager` account can execute `stopAcceptingNewStakes()` to prevent any further staking, and `releaseAllStakes()` to release all staked tokens regardless of the cooldown period.
 
 #### The `notifier` Variable
 
-The staking smart contract has a variable `notifier`, which if set to a non-`0x0000000000000000000000000000000000000000` address, will allow sets of staking contracts to report changes to the staked amounts in one `notifier` smart contract. Only the `migrationManager` has the premission to update this `notifier` field using the `setStakeChangeNotifier(...)` function. If `notifier` is set to an invalid non-`0x0000000000000000000000000000000000000000` address, the `stake(...)`, `unstake(...)`, `withdraw()`, `restake()` and `migrateStakedTokens(...)` functions will fail to execute correctly. Orbs have stated that for the purpose of this audit, the `notifier` variable will be set to the null address `0x0000000000000000000000000000000000000000`.
+The staking contract has a variable `notifier`, which if set to a non-`0x0000000000000000000000000000000000000000` address, will allow sets of staking contracts to report changes to the staked amounts to one `notifier` contract. Only the `migrationManager` has the premission to update this `notifier` field using the `setStakeChangeNotifier(...)` function. If `notifier` is set to an invalid non-`0x0000000000000000000000000000000000000000` address, the `stake(...)`, `unstake(...)`, `withdraw()`, `restake()` and `migrateStakedTokens(...)` functions will fail to execute correctly due to an invalid function call. Orbs have stated that for the purpose of this audit, the `notifier` variable will be set to the null address `0x0000000000000000000000000000000000000000`.
 
 #### Results
 
@@ -71,7 +71,7 @@ No potential vulnerabilities have been identified in the staking contract.
 
 ## Scope And Methodology
 
-This audit is into the technical aspects of the staking smart contract. The code was [reviewed](#code-review) and a [testing suite](#testing) was built (separate from the developer's testing suite) and executed. This audit does not guarantee that the code is bug-free, but intends to highlight any areas of weaknesses.
+This audit is into the technical aspects of the staking contract. The code was [reviewed](#code-review) and a [testing suite](#testing) was built (separate from the developer's testing suite) and executed. This audit does not guarantee that the code is bug-free, but intends to highlight any areas of weaknesses.
 
 <br />
 
@@ -108,7 +108,7 @@ Solidity 0.5.16
 
 [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0)
 
-The following smart contract modules were "flattened" using [scripts/solidityFlattener.pl](scripts/solidityFlattener.pl), with the referenced [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0) files:
+The following contract modules were "flattened" using [scripts/solidityFlattener.pl](scripts/solidityFlattener.pl), with the referenced [OpenZeppelin Contracts v2.3.0](https://github.com/OpenZeppelin/openzeppelin-contracts/releases/tag/v2.3.0) files:
 
 * [../contracts/StakingContract.sol](../contracts/StakingContract.sol)
   * import [@openzeppelin/contracts/math/SafeMath.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.3.0/contracts/math/SafeMath.sol)
@@ -165,8 +165,7 @@ The flattened contract has been reviewed in [flattened/StakingContract_flattened
 
 ## Testing
 
-General testing setup with 250,000 (18 decimals) ERC20 token allocated to `deployer`, `user1`, `user2` and `user3`. 2 staking contracts, with the second staking contract
-added as an `approvedStakingContracts` in the first staking contract.
+General testing setup with 250,000 (18 decimals) ERC20 token allocated to `deployer`, `user1`, `user2` and `user3`. 2 staking contracts, with the second staking contract added as an `approvedStakingContracts` in the first staking contract.
 
 ### Constructor
 
