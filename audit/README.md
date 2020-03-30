@@ -54,7 +54,7 @@ No potential vulnerabilities have been identified in the staking contract.
 
 ## Recommendations
 
-* **LOW IMPORTANCE** The `try...catch` keyword (that was not available when these smart contract were written) should be used to guard against an invalide `notifier`
+* **LOW IMPORTANCE** The `try...catch` keyword (that was not available when these smart contract were written) should be used to guard against an invalid `notifier`
 * **VERY LOW IMPORTANCE** Add a function that will report back the length of the `approvedStakingContracts` array. So callers can iterate over 0..length, instead of 0..9 and detect an invalid address. I would not change the smart contracts just for this.
 
 <br />
